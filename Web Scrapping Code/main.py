@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import gevent
 import json
-from utils import driver_setup, scrape_images
+from utils import driver_setup, scrape_data
 
 INSTANCE = 2
 
@@ -13,7 +13,7 @@ df.dropna(inplace=True)
 df_split = np.array_split(df, INSTANCE)
 
 drivers = [driver_setup() for _ in range(INSTANCE)]
-threads = [gevent.spawn(scrape_images, data, driver) for data,driver in zip(df_split, drivers)]
+threads = [gevent.spawn(scrape_data, data, driver) for data,driver in zip(df_split, drivers)]
 gevent.joinall(threads)
 
 result = []

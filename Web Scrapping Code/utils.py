@@ -13,7 +13,7 @@ def driver_setup():
     driver.implicitly_wait(5)
     return driver
 
-def scrape_images(df, driver):
+def scrape_data(df, driver):
     data_json = []
     try:
         for _,data in df.iterrows():

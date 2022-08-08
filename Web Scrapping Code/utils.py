@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service 
 from selenium.webdriver.edge.options import Options
@@ -19,7 +17,7 @@ def scrape_images(df, driver):
     data_json = []
     try:
         for _,data in df.iterrows():
-            print(f'Scrapping for {data["Title-Edition-ISBN"]}')
+            print(f'Scrapping for {data["Title-Edition-ISBN"].split(".")[0].strip()}')
             
             if not pd.isnull(data['ISBN']):
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
@@ -43,7 +41,9 @@ def scrape_images(df, driver):
                     image = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[1]/div/a/img')
                     
                     if image.get_attribute('src') != 'https://nicebooksimages.b-cdn.net/placeholder.png?width=240&quality=90&optimizer=image&format=png' :
-                        result_data['url'] = image.get_attribute('src')                    
+                        result_data['url'] = image.get_attribute('src') 
+                    title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
+                    result_data['title'] = title.get_attribute('innerHTML')
                 except Exception as e:
                     print(e) 
             
@@ -55,15 +55,6 @@ def scrape_images(df, driver):
         driver.close()
 
     return data_json
-
-if __name__ == "__main__":
-    df = pd.read_csv('Accession Register.csv', skiprows=5)
-    df.dropna(inplace=True)
-    df_split = np.array_split(df, 4)
-    drivers = [driver_setup() for _ in range(2)]
-
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        executor.map(scrape_images, df, drivers)
 
 
 

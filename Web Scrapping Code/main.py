@@ -6,12 +6,11 @@ import gevent
 import json
 from utils import driver_setup, scrape_images
 
-
 INSTANCE = 2
 
 df = pd.read_csv('Accession Register.csv', skiprows=5)
 df.dropna(inplace=True)
-df_split = np.array_split(df[:40], INSTANCE)
+df_split = np.array_split(df, INSTANCE)
 
 drivers = [driver_setup() for _ in range(INSTANCE)]
 threads = [gevent.spawn(scrape_images, data, driver) for data,driver in zip(df_split, drivers)]

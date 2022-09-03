@@ -1,3 +1,4 @@
+from collections import defaultdict
 from gevent import monkey
 monkey.patch_all()
 import pandas as pd
@@ -9,11 +10,20 @@ from utils import driver_setup, scrape_data
 INSTANCE = 2
 
 df = pd.read_csv('Accession Register.csv', skiprows=5)
-df.dropna(inplace=True)
+old_ISBN = df['ISBN'][0]
+accession_list = defaultdict(list)
+
+for _,data in df.iterrows():
+    
+    if not pd.isnull(data['ISBN']) and old_ISBN != data['ISBN']:
+        old_ISBN = data['ISBN']
+    accession_list[str(old_ISBN)].append(data['Accession Number'])
+
+# df.dropna(inplace=True)
 df_split = np.array_split(df, INSTANCE)
 
 drivers = [driver_setup() for _ in range(INSTANCE)]
-threads = [gevent.spawn(scrape_data, data, driver) for data,driver in zip(df_split, drivers)]
+threads = [gevent.spawn(scrape_data, data, driver, accession_list) for data,driver in zip(df_split, drivers)]
 gevent.joinall(threads)
 
 result = []

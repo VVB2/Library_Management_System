@@ -5,6 +5,7 @@ cffi==1.15.1
 charset-normalizer==2.1.0
 colorama==0.4.5
 cryptography==37.0.4
+dnspython==2.2.1
 gevent==21.12.0
 greenlet==1.1.2
 h11==0.13.0
@@ -13,6 +14,7 @@ numpy==1.23.1
 outcome==1.2.0
 pandas==1.4.3
 pycparser==2.21
+pymongo==4.2.0
 pyOpenSSL==22.0.0
 PySocks==1.7.1
 python-dateutil==2.8.2

@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.edge.service import Service 
 from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
+from databaseEntry import get_database
 
 def driver_setup():
     service= Service("msedgedriver.exe")
@@ -19,10 +20,7 @@ def scrape_data(df, driver, accession_list):
         for _,data in df.iterrows():
 
             if not pd.isnull(data['ISBN']):
-                # print(type(data['ISBN']))
-                # print(str(data['ISBN']) in accession_list)
-                # print(str(data['ISBN']))
-                print(f'Scrapping for {data["Title-Edition-ISBN"].split(".")[0].strip()}')
+                print(f'Scrapping for {data["Title-Edition-ISBN"].split(".")[0].strip()} - {data["ISBN"]}')
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
                 search_text.clear()
                 search_text.send_keys(data['ISBN'])
@@ -36,7 +34,7 @@ def scrape_data(df, driver, accession_list):
                         'author': data['Author'],
                         'price': data['Price'],
                         'publisher': data['Publisher Details'],
-                        'pages': data.get(data['Pages']),
+                        'pages': data.get('Pages', 'None').upper(),
                         'entry_date': data['Date'],
                         'image_url': 'https://leadershiftinsights.com/wp-content/uploads/2019/07/no-book-cover-available.jpg'
                     },
@@ -54,7 +52,7 @@ def scrape_data(df, driver, accession_list):
                     print(e) 
             
                 data_json.append(result_data)
-
+                get_database(result_data)
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
                 search_text.clear()
     finally:

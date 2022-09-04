@@ -7,7 +7,7 @@ import gevent
 import json
 from utils import driver_setup, scrape_data
 
-INSTANCE = 2
+INSTANCE = 1
 
 df = pd.read_csv('Accession Register.csv', skiprows=5)
 old_ISBN = df['ISBN'][0]
@@ -19,7 +19,8 @@ for _,data in df.iterrows():
         old_ISBN = data['ISBN']
     accession_list[str(old_ISBN)].append(data['Accession Number'])
 
-# df.dropna(inplace=True)
+df.dropna(subset=['ISBN'], inplace=True)
+df.drop_duplicates(subset=['ISBN'])
 df_split = np.array_split(df, INSTANCE)
 
 drivers = [driver_setup() for _ in range(INSTANCE)]

@@ -4,7 +4,8 @@ logs
 Web Scrapping Code/env
 Web Scrapping Code/*.txt
 Web Scrapping Code/*.csv
-Web Scrapping Code/data copy.json
+Web Scrapping Code/*copy.json
+Web Scrapping Code/test.*
 Password.txt
 __pycache__
 npm-debug.log*

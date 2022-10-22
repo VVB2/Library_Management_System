@@ -1,11 +1,11 @@
 # Logs
 logs
 *.log
-Web Scrapping Code/env
-Web Scrapping Code/*.txt
-Web Scrapping Code/*.csv
-Web Scrapping Code/*copy.json
-Web Scrapping Code/test.*
+env
+*.txt
+/*.csv
+*copy.json
+*/test.*
 Password.txt
 __pycache__
 npm-debug.log*

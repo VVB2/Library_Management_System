@@ -8,10 +8,12 @@ import os
 import numpy as np
 import gevent
 import json
+from flask_cors import CORS
 from utils import driver_setup, bulk_scrape_data, single_scrape_data
 from databaseCRUD import DatabaseObject
 
 app = Flask(__name__)
+CORS(app)
 
 FILE_UPLOADS = 'app/static'
 app.config['FILE_UPLOADS'] = FILE_UPLOADS
@@ -34,20 +36,44 @@ def getBooks():
         for book in books:
             db_books.append({
                 'book_detail' : book['book_detail'], 
-                'accession_books_list' : book['accession_books_list']
+                'accession_books_list' : book['accession_books_list'],
+                'available_books' : book['available_books']
             })
     return db_books
+
+@app.route('/getBookByISBN', methods=['GET'])
+def getBookByISBN():
+    book = []
+    ISBN = request.args.get('isbn')
+    with DatabaseObject() as dbo:
+        db_book = dbo.getBookByISBN(ISBN)
+        book = list(db_book)
+    return book
+
+@app.route('/getBookTitle', methods=['GET'])
+def getBookTitle():
+    with DatabaseObject() as dbo:
+        titles = dbo.getBookTitle()
+        print([title for title in titles])
+    return 'done'
+
+@app.route('/test', methods=['GET'])
+def test():
+    book = []
+    number = request.args.get('number')
+    with DatabaseObject() as dbo:
+        titles = dbo.checkAvailable(int(number))
+        book = list(titles)
+    return book
 
 @app.route('/singleInsert', methods=['POST'])
 def singleInsert():
     book = request.json
     with DatabaseObject() as dbo:
         if not dbo.bookPresent(book):
-            driver = driver_setup()
-            result = single_scrape_data(book, driver)
-            print(result)
-        # dbo.insertOne(book)
-    return 'Done!'
+            result = single_scrape_data(book, driver_setup())
+            dbo.insertOne(json.dumps(result))
+    return result
 
 @app.route('/bulkInsert', methods=['POST'])
 def bulkInsert():

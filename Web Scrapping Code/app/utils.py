@@ -78,8 +78,8 @@ def single_scrape_data(data, driver):
                 'entry_date': data['Date'],
                 'image_url': 'https://leadershiftinsights.com/wp-content/uploads/2019/07/no-book-cover-available.jpg'
             },
-            'accession_books_list' : str(data['accession_list']),
-            'available_books' : str(data['accession_list'])
+            'accession_books_list' : data['accession_list'],
+            'available_books' : data['accession_list']
         } 
 
         try:
@@ -89,7 +89,7 @@ def single_scrape_data(data, driver):
             title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
             result_data['books_details']['title'] = title.get_attribute('innerHTML')
         except Exception as e:
-            print(e) 
+            print('Book not found')
         search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
         search_text.clear()
 

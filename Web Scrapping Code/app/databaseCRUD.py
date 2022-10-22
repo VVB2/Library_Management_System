@@ -6,13 +6,13 @@ config = dotenv_values('.env')
 class DatabaseObject:
     def __init__(self) -> None: 
         self.URI = config['MONGO_URI']
-        self.DATABASE = None        
+        self.DATABASE = None      
     
     def insertOne(self, data):
         self.DATABASE['Books'].insert_one(data)
 
     def getBooks(self, pageNo):
-        return self.DATABASE['Books'].find().skip(10 * pageNo).limit(10)
+        return self.DATABASE['Books'].find( {}, { "_id": 0 }).skip(20 * pageNo).limit(20)
 
     def bookPresent(self, book):
         present = self.DATABASE['Books'].count_documents({"book_detail.isbn": book['ISBN']}) > 0
@@ -33,6 +33,15 @@ class DatabaseObject:
                 }
             )
         return present
+    
+    def getBookTitle(self):
+        return self.DATABASE['Books'].distinct("book_detail.title")
+
+    def checkAvailable(self, number):
+        return self.DATABASE['Books'].find( { "accession_books_list": { "$in": [number] } }, { "_id": 0 } )
+    
+    def getBookByISBN(self, ISBN):
+        return self.DATABASE['Books'].find( { "book_detail.isbn": ISBN }, {"_id": 0 } )
 
     def __enter__(self):
         '''make a database connection and return it'''
@@ -49,5 +58,3 @@ class DatabaseObject:
             self.client.close()
         except Exception as e:
             print(e)
-
-    

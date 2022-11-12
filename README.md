@@ -6,7 +6,6 @@
 - This task if carried out manually will be tedious and includes chances of mistakes. These errors are avoided by allowing the system to keep track of information such as issue date, last date to return the book and even fine information and thus there is no need to keep manual track of this information which thereby avoids chances of mistakes. </br>
 - Thus this system reduces manual work to a great extent allows smooth flow of library activities by removing chances of errors in the details.
 <hr/>
-<br/>
 
 ## Objective
 1. The system excludes the use of paper work by managing all the book information electronically. </br>
@@ -14,7 +13,6 @@
 3. The system has books well organized and systematically arranged in different categories in the system so that user can easily search and find the book. </br>
 4. Thus, it saves human efforts and resources.
 <hr/>
-<br/>
 
 ## Problem Statement
 Our aim to create advanced library management where the system contain all management features and advanced features like trending books, users choices, tracking of the books circulation etc. <br/>
@@ -26,12 +24,10 @@ Our aim to create advanced library management where the system contain all manag
 6. Online payment 
 7. Efficient
 <hr/>
-<br/>
 
 ## Proposed Methodology
 ![Proposed Methodology](Images/Proposed%20Methodology.jpg)
 <hr/>
-<br/>
 
 ## Implementation Plan
 1. Data preprocessing
@@ -42,12 +38,10 @@ Our aim to create advanced library management where the system contain all manag
 6. Build React app for admin
 7. Testing Whole system
 <hr/>
-<br/>
 
 ## Requirement analysis
 ![Requirement analysis](Images/Requirement%20Analysis.jpg "hello")
 <hr/>
-<br/>
 
 ## Modern Tools
 <table>

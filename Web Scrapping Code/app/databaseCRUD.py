@@ -11,6 +11,9 @@ class DatabaseObject:
     def insertOne(self, data):
         self.DATABASE['Books'].insert_one(data)
 
+    def getBooksCount(self):
+        return self.DATABASE['Books'].count_documents({})
+
     def getBooks(self, pageNo):
         return self.DATABASE['Books'].find( {}, { "_id": 0 }).skip(20 * pageNo).limit(20)
 

@@ -27,6 +27,11 @@ def clean_json(books_data):
             print(f'Entering {data["book_detail"]["isbn"]} into database')
             dbo.insertOne(data)
 
+@app.route('/getBooksCount', methods=['GET'])
+def getBooksCount():
+    with DatabaseObject() as dbo:
+        return { 'count': dbo.getBooksCount() }
+
 @app.route('/getBooks', methods=['GET'])
 def getBooks():
     db_books = []

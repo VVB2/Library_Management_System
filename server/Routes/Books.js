@@ -1,9 +1,12 @@
 import express from 'express';
-import { getBooks } from '../Controllers/booksController.js';
+import { getBooks, getBooksTitles } from '../Controllers/booksController.js';
 
-const router = express.Router();
+const booksRouter = express.Router();
 
-//@route - /api/books
-router.get('/', getBooks);
+//@route - /api/books/getBooks?page=*
+booksRouter.get('/getBooks', getBooks);
 
-export default router;
+//@route - /api/books/getBooksTitles
+booksRouter.get('/getBooksTitles', getBooksTitles);
+
+export default booksRouter;

@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+ /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -7,7 +7,7 @@ const nextConfig = {
       {
         source: '/',
         destination: '/books/page=1',
-        permanent: true,
+        permanent: false,
       },
     ]
   },

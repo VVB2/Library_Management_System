@@ -1,10 +1,13 @@
+import logger from '../logger/logger.js';
 import UserModel from '../Models/userModel.js';
 
 export const createSingleUser = async (req, res) => { 
     try {
         insertUsers(req.body);
+        logger.info('New user was created');
         res.status(200).json({ message: 'Account successfully created' });
     } catch (error) {
+        logger.error(error.message);
         res.status(404).json({ message: error.message });
     }
 }
@@ -31,6 +34,7 @@ function insertUsers(user) {
             profile_picture: user.profile_picture
         })
     } catch (error) {
+        logger.error(error.message)
         console.log({ message: error.message });
     }
 }

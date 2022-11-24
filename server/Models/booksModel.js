@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const books_details = new mongoose.Schema({
+const book_detail = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -40,7 +40,7 @@ const books_details = new mongoose.Schema({
 })
 
 const booksSchema = new mongoose.Schema({
-    books_details: [books_details],
+    book_detail: [book_detail],
     accession_books_list: Array,
     available_books: Array
 },

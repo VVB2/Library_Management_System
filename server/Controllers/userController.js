@@ -1,5 +1,5 @@
 import logger from '../logger/logger.js';
-import UserModel from '../Models/userModel.js';
+import userModel from '../Models/userModel.js';
 
 export const createSingleUser = async (req, res) => { 
     try {
@@ -23,7 +23,7 @@ export const createBulkUsers = async (req, res) => {
 
 function insertUsers(user) {
     try {
-        UserModel.create({
+        userModel.create({
             email: user.email,
             password: user.password,
             name: user.name,

@@ -82,6 +82,6 @@ userSchema.methods.getSignedToken = function () {
     });
 };
 
-const UserModel = mongoose.model('UserData', userSchema);
+const userModel = mongoose.model('UserData', userSchema);
 
-export default UserModel;
+export default userModel;

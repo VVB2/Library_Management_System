@@ -1,15 +1,12 @@
 import mongoose from "mongoose";
-import userModel from "./userModel";
-import librarianModel from "./librarianModel";
+import userModel from "./userModel.js";
+import librarianModel from "./librarianModel.js";
+import booksModel from "./booksModel.js";
 
 const issueSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    isbn: {
-        type: String,
-        required: true
+    book_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: booksModel
     },
     accession_number: {
         type: String,
@@ -25,7 +22,7 @@ const issueSchema = new mongoose.Schema({
     },
     return_by: {
         type: Date,
-        default: Date.setDate(new Date().getDate() + 7)
+        default: new Date().setDate(new Date().getDate() + 7)
     },
     returned_on: {
         type: Date,
@@ -33,7 +30,8 @@ const issueSchema = new mongoose.Schema({
     },
     returned_to: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: librarianModel
+        ref: librarianModel,
+        default: null
     }
 },
     {collection: 'Issues'}

@@ -9,7 +9,7 @@ const issueSchema = new mongoose.Schema({
         ref: booksModel
     },
     accession_number: {
-        type: String,
+        type: Number,
         required: true
     },
     student_id: {

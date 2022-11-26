@@ -3,6 +3,10 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 const userSchema = mongoose.Schema({
+    authorized: {
+        type: Boolean,
+        default: false
+    },
     email: {
         type: String,
         required: [true, 'Please provide an Email address'],

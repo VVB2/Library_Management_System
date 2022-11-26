@@ -1,6 +1,13 @@
 import logger from '../logger/logger.js';
 import userModel from '../Models/userModel.js';
 
+/**
+ * Creates
+ * @param {int} accession_number - Accession number of the book
+ * @param {ObjectId} book_id - Object Id of the book
+ * @param {ObjectId} student_id - Student Id of the student
+ * @return {json} message - Successful issue creation
+ */
 export const createSingleUser = async (req, res) => { 
     try {
         insertUsers(req.body);

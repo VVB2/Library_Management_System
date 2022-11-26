@@ -1,13 +1,17 @@
 import logger from '../logger/logger.js';
 import booksModel from '../Models/booksModel.js';
 
-//get all book titles, authors and isbns
+/**
+ * Returns titles, authors and isbns for autocomplete
+ * @return {json} titles - Titles of books
+ * @return {json} authors - Authors of books
+ * @return {json} isbns - ISBNs of books
+ */
 export const getAutocomplete = async (req, res) => { 
     try {
         const titles = await booksModel.distinct("book_detail.title");
-        let authors = await booksModel.distinct("book_detail.author");
+        const authors = await booksModel.distinct("book_detail.author");
         const isbns = await booksModel.distinct("book_detail.isbn");
-        authors = authors.filter(Boolean);
         res.status(200).json({titles, authors, isbns});
     } catch (error) {
         logger.error(error.message);
@@ -15,10 +19,15 @@ export const getAutocomplete = async (req, res) => {
     }
 }
 
-//search books by title, author or isbn
+/**
+ * Returns book based upon the search parameters
+ * @param {string} title - Title of book
+ * @param {string} author - Author of book
+ * @param {string} isbn - ISBN of book
+ * @return {json} books - Books based upon the given query
+ */
 export const searchBooks = async (req, res) => {
     try {
-        // const { title, author, isbn } = req.body;
         const queryObj = {};
         const usp = new URLSearchParams(req.query);
         for (const [key, value] of usp) {
@@ -32,7 +41,12 @@ export const searchBooks = async (req, res) => {
     }
 }
 
-//get page number from query and skip using page_number*page_size
+/**
+ * Returns books based upon the page number
+ * @param {int} page - Pagination page number
+ * @return {json} books - Books based upon the page number
+ * @return {int} totalBooks - Total number of books present in the database
+ */
 export const getBooks = async (req, res) => { 
     const noOfBooks = 20;
     const page = parseInt(req.query.page);
@@ -46,6 +60,10 @@ export const getBooks = async (req, res) => {
     }
 }
 
+/**
+ * Adds or Updates books in the database
+ * This function is not yet fully implemented
+ */
 export const addUpdateBook = async (req, res) => {
     const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
     const present = await booksModel.countDocuments({ "book_detail.isbn": req.body.isbn }) > 0;

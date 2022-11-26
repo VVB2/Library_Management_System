@@ -6,6 +6,10 @@ import logger from '../logger/logger.js';
 //Connect to MongoDB
 const connString = process.env.MONGO_URI;
 
+/**
+ * Connection function to connect to MongoDB Atlas Cluster
+ * @param {string} connString - MongoDB URI (connection string)
+ */
 const connectDB = async () => {
     try {
         await mongoose.connect(connString, {
@@ -15,7 +19,7 @@ const connectDB = async () => {
         console.log('Database connection successful');
     } catch (err) {
         logger.error(err)
-        // console.log(err);
+        console.log(err);
         process.exit(1);
     }
 };

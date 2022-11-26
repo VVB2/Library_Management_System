@@ -2,7 +2,13 @@ import logger from "../logger/logger.js";
 import booksModel from "../Models/booksModel.js";
 import issueModel from "../Models/issueModel.js";
 
-//issue book by the student
+/**
+ * Issues books
+ * @param {int} accession_number - Accession number of the book
+ * @param {ObjectId} book_id - Object Id of the book
+ * @param {ObjectId} student_id - Object Id of the student
+ * @return {json} message - Successful issue creation
+ */
 export const issueBook = async (req,res) => {
     try {
         const bookAvailable = await booksModel.find({ "available_books": { "$all" : [req.body.accession_number] }});
@@ -27,6 +33,13 @@ export const issueBook = async (req,res) => {
     }
 }
 
+/**
+ * Returns books
+ * @param {int} accession_number - Accession number of the book
+ * @param {ObjectId} book_id - Object Id of the book
+ * @param {ObjectId} returned_to - Object Id of the librarian
+ * @return {json} message - Successful return book
+ */
 export const returnBook = async (req,res) => {
     try {
         const today = new Date();

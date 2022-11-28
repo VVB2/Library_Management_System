@@ -1,5 +1,5 @@
 import logger from '../logger/logger.js';
-import userModel from '../Models/userModel.js';
+import studentModel from '../Models/studentModel.js';
 
 /**
  * Creates
@@ -8,7 +8,7 @@ import userModel from '../Models/userModel.js';
  * @param {ObjectId} student_id - Student Id of the student
  * @return {json} message - Successful issue creation
  */
-export const createSingleUser = async (req, res) => { 
+export const createSingleStudent = async (req, res) => { 
     try {
         insertUsers(req.body);
         logger.info('New user was created');
@@ -19,7 +19,7 @@ export const createSingleUser = async (req, res) => {
     }
 }
 
-export const createBulkUsers = async (req, res) => { 
+export const createBulkStudents = async (req, res) => { 
     try {
         console.log(req.body);
         res.status(200).json({'message': req});
@@ -30,7 +30,7 @@ export const createBulkUsers = async (req, res) => {
 
 function insertUsers(user) {
     try {
-        userModel.create({
+        studentModel.create({
             email: user.email,
             password: user.password,
             name: user.name,

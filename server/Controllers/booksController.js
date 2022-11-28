@@ -1,5 +1,6 @@
 import logger from '../logger/logger.js';
 import booksModel from '../Models/booksModel.js';
+import { booksAutocomplete, booksSearchByParams, booksPagination } from '../queries/BookQueries.js';
 
 /**
  * Returns titles, authors and isbns for autocomplete
@@ -7,12 +8,13 @@ import booksModel from '../Models/booksModel.js';
  * @return {json} authors - Authors of books
  * @return {json} isbns - ISBNs of books
  */
-export const getAutocomplete = async (req, res) => { 
+export const getInitialData = async (req, res) => { 
     try {
-        const titles = await booksModel.distinct("book_detail.title");
-        const authors = await booksModel.distinct("book_detail.author");
-        const isbns = await booksModel.distinct("book_detail.isbn");
-        res.status(200).json({titles, authors, isbns});
+        const titles = await booksAutocomplete("book_detail.title");
+        const authors = await booksAutocomplete("book_detail.author");
+        const isbns = await booksAutocomplete("book_detail.isbn");
+        const totalBooks = await booksModel.countDocuments();
+        res.status(200).json({titles, authors, isbns, totalBooks});
     } catch (error) {
         logger.error(error.message);
         res.status(404).json({ message: error.message });
@@ -28,12 +30,7 @@ export const getAutocomplete = async (req, res) => {
  */
 export const searchBooks = async (req, res) => {
     try {
-        const queryObj = {};
-        const usp = new URLSearchParams(req.query);
-        for (const [key, value] of usp) {
-            queryObj[`book_detail.${key}`] = value
-        }
-        const books = await booksModel.find(queryObj);
+        const books = await booksSearchByParams(req.query);
         res.status(200).json(books);
     } catch (error) {
         logger.error(error.message);
@@ -48,12 +45,9 @@ export const searchBooks = async (req, res) => {
  * @return {int} totalBooks - Total number of books present in the database
  */
 export const getBooks = async (req, res) => { 
-    const noOfBooks = 20;
-    const page = parseInt(req.query.page);
     try {
-        const books = await booksModel.find().limit(noOfBooks).skip((page-1)*noOfBooks);
-        const totalBooks = await booksModel.countDocuments();
-        res.status(200).json({ books, totalBooks });
+        const books = await booksPagination(parseInt(req.query.page), 20)
+        res.status(200).json(books);
     } catch (error) {
         logger.error(error.message);
         res.status(404).json({ message: error.message });

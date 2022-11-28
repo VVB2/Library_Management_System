@@ -1,5 +1,5 @@
 import express from 'express';
-import { getBooks, getAutocomplete, searchBooks, addUpdateBook } from '../Controllers/booksController.js';
+import { getBooks, getInitialData, searchBooks, addUpdateBook } from '../Controllers/booksController.js';
 
 const booksRouter = express.Router();
 
@@ -7,7 +7,7 @@ const booksRouter = express.Router();
 booksRouter.get('/getBooks', getBooks);
 
 //@route - /api/books/getAutocomplete
-booksRouter.get('/getAutocomplete', getAutocomplete);
+booksRouter.get('/getInitialData', getInitialData);
 
 //@route - /api/books/searchBooks
 booksRouter.get('/searchBooks', searchBooks);

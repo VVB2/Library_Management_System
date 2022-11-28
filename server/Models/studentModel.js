@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const userSchema = mongoose.Schema({
+const studentSchema = mongoose.Schema({
     authorized: {
         type: Boolean,
         default: false
@@ -68,7 +68,7 @@ const userSchema = mongoose.Schema({
     {collection: 'Users'}
 );
 
-userSchema.pre('save', async function (next) {
+studentSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next();
     }
@@ -76,16 +76,16 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.methods.matchPassword = async function (password) {
+studentSchema.methods.matchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.getSignedToken = function () {
+studentSchema.methods.getSignedToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
     });
 };
 
-const userModel = mongoose.model('UserData', userSchema);
+const studentModel = mongoose.model('StudentData', studentSchema);
 
-export default userModel;
+export default studentModel;

@@ -1,9 +1,18 @@
 import express from 'express';
-import { getBooks } from '../Controllers/booksController.js';
+import { getBooks, getInitialData, searchBooks, addUpdateBook } from '../Controllers/booksController.js';
 
-const router = express.Router();
+const booksRouter = express.Router();
 
-//@route - /api/books
-router.get('/', getBooks);
+//@route - /api/books/getBooks?page=*
+booksRouter.get('/getBooks', getBooks);
 
-export default router;
+//@route - /api/books/getAutocomplete
+booksRouter.get('/getInitialData', getInitialData);
+
+//@route - /api/books/searchBooks
+booksRouter.get('/searchBooks', searchBooks);
+
+//@route - /api/books/addUpdateBook
+booksRouter.post('/addUpdateBook', addUpdateBook)
+
+export default booksRouter;

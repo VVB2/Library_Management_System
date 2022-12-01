@@ -1,25 +1,38 @@
 import mongoose from "mongoose";
-import userModel from "./userModel";
+import studentModel from "./studentModel.js";
+import librarianModel from "./librarianModel.js";
+import booksModel from "./booksModel.js";
 
 const issueSchema = new mongoose.Schema({
+    book_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: booksModel
+    },
     accession_number: {
-        type: String,
+        type: Number,
         required: true
     },
-    reader_id: {
+    student_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: userModel
+        ref: studentModel
     },
-    issued_date: {
+    issued_on: {
         type: Date,
-        required: false,
-        default: new Date.now()
+        default: new Date()
     },
-    return_date: {
+    return_by: {
         type: Date,
-        required: false,
         default: new Date().setDate(new Date().getDate() + 7)
     },
+    returned_on: {
+        type: Date,
+        default: null
+    },
+    returned_to: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: librarianModel,
+        default: null
+    }
 },
     {collection: 'Issues'}
 );

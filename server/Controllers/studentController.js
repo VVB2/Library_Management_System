@@ -1,14 +1,14 @@
 import logger from '../logger/logger.js';
 import studentModel from '../Models/studentModel.js';
 
-/**
- * Creates
- * @param {int} accession_number - Accession number of the book
- * @param {ObjectId} book_id - Object Id of the book
- * @param {ObjectId} student_id - Student Id of the student
- * @return {json} message - Successful issue creation
- */
 export const createSingleStudent = async (req, res) => { 
+    /**
+     * Creates
+     * @param {int} accession_number - Accession number of the book
+     * @param {ObjectId} book_id - Object Id of the book
+     * @param {ObjectId} student_id - Student Id of the student
+     * @return {json} message - Successful issue creation
+     */
     try {
         insertUsers(req.body);
         logger.info('New user was created');

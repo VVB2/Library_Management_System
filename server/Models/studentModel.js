@@ -51,7 +51,7 @@ const studentSchema = mongoose.Schema({
     },
     created_on: {
         type: Date,
-        default: Date.now,
+        default: new Date(),
     },
     profile_picture: {
         type: String,

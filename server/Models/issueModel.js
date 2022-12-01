@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import userModel from "./studentModel.js";
+import studentModel from "./studentModel.js";
 import librarianModel from "./librarianModel.js";
 import booksModel from "./booksModel.js";
 
@@ -14,11 +14,11 @@ const issueSchema = new mongoose.Schema({
     },
     student_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: userModel
+        ref: studentModel
     },
     issued_on: {
         type: Date,
-        default: Date.now
+        default: new Date()
     },
     return_by: {
         type: Date,

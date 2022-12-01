@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
+import cron from 'node-cron';
 import logger from './logger/logger.js';
 import express from 'express';
 import cors from 'cors';

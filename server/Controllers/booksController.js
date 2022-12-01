@@ -2,13 +2,13 @@ import logger from '../logger/logger.js';
 import booksModel from '../Models/booksModel.js';
 import { booksAutocomplete, booksSearchByParams, booksPagination } from '../queries/BookQueries.js';
 
-/**
- * Returns titles, authors and isbns for autocomplete
- * @return {json} titles - Titles of books
- * @return {json} authors - Authors of books
- * @return {json} isbns - ISBNs of books
- */
 export const getInitialData = async (req, res) => { 
+    /**
+     * Returns titles, authors and isbns for autocomplete
+     * @return {json} titles - Titles of books
+     * @return {json} authors - Authors of books
+     * @return {json} isbns - ISBNs of books
+     */
     try {
         const titles = await booksAutocomplete("book_detail.title");
         const authors = await booksAutocomplete("book_detail.author");
@@ -21,14 +21,14 @@ export const getInitialData = async (req, res) => {
     }
 }
 
-/**
- * Returns book based upon the search parameters
- * @param {string} title - Title of book
- * @param {string} author - Author of book
- * @param {string} isbn - ISBN of book
- * @return {json} books - Books based upon the given query
- */
 export const searchBooks = async (req, res) => {
+    /**
+     * Returns book based upon the search parameters
+     * @param {string} title - Title of book
+     * @param {string} author - Author of book
+     * @param {string} isbn - ISBN of book
+     * @return {json} books - Books based upon the given query
+     */
     try {
         const books = await booksSearchByParams(req.query);
         res.status(200).json(books);
@@ -38,13 +38,13 @@ export const searchBooks = async (req, res) => {
     }
 }
 
-/**
- * Returns books based upon the page number
- * @param {int} page - Pagination page number
- * @return {json} books - Books based upon the page number
- * @return {int} totalBooks - Total number of books present in the database
- */
 export const getBooks = async (req, res) => { 
+    /**
+     * Returns books based upon the page number
+     * @param {int} page - Pagination page number
+     * @return {json} books - Books based upon the page number
+     * @return {int} totalBooks - Total number of books present in the database
+     */
     try {
         const books = await booksPagination(parseInt(req.query.page), 20)
         res.status(200).json(books);
@@ -54,11 +54,11 @@ export const getBooks = async (req, res) => {
     }
 }
 
-/**
- * Adds or Updates books in the database
- * This function is not yet fully implemented
- */
 export const addUpdateBook = async (req, res) => {
+    /**
+     * Adds or Updates books in the database
+     * This function is not yet fully implemented
+     */
     const MICROSERVICE_URI = process.env.MICROSERVICE_URI;
     const present = await booksModel.countDocuments({ "book_detail.isbn": req.body.isbn }) > 0;
     let image_url = present ? await booksModel.find({"book_detail.isbn": req.body.isbn}, {"book_detail.image_url": 1}) : '';

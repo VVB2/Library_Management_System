@@ -1,31 +1,45 @@
-import { createLogger, format, transports } from "winston";
+import * as dotenv from 'dotenv';
+dotenv.config();
+import * as winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
 
-const { combine, timestamp, printf } = format;
+const { combine, timestamp, printf } = winston.format;
 
-/**
- * To store the log in a well formated and documented manner.
- */
 const myFormat = printf(({ level, message, timestamp }) => {
+    /**
+     * To store the log in a well formated and documented manner.
+     */
     return `${timestamp} | ${level.toUpperCase()} | ${message}`;
 });
 
-/**
- * To create a logger to log all the activities that are taking place on the backend.
- * Very useful for finding out any bugs or glitches in the system.
- * Also if the server is not slowing down.
- */
+const transport = new winston.transports.DailyRotateFile({
+    filename: process.env.LOG_FOLDER + process.env.LOG_FILENAME,
+    datePattern: 'YYYY-MM',
+    zippedArchive: true,
+    maxFiles: '12',
+    maxSize: '10m',
+    prepend: true,
+    level: 'info',
+});
+
+transport.on('rotate', function(oldFilename, newFilename) {
+    console.log('rotated');
+});
+
 const backendLogger = () => {
-    return createLogger({
+    /**
+     * To create a logger to log all the activities that are taking place on the backend.
+     * Very useful for finding out any bugs or glitches in the system.
+     * Also if the server is not slowing down.
+     */
+    return winston.createLogger({
         level: 'info',
         format: combine(
             timestamp({format: "YYYY-MM-DD HH:mm:ss"}),
             myFormat,
         ),
         transports: [
-          /**
-          * - Write all logs with importance level of `info` or less to `combined.log`
-          */
-          new transports.File({ name: "info", filename: './logs/combined.log', level: 'info' }),
+          transport,
         ],
     });
 }

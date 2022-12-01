@@ -3,14 +3,14 @@ import { isBookAvailable, updateAvailableBook } from "../queries/BookQueries.js"
 import { noOfBooksTaken, increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
 import { createIssue, updateIssue, findStudent } from "../queries/IssueQueries.js";
 
-/**
- * Issues books
- * @param {int} accession_number - Accession number of the book
- * @param {ObjectId} book_id - Object Id of the book
- * @param {ObjectId} student_id - Object Id of the student
- * @return {json} message - Successful issue creation
- */
 export const issueBook = async (req,res) => {
+    /**
+     * Issues books
+     * @param {int} accession_number - Accession number of the book
+     * @param {ObjectId} book_id - Object Id of the book
+     * @param {ObjectId} student_id - Object Id of the student
+     * @return {json} message - Successful issue creation
+     */
     try {
         const bookAvailable = await isBookAvailable(req.body.accession_number);
         const user_book_taken = await noOfBooksTaken(req.body.student_id);
@@ -28,14 +28,14 @@ export const issueBook = async (req,res) => {
     }
 }
 
-/**
- * Returns books
- * @param {int} accession_number - Accession number of the book
- * @param {ObjectId} book_id - Object Id of the book
- * @param {ObjectId} returned_to - Object Id of the librarian
- * @return {json} message - Successful return book
- */
 export const returnBook = async (req,res) => {
+    /**
+     * Returns books
+     * @param {int} accession_number - Accession number of the book
+     * @param {ObjectId} book_id - Object Id of the book
+     * @param {ObjectId} returned_to - Object Id of the librarian
+     * @return {json} message - Successful return book
+     */
     try {
         const today = new Date();
         const student_id = await findStudent(req.body.accession_number);

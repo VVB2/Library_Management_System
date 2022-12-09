@@ -2,11 +2,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const studentSchema = mongoose.Schema({
-    authorized: {
-        type: Boolean,
-        default: false
-    },
+const librarianSchema = mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Please provide an Email address'],
@@ -41,34 +37,15 @@ const studentSchema = mongoose.Schema({
             'Please provide a valid Phone Number',
         ],
     },
-    dept: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    },
-    created_on: {
-        type: Date,
-        default: new Date(),
-    },
     profile_picture: {
         type: String,
-    },  
-    books_taken: {
-        type: Number,
-        default: 0
-    },
-    fine_pending: {
-        type: Number,
-        default: 0
     }
 },
-    {collection: 'Users'}
+    {collection: 'Librarians'},
+    {timestamps: true}
 );
 
-studentSchema.pre('save', async function (next) {
+librarianSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next();
     }
@@ -76,16 +53,16 @@ studentSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-studentSchema.methods.matchPassword = async function (password) {
+librarianSchema.methods.matchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
-studentSchema.methods.getSignedToken = function () {
+librarianSchema.methods.getSignedToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
     });
 };
 
-const studentModel = mongoose.model('StudentData', studentSchema);
+const librarianModel = mongoose.model('LibrarianData', librarianSchema);
 
-export default studentModel;
+export default librarianModel;

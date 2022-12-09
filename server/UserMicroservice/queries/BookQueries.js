@@ -1,5 +1,9 @@
 import booksModel from "../Models/booksModel.js";
 
+export const countBooks = async () => {
+    return await booksModel.countDocuments();
+}
+
 export const booksAutocomplete = async (param) => {
     return await booksModel.distinct(param);
 }

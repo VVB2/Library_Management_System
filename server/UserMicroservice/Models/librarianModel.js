@@ -37,15 +37,12 @@ const librarianSchema = mongoose.Schema({
             'Please provide a valid Phone Number',
         ],
     },
-    created_on: {
-        type: Date,
-        default: new Date(),
-    },
     profile_picture: {
         type: String,
     }
 },
-    {collection: 'Librarians'}
+    {collection: 'Librarians'},
+    {timestamps: true}
 );
 
 librarianSchema.pre('save', async function (next) {

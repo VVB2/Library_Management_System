@@ -5,7 +5,7 @@ env
 *.txt
 /*.csv
 *copy.json
-*/test.*
+*/test*.*
 Password.txt
 __pycache__
 npm-debug.log*

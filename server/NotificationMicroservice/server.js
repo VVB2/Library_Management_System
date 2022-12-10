@@ -2,13 +2,13 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { createServer } from "http";
 import express from 'express';
-import { Server } from "socket.io";
 import cors from 'cors';
-import logger from './logger/logger.js';
+import { Server } from "socket.io";
 import connectDB from './db/Connection.js';
-import booksRouter from './Routes/Books.js';
-import studentRouter from './Routes/Student.js';
-import issueRouter from './Routes/Issues.js';
+// import logger from './logger/logger.js';
+// import booksRouter from './Routes/Books.js';
+// import studentRouter from './Routes/Student.js';
+// import issueRouter from './Routes/Issues.js';
 
 const app = express();
 app.use(cors());
@@ -20,21 +20,25 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer);
 
 io.on("connection", (socket) => {
-    console.log('user connected');
+    console.log(`User with ${socket.id} connected!`);
+    socket.on("disconnect", (reason) => {
+        console.log(`User with ${socket.id} disconnected due to ${reason}`);
+    })
 });
+
 
 httpServer.listen(PORT, console.log(`Notification server running on ${PORT}`));
 
-app.use('/api/user/books', booksRouter);
-app.use('/api/user/student', studentRouter);
-app.use('/api/user/issue', issueRouter);
+// app.use('/api/user/books', booksRouter);
+// app.use('/api/user/student', studentRouter);
+// app.use('/api/user/issue', issueRouter);
 
-process.on('unhandlededRejection', (error, data) => {
-    logger.error(error.message);
-    console.log(error);
-    server.close(() => process.exit(1));
-});
+// process.on('unhandlededRejection', (error, data) => {
+//     logger.error(error.message);
+//     console.log(error);
+//     server.close(() => process.exit(1));
+// });
 

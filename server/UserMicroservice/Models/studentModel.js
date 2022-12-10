@@ -18,6 +18,10 @@ const studentSchema = mongoose.Schema({
             'Please provide a valid Email address',
         ],
     },
+    created_on: {
+        type: Date,
+        default: new Date()
+    },
     password: {
         type: String,
         required: [true, 'Please provide a password'],
@@ -62,7 +66,6 @@ const studentSchema = mongoose.Schema({
     }
 },
     {collection: 'Users'},
-    {timestamps: true}
 );
 
 studentSchema.pre('save', async function (next) {

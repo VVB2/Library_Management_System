@@ -14,7 +14,7 @@ RUN apt-get update && \
 RUN chmod +x /chromedriver/chromedriver
 RUN mv /chromedriver/chromedriver /usr/bin/chromedriver
 
-EXPOSE 8000
+EXPOSE 4000
 
 WORKDIR /scrapping
 

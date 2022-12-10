@@ -42,7 +42,6 @@ const librarianSchema = mongoose.Schema({
     }
 },
     {collection: 'Librarians'},
-    {timestamps: true}
 );
 
 // librarianSchema.pre('save', async function (next) {

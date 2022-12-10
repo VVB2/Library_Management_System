@@ -6,4 +6,4 @@ services:
       - ./app:/scrapping/app
     container_name: flask-server
     ports:
-      - '8000:8000'
+      - '4000:8000'

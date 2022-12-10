@@ -4,10 +4,15 @@ import studentModel from '../Models/studentModel.js';
 export const createStudent = async (req, res) => { 
     /**
      * Creates
-     * @param {int} accession_number - Accession number of the book
-     * @param {ObjectId} book_id - Object Id of the book
-     * @param {ObjectId} student_id - Student Id of the student
-     * @return {json} message - Successful issue creation
+     * @param {email} email - Email of student
+     * @param {password} password - Password of student
+     * @param {name} name - Name of student
+     * @param {address} address - Address of student
+     * @param {phone_number} phone_number - Phone Number of student
+     * @param {dept} dept - Department of student
+     * @param {year} year - Year of Engineering of student
+     * @param {profile_picture} profile_picture - Profile picture of student
+     * @return {json} message - Account successfully created
      */
     try {
         insertUsers(req.body);

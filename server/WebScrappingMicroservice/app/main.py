@@ -9,7 +9,7 @@ import numpy as np
 import gevent
 import json
 from flask_cors import CORS
-from utils import driver_setup, bulk_scrape_data, single_scrape_data
+from utils import driver_setup, bulk_scrape_data
 from databaseCRUD import DatabaseObject
 
 app = Flask(__name__)

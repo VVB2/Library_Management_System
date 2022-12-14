@@ -1,9 +1,9 @@
-version: '3'
+version: "3"
 services:
   server:
     build: .
     volumes:
       - ./app:/scrapping/app
-    container_name: flask-server
+    container_name: webscrapping-microservice
     ports:
-      - '4000:8000'
+      - "4000:8000"

@@ -26,8 +26,6 @@ COPY ./requirements.txt /scrapping
 
 COPY ./.env /scrapping
 
-WORKDIR /scrapping
-
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 CMD ["python", "app/main.py"]

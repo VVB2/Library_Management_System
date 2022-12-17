@@ -7,9 +7,9 @@ const bookNotificationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: booksModel
     },
-    send_on: {
-        type: Date,
-        default: new Date(new Date().setDate(new Date().getDate() + 6))
+    is_send: {
+        type: Boolean,
+        default: false
     },
     student_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,9 +20,9 @@ const bookNotificationSchema = new mongoose.Schema({
         default: false
     }
 },
-    {collection: 'Book_Return_Notification'}
+    {collection: 'Book_Available'}
 );
 
-const bookNotificationModel = mongoose.model("Book_Return_Notification", bookNotificationSchema);
+const bookNotificationModel = mongoose.model("Issues", bookNotificationSchema);
 
 export default bookNotificationModel;

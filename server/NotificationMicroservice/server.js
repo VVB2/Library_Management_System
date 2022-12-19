@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.use('/api/notification/books', bookNotificationRouter);
 
-cron.schedule('0 */12 * * *', () => {
+cron.schedule('0 10 * * *', () => {
     console.log('running every 12 hours');
 })
 

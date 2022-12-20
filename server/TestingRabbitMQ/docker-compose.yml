@@ -11,8 +11,8 @@ services:
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - rabbitmq_go_net
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
 
 networks:
   rabbitmq_go_net:

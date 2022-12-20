@@ -37,8 +37,8 @@ amqp.connect('amqp://localhost:5672', function(error0, connection) {
             noAck: true
         });
     });
-    setTimeout(function() {
-        connection.close();
-        process.exit(0)
-    }, 500);
+    // setTimeout(function() {
+    //     connection.close();
+    //     process.exit(0)
+    // }, 500);
 });

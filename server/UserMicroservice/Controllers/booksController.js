@@ -1,5 +1,5 @@
 import logger from '../logger/logger.js';
-import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks } from '../queries/BookQueries.js';
+import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
 
 export const getBooks = async (req, res) => { 
     /**
@@ -53,3 +53,12 @@ export const searchBooks = async (req, res) => {
     }
 }
 
+export const watchList = async (req, res) => {
+    try {
+        await watchListQuery(req.body);
+        res.status(201).json({ message: 'Book successfully added to watchlist' })
+    } catch (error) {
+        logger.error(error.message);
+        res.status(404).json({ message: error.message });
+    }
+}

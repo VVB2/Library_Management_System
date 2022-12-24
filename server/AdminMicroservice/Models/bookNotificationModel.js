@@ -23,6 +23,6 @@ const bookNotificationSchema = new mongoose.Schema({
     {collection: 'Book_Available'}
 );
 
-const bookNotificationModel = mongoose.model("Issues", bookNotificationSchema);
+const bookNotificationModel = mongoose.model("Book_Avaliable", bookNotificationSchema);
 
 export default bookNotificationModel;

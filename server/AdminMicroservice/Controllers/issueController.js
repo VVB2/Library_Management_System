@@ -1,8 +1,9 @@
-import amqp from 'amqplib/callback_api';
+import amqp from 'amqplib/callback_api.js';
 import logger from "../logger/logger.js";
 import { updateAvailableBook } from "../queries/BookQueries.js";
 import { increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
 import { updateIssue, findStudent } from "../queries/IssueQueries.js";
+import { checkBookNotification } from '../queries/NotificationQuery.js';
 
 export const returnBook = async (req,res) => {
     /**
@@ -12,13 +13,16 @@ export const returnBook = async (req,res) => {
      * @param {ObjectId} returned_to - Object Id of the librarian
      * @return {json} message - Successful return book
      */
+    console.log(req.body);
     try {
         const today = new Date();
         const student_id = await findStudent(req.body.accession_number);
         await updateAvailableBook(req.body, "$push");
         await increaseTotalBooksTakenCount(student_id[0].student_id, -1);
         await updateIssue(req.body, today);
-        sendNotification(student_id[0].student_id);
+        const students = await checkBookNotification(req.body.book_id);
+        if (students.length > 0)
+            sendNotification(students);
         logger.info(`Book with accession number '${req.body.accession_number}' returned on ${today.toLocaleDateString('en-GB')} to ${req.body.returned_to}`);
         res.status(200).json({ message: 'Book successfully returned' });
     } catch (error) {
@@ -26,8 +30,8 @@ export const returnBook = async (req,res) => {
     }
 }
 
-function sendNotification(id) {
-    amqp.connect('amqp://localhost', function(error0, connection) {
+function sendNotification(students) {
+    amqp.connect('amqp://localhost:5672', function(error0, connection) {
         if (error0) {
             throw error0;
         }
@@ -35,16 +39,26 @@ function sendNotification(id) {
             if (error1) {
                 throw error1;
             }
-            const queue = 'returnSuccess'
-            var args = process.argv.slice(2);
-            var msg = args.slice(1).join(' ') || 'Hello World!';
 
-            channel.assertExchange(queue, 'direct', {
+            const bookAvailableQueue = 'bookAvailable';
+            const emailNotificationQueue = 'emailNotification';
+
+            channel.assertQueue(bookAvailableQueue, {
                 durable: true
             });
-            channel.publish(queue, id, Buffer.from(msg));
-            console.log(" [x] Sent %s: '%s'", id, msg);
+
+            channel.sendToQueue(bookAvailableQueue, Buffer.from(JSON.stringify(students)));
+            console.log(" [x] Sent '%s'", JSON.stringify(students));
+
+            channel.assertQueue(emailNotificationQueue, {
+                durable: true
+            });
+
+            channel.sendToQueue(emailNotificationQueue, Buffer.from(JSON.stringify(students)));
+            console.log(" [x] Sent '%s' to '%s'", JSON.stringify(students), emailNotificationQueue);
         });
-        connection.close();
+        setTimeout(function() {
+            connection.close();
+        }, 500);
     });
 }

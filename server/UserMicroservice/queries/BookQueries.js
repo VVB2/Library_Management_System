@@ -1,4 +1,5 @@
 import booksModel from "../Models/booksModel.js";
+import watchListModel from "../Models/watchListModel.js";
 
 export const countBooks = async () => {
     return await booksModel.countDocuments();
@@ -6,6 +7,13 @@ export const countBooks = async () => {
 
 export const booksAutocomplete = async (param) => {
     return await booksModel.distinct(param);
+}
+
+export const watchListQuery = async (param) => {
+    await watchListModel.create({
+        book_id: param.book_id,
+        student_id: param.student_id
+    })
 }
 
 export const booksSearchByParams = async (param) => {

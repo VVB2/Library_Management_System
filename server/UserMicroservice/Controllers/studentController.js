@@ -1,5 +1,7 @@
+import jwt from 'jsonwebtoken';
 import logger from '../logger/logger.js';
 import studentModel from '../Models/studentModel.js';
+import ErrorResponse from '../utils/errorResponse.js';
 
 export const createStudent = async (req, res) => { 
     /**
@@ -24,6 +26,37 @@ export const createStudent = async (req, res) => {
     }
 }
 
+export const signin = async (req, res) => {
+    try {
+        const student = await studentModel.findOne({ email: req.body.email }).select('+password');
+        if (!student) {
+            return next(new ErrorResponse('Invalid credentials', 401));
+        }
+        const isMatch = await student.matchPassword(req.body.password);
+        if (!isMatch) {
+            return next(new ErrorResponse('Invalid credentials', 401));
+        }
+        sendToken(student, 200, res);
+    } catch (error) {
+        logger.error(error.message);
+        res.status(500).json({ error: error.message});
+    }
+}
+
+export const updateAccount = async (req, res) => {
+
+}
+
+export const getUserInfo = async (req, res) => {
+    const { id, exp } = jwt.decode(req.body.jwtEncodedStudent);
+    try {
+        const student = await studentModel.findById(id);
+        res.status(201).json({ success: true, student, exp });
+    } catch (error) {
+        next(error);
+    }
+}
+
 function insertUsers(user) {
     try {
         studentModel.create({
@@ -40,4 +73,9 @@ function insertUsers(user) {
         logger.error(error.message)
         console.log({ message: error.message });
     }
+}
+
+function sendToken(student, statusCode, res) {
+    const token = student.getSignedToken();
+    res.status(statusCode).json({ token });
 }

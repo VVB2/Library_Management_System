@@ -11,10 +11,10 @@ amqp.connect('amqp://localhost:5672', function(error0, connection) {
             throw error1;
         }
 
-        var queue = 'hello';
+        var queue = 'accountActivated';
 
         channel.assertQueue(queue, {
-            durable: false
+            durable: true
         });
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
@@ -25,13 +25,13 @@ amqp.connect('amqp://localhost:5672', function(error0, connection) {
             noAck: true
         });
 
-        channel.assertQueue('test', {
-            durable: false
+        channel.assertQueue('bookAvailable', {
+            durable: true
         });
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", 'test');
 
-        channel.consume('test', function(msg) {
+        channel.consume('bookAvailable', function(msg) {
             console.log(" [x] Received %s", msg.content.toString());
         }, {
             noAck: true

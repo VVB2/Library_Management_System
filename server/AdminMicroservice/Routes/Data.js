@@ -1,9 +1,15 @@
 import express from 'express';
-import { addUpdateBook } from '../Controllers/booksController.js';
+import { getBooks, issuedBooks, returnedBooks } from '../Controllers/dataController.js';
 
-const booksRouter = express.Router();
+const dataRouter = express.Router();
 
-//@route - /api/admin/books/add-update-book
-booksRouter.post('/add-update-book', addUpdateBook)
+//@route - /api/admin/data/get-books
+dataRouter.get('/get-books', getBooks);
 
-export default booksRouter;
+//@route - /api/admin/data/issued-books
+dataRouter.get('/issued-books', issuedBooks);
+
+//@route - /api/admin/data/returned-books
+dataRouter.get('/returned-books', returnedBooks);
+
+export default dataRouter;

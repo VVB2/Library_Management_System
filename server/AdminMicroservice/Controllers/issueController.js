@@ -3,7 +3,6 @@ import logger from "../logger/logger.js";
 import { updateAvailableBook } from "../queries/BookQueries.js";
 import { increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
 import { updateIssue, findStudent } from "../queries/IssueQueries.js";
-import { checkBookNotification } from '../queries/NotificationQuery.js';
 
 export const returnBook = async (req,res) => {
     /**
@@ -20,9 +19,8 @@ export const returnBook = async (req,res) => {
         await updateAvailableBook(req.body, "$push");
         await increaseTotalBooksTakenCount(student_id[0].student_id, -1);
         await updateIssue(req.body, today);
-        const students = await checkBookNotification(req.body.book_id);
-        if (students.length > 0)
-            sendNotification(students);
+        // if (students.length > 0)
+        //     sendNotification(students);
         logger.info(`Book with accession number '${req.body.accession_number}' returned on ${today.toLocaleDateString('en-GB')} to ${req.body.returned_to}`);
         res.status(200).json({ message: 'Book successfully returned' });
     } catch (error) {

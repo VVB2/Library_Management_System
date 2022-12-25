@@ -44,9 +44,9 @@ def bulk_scrape_data(df, driver, accession_list):
                 try:
                     image = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[1]/div/a/img')
                     if image.get_attribute('src') != 'https://nicebooksimages.b-cdn.net/placeholder.png?width=240&quality=90&optimizer=image&format=png' :
-                        result_data['books_details']['image_url'] = image.get_attribute('src') 
+                        result_data['books_detail']['image_url'] = image.get_attribute('src') 
                     title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
-                    result_data['books_details']['title'] = title.get_attribute('innerHTML')
+                    result_data['books_detail']['title'] = title.get_attribute('innerHTML')
                 except Exception as e:
                     print(e) 
             
@@ -60,38 +60,35 @@ def bulk_scrape_data(df, driver, accession_list):
 
 def single_scrape_data(data, driver):
     try:
-        print(f'Scrapping for {data["Title-Edition-ISBN"].split(".")[0].strip()} - {data["ISBN"]}')
+        print(f'Scrapping for {data["title"].split(".")[0].strip()} - {data["isbn"]}')
         search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
         search_text.clear()
-        search_text.send_keys(data['ISBN'])
+        search_text.send_keys(data['isbn'])
         submit = driver.find_element(By.CLASS_NAME,"nb-input-group-right")
         submit.click()
-
         result_data = {'books_detail': {
-                'title': data['Title-Edition-ISBN'].split('.')[0].strip(),
-                'isbn': data['ISBN'],
-                'publishedYear': data['Year'],
-                'author': data['Author'],
-                'price': data['Price'],
-                'publisher': data['Publisher Details'],
-                'pages': data.get('Pages', 'None'),
-                'entry_date': data['Date'],
+                'title': data['title'].split('.')[0].strip(),
+                'isbn': data['isbn'],
+                'publishedYear': data['publishedYear'],
+                'author': data['author'],
+                'price': data['price'],
+                'publisher': data['publisher'],
+                'pages': data.get('pages', 'None'),
+                'entry_date': data['entry_date'],
                 'image_url': 'https://leadershiftinsights.com/wp-content/uploads/2019/07/no-book-cover-available.jpg'
             },
-            'accession_books_list' : data['accession_list'],
-            'available_books' : data['accession_list']
+            'accession_books_list' : data['accession_books_list'],
+            'available_books' : data['accession_books_list']
         } 
 
         try:
             image = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[1]/div/a/img')
             if image.get_attribute('src') != 'https://nicebooksimages.b-cdn.net/placeholder.png?width=240&quality=90&optimizer=image&format=png' :
-                result_data['books_details']['image_url'] = image.get_attribute('src') 
+                result_data['books_detail']['image_url'] = image.get_attribute('src') 
             title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
-            result_data['books_details']['title'] = title.get_attribute('innerHTML')
+            result_data['books_detail']['title'] = title.get_attribute('innerHTML')
         except Exception as e:
             print('Book not found')
-        search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
-        search_text.clear()
 
     finally:
         driver.close()

@@ -7,6 +7,7 @@ export const getAllStudentRecords = async (req, res) => {
         const students = await studentModel.find().sort({ 'authorized': 1 });
         res.status(200).json({'data': students});
     } catch (error) {
+        logger.error(error.message);
         res.status(404).json({ message: error.message });
     }
 }
@@ -19,6 +20,17 @@ export const createBulkStudents = async (req, res) => {
         }
         res.status(200).json({ 'message': 'done' });
     } catch (error) {
+        logger.error(error.message);
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export const removeStudent = async (req, res) => {
+    try {
+        await studentModel.deleteOne({ email: req.body.email });
+        res.status(201).message({ message: 'Done!' });
+    } catch (error) {
+        logger.error(error.message);
         res.status(404).json({ message: error.message });
     }
 }
@@ -45,7 +57,7 @@ function insertUsertoQueue(email) {
                 throw error1;
             }
 
-            var queue = 'accountActivated';
+            var queue = 'AccountActivated';
 
             channel.assertQueue(queue, {
                 durable: true

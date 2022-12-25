@@ -9,7 +9,7 @@ import numpy as np
 import gevent
 import json
 from flask_cors import CORS
-from utils import driver_setup, bulk_scrape_data
+from utils import driver_setup, bulk_scrape_data, single_scrape_data
 from databaseCRUD import DatabaseObject
 
 app = Flask(__name__)
@@ -27,8 +27,24 @@ def clean_json(books_data):
             print(f'Entering {data["book_detail"]["isbn"]} into database')
             dbo.insertOne(data)
 
-@app.route('/api/web-scrapping/insert-book', methods=['POST'])
-def insertBook():
+@app.route('/api/web-scrapping/single-insert-book', methods=['POST'])
+def singleInsertBook():
+    data = single_scrape_data(request.get_json(), driver_setup())
+    print(data)
+    # with DatabaseObject() as dbo:
+    #     dbo.insertOne(data)
+    return 'Done!'
+
+@app.route('/api/web-scrapping/test', methods=['GET'])
+def test():
+    # data = single_scrape_data(request.get_json(), driver_setup())
+    # print(data)
+    # with DatabaseObject() as dbo:
+    #     dbo.insertOne(data)
+    return 'Done!'
+
+@app.route('/api/web-scrapping/bulk-insert-book', methods=['POST'])
+def bulkInsertBook():
     print('Started Scrapping')
     uploaded_file = request.files['file']
     try:

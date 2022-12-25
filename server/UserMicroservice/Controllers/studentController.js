@@ -47,7 +47,7 @@ export const updateAccount = async (req, res) => {
 
 }
 
-export const getUserInfo = async (req, res) => {
+export const getStudentInfo = async (req, res) => {
     const { id, exp } = jwt.decode(req.body.jwtEncodedStudent);
     try {
         const student = await studentModel.findById(id);

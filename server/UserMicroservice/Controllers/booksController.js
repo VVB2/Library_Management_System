@@ -1,3 +1,4 @@
+import amqp from 'amqplib/callback_api.js';
 import logger from '../logger/logger.js';
 import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
 

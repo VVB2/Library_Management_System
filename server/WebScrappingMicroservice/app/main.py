@@ -24,7 +24,8 @@ def clean_json(books_data):
     unique = { each['book_detail']['isbn'] : each for each in books_data }.values()
     with DatabaseObject() as dbo:
         for data in unique:
-            print(f'Entering {data["book_detail"]["isbn"]} into database')
+            if dbo.checkPresent(data['book_detail']['isbn']):
+                print('present')
             dbo.insertOne(data)
 
 @app.route('/api/web-scrapping/single-insert-book', methods=['POST'])
@@ -35,17 +36,8 @@ def singleInsertBook():
     #     dbo.insertOne(data)
     return 'Done!'
 
-@app.route('/api/web-scrapping/test', methods=['GET'])
-def test():
-    # data = single_scrape_data(request.get_json(), driver_setup())
-    # print(data)
-    # with DatabaseObject() as dbo:
-    #     dbo.insertOne(data)
-    return 'Done!'
-
 @app.route('/api/web-scrapping/bulk-insert-book', methods=['POST'])
 def bulkInsertBook():
-    print('Started Scrapping')
     uploaded_file = request.files['file']
     try:
         if uploaded_file:
@@ -74,18 +66,20 @@ def bulkInsertBook():
             for thread in threads:
                 result.extend(thread.value)
 
+            datapath = os.path.join(app.config['FILE_UPLOADS'], 'data.json')
             #Storing the data into json file
-            with open('data.json', 'w') as f:
+            with open(datapath, 'w') as f:
                 json.dump(result, f, indent=4)
 
             #Removing duplicates and pushing to database
-            with open('data.json') as f:
+            with open(datapath) as f:
                 file_data = json.load(f)
 
             clean_json(file_data)
         
     finally:
         os.remove(filepath)
+        # os.remove(datapath)
 
     return 'Done!'
 

@@ -46,29 +46,28 @@ async function insertUsers(user) {
 }
 
 function insertUsertoQueue(email) {
-    amqp.connect('amqp://localhost:5672', function(error0, connection) {
-
+    amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;
         }
-
         connection.createChannel(function(error1, channel) {
             if (error1) {
-                throw error1;
+            throw error1;
             }
-
-            var queue = 'AccountActivated';
+            var queue = 'AuthorizedUserQueue';
+            var msg = {
+                email,
+            };
 
             channel.assertQueue(queue, {
                 durable: true
             });
 
-            channel.sendToQueue(queue, Buffer.from(email));
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
+            console.log(" [x] Sent %s", msg);
         });
-
         setTimeout(function() {
             connection.close();
         }, 500);
-
     });
 }

@@ -1,15 +1,5 @@
 Date,Accession Number,Author,Title-Edition-ISBN,Publisher Details,Year,Pages,ISBN,Supplier,Call Number,Price,Bill No. & date
-15-May-05,1,"Dhogal, P. S.",Basic electrical engineering volume - I .-1st .-9780074515860,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1985,"xiv, 257 p.",9.78E+12,Union Book Stall,"621.3DHO","1,100.00","B:T-21/200515-May-2005"
-,2,,,,,,,,,,
-,3,,,,,,,,,,
-,4,,,,,,,,,,
-,5,,,,,,,,,,
-,6,,,,,,,,,,
-,7,,,,,,,,,,
-,8,,,,,,,,,,
-,9,,,,,,,,,,
-,10,,,,,,,,,,
-15-May-05,11,"Dhogal, P. S.",Basic electrical engineering volume - II .-0-07-451587-X,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1987,"xIv, 259-466 p.",0-07-451587-X,Union Book Stall,"621.3DHO",950,"B:T-21/200515-May-2005"
+15-May-05,11,"Dhogal, P. S.",Basic electrical engineering volume - I .-1st .-9780074515860,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1985,"xiv, 257 p.",9.78E+12,Union Book Stall,"621.3DHO","1,100.00","B:T-21/200515-May-2005"
 ,12,,,,,,,,,,
 ,13,,,,,,,,,,
 ,14,,,,,,,,,,
@@ -19,52 +9,3 @@ Date,Accession Number,Author,Title-Edition-ISBN,Publisher Details,Year,Pages,ISB
 ,18,,,,,,,,,,
 ,19,,,,,,,,,,
 ,20,,,,,,,,,,
-15-May-05,21,"Mittle, V. N.",Basic electrical engineering .-1st .-9780074516324,"Tata McGraw-Hill Publishing Company Limited, Delhi",1990,"xxi, 697 p.",9.78E+12,Union Book Stall,"621.3MIT",780,"B:T-23/200515-May-2005"
-,22,,,,,,,,,,
-,23,,,,,,,,,,
-,24,,,,,,,,,,
-15-May-05,25,"Davis, Gordon B. & Olson, Margrethe H.","Management information systems : conceptual foundations, structure, and development .-2nd .-9780070402676","Tata McGraw-Hill Publishing Company Limited, New Delhi",2000,"IX, 693 p.",9.78E+12,Union Book Stall,"658.403 8DAV",390,"B:T-21/200515-May-2005"
-,26,,,,,,,,,,
-15-May-05,27,"Nagrath, I. J. & Kothari, D. P.",Power system engineering .-1st .-9780070647916,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1994,"xv, 838 p.",9.78E+12,Union Book Stall,"621.381 044NAG",550,"B:T-23/200515-May-2005"
-,28,,,,,,,,,,
-15-May-05,29,"Zienkiewicz, O. C.",The finite element method .-3rd .-9780070996946,"Tata Mcgraw Hill, New Delhi",1979,"xiv, 257 p.",9.78E+12,Union Book Stall,"620.001 515 35ZIE",730,"B:T-22/200515-May-2005"
-,30,,,,,,,,,,
-15-May-05,31,"Cathey, Jimmie J. & Nasar, Syed A.",Schaum's outline of theory and problems of basic electrical engineering .-2nd .-9780070584037,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"viii, 335 p.",9.78E+12,Union Book Stall,"621.3CAT",370,"B:T-21/200515-May-2005"
-,32,,,,,,,,,,
-15-May-05,33,"Skolnik, Merrill I.",Introduction to radar systems .-3rd .-9780070445338,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"xii, 772 p.",9.78E+12,Union Book Stall,"621.384 8SKO",570,"B:T-23/200515-May-2005"
-,34,,,,,,,,,,
-15-May-05,35,"Leon-Garcia, Alberto & Widjaja, Indra",Communication networks : fundamental concepts and key architectures .-2nd .-9780070595019,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"xxvii, 900 p.",9.78E+12,Union Book Stall,"621.382 1LEO",650,"B:T-23/200515-May-2005"
-,36,,,,,,,,,,
-15-May-05,37,"Alexander, Charles K. & Sadiku, Matthew N. O.",Fundamentals of electric circuits .-2nd .-9780070584945,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2003,"xviii, 694 p.",9.78E+12,Union Book Stall,"621.381 32ALE",495,"B:T-21/200515-May-2005"
-15-May-05,38,"Das, Sumitabha",Unix : concepts and applications .-3rd .-9780070635463,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2003,"xxiii, 671 p.",9.78E+12,Union Book Stall,"005.432DAS",260,"B:T-21/200515-May-2005"
-15-May-05,39,CIStems,Internet : an introduction .-1st .-0074632227,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1999,129 p.,74632227,Union Book Stall,"004.678CIS",96,"B:T-21/200515-May-2005"
-15-May-05,40,"Jain, R. P.",Modern digital electronics .-3rd .-9780070494923,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2003,"xxiv, 611 p.",9.78E+12,Union Book Stall,"621.381JAI",450,"B:T-22/200515-May-2005"
-,41,,,,,,,,,,
-15-May-05,42,"Naidu, M. S. & Kamaraju, V.",High voltage engineering .-3rd .-9780070494640,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"xii, 462 p.",9.78E+12,Union Book Stall,"621.31KAM",390,"B:T-23/200515-May-2005"
-,43,,,,,,,,,,
-15-May-05,44,"Dasgupta, Indrajit",Design of transformers .-1st .-9780070436404,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2002,"xxvii, 537 p.",9.78E+12,Union Book Stall,"621.314DAS",495,"B:T-21/200515-May-2005"
-15-May-05,45,"Bronson, Richard",Differential equations : based on Schaum's outline of theory and problems of differential equations .-2nd .-9780070587199,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"x, 358 p.",9.78E+12,Union Book Stall,"515.35BRO",675,"B:T-21/200515-May-2005"
-,46,,,,,,,,,,
-,47,,,,,,,,,,
-15-May-05,48,"Balagurusamy, E.",Numerical methods .-1st .-0074633112,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1999,"xvi, 608 p.",74633112,Union Book Stall,"518BAL",390,"B:T-21/200515-May-2005"
-,49,,,,,,,,,,
-15-May-05,50,"Liu, C. L.",Element of discrete mathematics .-2nd .-9780070434769,"Tata McGraw-Hill Publishing Company Limited, Delhi",2000,"xiv, 433 p.",9.78E+12,Union Book Stall,"511.1LIU",350,"O:15-May-2005B:T-23/200515-May-2011"
-,51,,,,,,,,,,
-15-May-05,52,"Spiegel, Murray R.; Schiller, John J. & Srinivasan, R. Alu",Probability and statistics .-2nd .-9780070532854,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"viii, 408 p.",9.78E+12,Union Book Stall,"519.23SPI",450,"B:T-22/200515-May-2005"
-,53,,,,,,,,,,
-15-May-05,54,"Temes, Lloyd & Schultz, Mitchel E.",Schaum's outline of theory and problems of electronic communications .-2nd .-9780070532854,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"vi, 178 p.",9.78E+12,Union Book Stall,"621.382 076TEM",300,"B:T-22/200515-May-2005"
-,55,,,,,,,,,,
-15-May-05,56,"Lipschutz, Seymour & Lipson, Marc Lars",Discrete mathematics .-2nd .-9780070601741,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1997,,9.78E+12,Union Book Stall,"511.1LIP",900,"B:T-23/200515-May-2005"
-,57,,,,,,,,,,
-,58,,,,,,,,,,
-,59,,,,,,,,,,
-15-May-05,60,"Kahate, Atul",Object-oriented analysis & design .-1st .-9780070583764,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,"xxiii, 424 p.",9.78E+12,Union Book Stall,"005.117KAH",675,"B:T-22/200515-May-2005"
-,61,,,,,,,,,,
-,62,,,,,,,,,,
-15-May-05,63,"Lipschutz, Seymour",Schaum's outline of theory and problems of data structures .-1st .-9780070991309,"Tata McGraw-Hill Publishing Company Limited, New Delhi",1986,344 p.,9.78E+12,Union Book Stall,"005.73LIP","1,194.00","B:T-23/200515-May-2005"
-,64,,,,,,,,,,
-,65,,,,,,,,,,
-,66,,,,,,,,,,
-,67,,,,,,,,,,
-,68,,,,,,,,,,
-15-May-05,69,"Sharma, S. P.",Basic radio and television .-2nd,"Tata McGraw-Hill Publishing Company Limited, New Delhi",2004,700p,,Union Book Stall,"621.388SHA",195,"B:T-22/200515-May-2005"

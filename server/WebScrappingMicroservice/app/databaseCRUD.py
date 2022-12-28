@@ -9,10 +9,23 @@ class DatabaseObject:
         self.DATABASE = None   
 
     def checkPresent(self, isbn):
-        return len(self.DATABASE['Test'].find_one({ 'book_detail.isbn': isbn })) > 0
+        try:
+            return len(self.DATABASE['Test'].find_one({ 'book_detail.isbn': isbn })) > 0
+        except:
+            return False
     
     def insertOne(self, data):
         self.DATABASE['Test'].insert_one(data)
+    
+    def updateList(self, isbn, list):
+        self.DATABASE['Test'].update_many({ 'book_detail.isbn': isbn }, { '$addToSet': {
+            'accession_books_list': {
+                '$each': list
+            },
+            'available_books': {
+                '$each': list
+            }
+        }})
 
     def __enter__(self):
         '''make a database connection and return it'''

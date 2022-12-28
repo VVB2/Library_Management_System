@@ -1,9 +1,19 @@
 version: "3"
 services:
   server:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-server
     volumes:
       - ./app:/scrapping/app
-    container_name: webscrapping-microservice
+    container_name: webscrapping-server-microservice
     ports:
       - "4000:8000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile-worker
+    volumes:
+      - ./app:/scrapping/app
+    container_name: webscrapping-worker-microservice

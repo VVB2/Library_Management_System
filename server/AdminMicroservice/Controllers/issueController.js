@@ -44,13 +44,10 @@ async function pushToQueue(book_id, student_id) {
             };
 
             channel.assertQueue(queue, {
-                durable: true,
-            
-            });
-            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)), {
-                persistent: true
+                durable: true
             });
 
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
             console.log(" [x] Sent %s", msg);
         });
         setTimeout(function() {

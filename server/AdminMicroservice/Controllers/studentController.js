@@ -62,10 +62,8 @@ function insertUsertoQueue(email) {
             channel.assertQueue(queue, {
                 durable: true
             });
-            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)), {
-                persistent: true
-            });
 
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
             console.log(" [x] Sent %s", msg);
         });
         setTimeout(function() {

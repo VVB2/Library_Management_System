@@ -11,11 +11,11 @@ export const booksAutocomplete = async (param) => {
 }
 
 export const watchListQuery = async (param) => {
-    // await watchListModel.create({
-    //     book_id: param.book_id,
-    //     student_id: param.student_id
-    // });
-    await amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
+    await watchListModel.create({
+        book_id: param.book_id,
+        student_id: param.student_id
+    });
+    amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;
         }
@@ -30,12 +30,10 @@ export const watchListQuery = async (param) => {
             };
 
             channel.assertQueue(queue, {
-                durable: true,
+                durable: true
             });
-            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)), {
-                persistent: true
-            });
-            
+
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
             console.log(" [x] Sent %s", msg);
         });
         setTimeout(function() {

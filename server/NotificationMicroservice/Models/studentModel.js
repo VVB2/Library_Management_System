@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const studentSchema = mongoose.Schema({
     authorized: {
@@ -17,6 +17,10 @@ const studentSchema = mongoose.Schema({
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid Email address',
         ],
+    },
+    created_on: {
+        type: Date,
+        default: new Date()
     },
     password: {
         type: String,
@@ -62,26 +66,25 @@ const studentSchema = mongoose.Schema({
     }
 },
     {collection: 'Users'},
-    {timestamps: true}
 );
 
-// studentSchema.pre('save', async function (next) {
-//     if (!this.isModified('password')) {
-//         next();
-//     }
-//     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
-// });
+studentSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
 
-// studentSchema.methods.matchPassword = async function (password) {
-//     return await bcrypt.compare(password, this.password);
-// };
+studentSchema.methods.matchPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
 
-// studentSchema.methods.getSignedToken = function () {
-//     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-//         expiresIn: process.env.JWT_EXPIRE,
-//     });
-// };
+studentSchema.methods.getSignedToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+    });
+};
 
 const studentModel = mongoose.model('StudentData', studentSchema);
 

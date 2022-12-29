@@ -24,6 +24,10 @@ const studentSchema = mongoose.Schema({
         minLength: 6,
         select: false,
     },
+    created_on: {
+        type: Date,
+        default: new Date()
+    },
     name: {
         type: String,
         required: [true, 'Please provide a username'],
@@ -61,8 +65,7 @@ const studentSchema = mongoose.Schema({
         default: 0
     }
 },
-    {collection: 'Users'},
-    {timestamps: true}
+    {collection: 'Users'}
 );
 
 studentSchema.pre('save', async function (next) {

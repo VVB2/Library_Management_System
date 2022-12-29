@@ -1,9 +1,9 @@
 import express from 'express';
-import { addUpdateBook } from '../Controllers/booksController.js';
+import { singleInsert } from '../Controllers/booksController.js';
 
 const booksRouter = express.Router();
 
-//@route - /api/admin/books/add-update-book
-booksRouter.post('/add-update-book', addUpdateBook)
+//@route - /api/admin/books/single-insert
+booksRouter.post('/single-insert', singleInsert)
 
 export default booksRouter;

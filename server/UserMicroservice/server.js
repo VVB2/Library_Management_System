@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import logger from './logger/logger.js';
 import express from 'express';
 import cors from 'cors';
+import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
 import booksRouter from './Routes/Books.js';
 import studentRouter from './Routes/Student.js';

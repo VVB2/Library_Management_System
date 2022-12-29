@@ -1,7 +1,7 @@
 import logger from "../logger/logger.js";
 import { isBookAvailable, updateAvailableBook } from "../queries/BookQueries.js";
 import { noOfBooksTaken, increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
-import { createIssue } from "../queries/IssueQueries.js";
+import { createIssueAndBookReturnNotification } from "../queries/IssueQueries.js";
 
 export const issueBook = async (req,res) => {
     /**
@@ -14,10 +14,13 @@ export const issueBook = async (req,res) => {
     try {
         const bookAvailable = await isBookAvailable(req.body.accession_number);
         const user_book_taken = await noOfBooksTaken(req.body.student_id);
-        if (bookAvailable.length > 0 && !(user_book_taken[0].books_taken >= 3)) {
+        if (bookAvailable.length > 0) {
+            if (user_book_taken[0].books_taken >= 3) {
+                res.status(200).json({ message: 'Book Issue limit reached!' });
+            }
             await updateAvailableBook(req.body, "$pull");
             await increaseTotalBooksTakenCount(req.body.student_id, 1);
-            await createIssue(req.body);
+            await createIssueAndBookReturnNotification(req.body);
             logger.info(`Book with accession number '${req.body.accession_number}' issued by ${req.body.student_id}`);
             res.status(201).json({message: 'Issue successfully created'});
         } else {

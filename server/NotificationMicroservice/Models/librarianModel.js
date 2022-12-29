@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const librarianSchema = mongoose.Schema({
     email: {
@@ -25,6 +25,10 @@ const librarianSchema = mongoose.Schema({
         required: [true, 'Please provide a username'],
         trim: true,
     },
+    created_on: {
+        type: Date,
+        default: new Date()
+    },
     address: {
         type: String,
         required: true
@@ -42,26 +46,25 @@ const librarianSchema = mongoose.Schema({
     }
 },
     {collection: 'Librarians'},
-    {timestamps: true}
 );
 
-// librarianSchema.pre('save', async function (next) {
-//     if (!this.isModified('password')) {
-//         next();
-//     }
-//     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
-// });
+librarianSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+});
 
-// librarianSchema.methods.matchPassword = async function (password) {
-//     return await bcrypt.compare(password, this.password);
-// };
+librarianSchema.methods.matchPassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
 
-// librarianSchema.methods.getSignedToken = function () {
-//     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-//         expiresIn: process.env.JWT_EXPIRE,
-//     });
-// };
+librarianSchema.methods.getSignedToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+    });
+};
 
 const librarianModel = mongoose.model('LibrarianData', librarianSchema);
 

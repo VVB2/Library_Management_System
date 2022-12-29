@@ -6,10 +6,26 @@ config = dotenv_values('.env')
 class DatabaseObject:
     def __init__(self) -> None: 
         self.URI = config['MONGO_URI']
-        self.DATABASE = None      
+        self.DATABASE = None   
+
+    def checkPresent(self, isbn):
+        try:
+            return len(self.DATABASE['Test'].find_one({ 'book_detail.isbn': isbn })) > 0
+        except:
+            return False
     
     def insertOne(self, data):
-        self.DATABASE['Books'].insert_one(data)
+        self.DATABASE['Test'].insert_one(data)
+    
+    def updateList(self, isbn, list):
+        self.DATABASE['Test'].update_many({ 'book_detail.isbn': isbn }, { '$addToSet': {
+            'accession_books_list': {
+                '$each': list
+            },
+            'available_books': {
+                '$each': list
+            }
+        }})
 
     def __enter__(self):
         '''make a database connection and return it'''

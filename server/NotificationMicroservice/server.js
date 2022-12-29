@@ -1,36 +1,29 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { createServer } from "http";
 import express from 'express';
-import { Server } from "socket.io";
 import cors from 'cors';
+import cron from 'node-cron';
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
-import booksRouter from './Routes/Books.js';
-import studentRouter from './Routes/Student.js';
-import issueRouter from './Routes/Issues.js';
+import bookNotificationRouter from './Routes/BookNotification.js'
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-const httpServer = createServer(app);
 
 // DB Connection
 connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-const io = new Server(httpServer, { /* options */ });
+const server = app.listen(PORT, console.log(`Server running on ${PORT}`));
 
-io.on("connection", (socket) => {
-    console.log('user connected');
-});
+app.use(express.json());
 
-httpServer.listen(PORT, console.log(`Notification server running on ${PORT}`));
+app.use('/api/notification/books', bookNotificationRouter);
 
-app.use('/api/user/books', booksRouter);
-app.use('/api/user/student', studentRouter);
-app.use('/api/user/issue', issueRouter);
+cron.schedule('0 10 * * *', () => {
+    console.log('running every 12 hours');
+})
 
 process.on('unhandlededRejection', (error, data) => {
     logger.error(error.message);

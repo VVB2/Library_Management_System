@@ -1,5 +1,22 @@
+import amqp from 'amqplib/callback_api.js';
 import logger from '../logger/logger.js';
-import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks } from '../queries/BookQueries.js';
+import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
+
+export const getBooks = async (req, res) => { 
+    /**
+     * Returns books based upon the page number
+     * @param {int} page - Pagination page number
+     * @return {json} books - Books based upon the page number
+     * @return {int} totalBooks - Total number of books present in the database
+     */
+    try {
+        const books = await booksPagination(parseInt(req.query.page), 20)
+        res.status(200).json(books);
+    } catch (error) {
+        logger.error(error.message);
+        res.status(404).json({ message: error.message });
+    }
+}
 
 export const getInitialData = async (req, res) => { 
     /**
@@ -37,16 +54,10 @@ export const searchBooks = async (req, res) => {
     }
 }
 
-export const getBooks = async (req, res) => { 
-    /**
-     * Returns books based upon the page number
-     * @param {int} page - Pagination page number
-     * @return {json} books - Books based upon the page number
-     * @return {int} totalBooks - Total number of books present in the database
-     */
+export const watchList = async (req, res) => {
     try {
-        const books = await booksPagination(parseInt(req.query.page), 20)
-        res.status(200).json(books);
+        await watchListQuery(req.body);
+        res.status(201).json({ message: 'Book successfully added to watchlist' })
     } catch (error) {
         logger.error(error.message);
         res.status(404).json({ message: error.message });

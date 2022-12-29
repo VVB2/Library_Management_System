@@ -17,6 +17,10 @@ config = dotenv_values('.env')
 FILE_UPLOADS = 'app/static'
 app.config['FILE_UPLOADS'] = FILE_UPLOADS
 
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
+channel = connection.channel()
+channel.queue_declare(queue='WebScrappingQueue', durable=True)
+
 @app.route('/api/web-scrapping/single-insert-book', methods=['POST'])
 def singleInsertBook():
     data = request.get_json()
@@ -34,15 +38,11 @@ def bulkInsertBook():
     if uploaded_file:
         filepath = os.path.join(app.config['FILE_UPLOADS'], f'{time.strftime("%Y%m%d-%H%M%S")}-{uploaded_file.filename}')
         uploaded_file.save(filepath)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
-        channel = connection.channel()
-        channel.queue_declare(queue='WebScrappingQueue', durable=True)
         channel.basic_publish(exchange='',
                     routing_key='WebScrappingQueue',
                     body=filepath)
         connection.close()
         return 'Done!'
-    
     else:
         return 'Server Error'
 

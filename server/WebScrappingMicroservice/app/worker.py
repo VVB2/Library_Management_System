@@ -63,7 +63,7 @@ def scrapping(channel, method, properties, body):
         channel.basic_ack(delivery_tag=method.delivery_tag)
     
     finally:
-        print('[x] Done')
+        print('[x] Done!')
         os.remove(filepath)
         os.remove(datapath)
 

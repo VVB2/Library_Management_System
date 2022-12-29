@@ -1,6 +1,4 @@
-FROM nikolaik/python-nodejs:latest
-
-RUN npm install -g nodemon
+FROM python:3.9.12-slim-buster
 
 RUN apt-get update && \
     apt-get install -y xvfb gnupg wget curl unzip --no-install-recommends && \
@@ -28,4 +26,4 @@ COPY ./.env /scrapping
 
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-CMD ["nodemon", "./app/worker.py"]
+CMD ["python", "./app/worker.py"]

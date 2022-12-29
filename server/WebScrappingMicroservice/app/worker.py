@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import gevent
 import json
+import time
 from dotenv import dotenv_values
 from utils import driver_setup, bulk_scrape_data
 from collections import defaultdict
@@ -24,6 +25,7 @@ def clean_json(books_data):
 
 def scrapping(channel, method, properties, body):
     try:
+        print('Started Scrapping')
         filepath = body.decode()
         df = pd.read_csv(filepath, encoding='latin-1')
         old_ISBN = df['ISBN'][0]
@@ -48,9 +50,7 @@ def scrapping(channel, method, properties, body):
         for thread in threads:
             result.extend(thread.value)
 
-        print(result)
-
-        datapath = os.path.join('app/static', 'data.json')
+        datapath = os.path.join('app/static', f'{time.strftime("%Y%m%d-%H%M%S")}-data.json')
         #Storing the data into json file
         with open(datapath, 'w') as f:
             json.dump(result, f, indent=4)
@@ -65,8 +65,8 @@ def scrapping(channel, method, properties, body):
     finally:
         print('[x] Done')
         os.remove(filepath)
+        os.remove(datapath)
 
-print('RabbitMQ Worker Running')
 connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
 channel = connection.channel()
 channel.basic_consume(queue='WebScrappingQueue', on_message_callback=scrapping)

@@ -9,6 +9,7 @@ services:
     container_name: webscrapping-server-microservice
     ports:
       - "4000:8000"
+    restart: always
 
   worker:
     build:
@@ -17,3 +18,4 @@ services:
     volumes:
       - ./app:/scrapping/app
     container_name: webscrapping-worker-microservice
+    restart: always

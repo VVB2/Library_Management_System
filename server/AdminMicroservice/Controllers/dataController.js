@@ -9,7 +9,7 @@ export const getBooks = async (req, res) => {
         const books = await booksModel.find({});
         res.status(200).json({ books });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -40,7 +40,7 @@ export const issuedBooks = async (req, res) => {
         }
         res.status(200).json(data);
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -77,7 +77,7 @@ export const returnedBooks = async (req, res) => {
         }
         res.status(200).json(data);
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }

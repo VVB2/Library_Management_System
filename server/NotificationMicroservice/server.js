@@ -26,7 +26,7 @@ cron.schedule('0 10 * * *', () => {
 })
 
 process.on('unhandlededRejection', (error, data) => {
-    logger.error(error.message);
+    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
     console.log(error);
     server.close(() => process.exit(1));
 });

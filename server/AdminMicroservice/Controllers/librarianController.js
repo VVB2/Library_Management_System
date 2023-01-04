@@ -19,7 +19,7 @@ export const createLibrarian = async (req, res) => {
         logger.info('New librarian was created');
         res.status(200).json({ message: 'Account successfully created' });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -36,7 +36,7 @@ export const signin = async (req, res) => {
         }
         sendToken(librarian, 200, res);
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(500).json({ error: error.message});
     }
 }
@@ -60,7 +60,7 @@ export const getAllLibrarianInfo = async (req, res) => {
         const librarians = await librarianModel.find({});
         res.status(200).json({ librarians });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -78,7 +78,7 @@ function insertLibrarain(librarian) {
             profile_picture: librarian.profile_picture
         })
     } catch (error) {
-        logger.error(error.message)
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         console.log({ message: error.message });
     }
 }

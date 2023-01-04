@@ -24,7 +24,7 @@ export const returnBook = async (req,res) => {
         logger.info(`Book with accession number '${req.body.accession_number}' returned on ${today.toLocaleDateString('en-GB')} to ${req.body.returned_to}`);
         res.status(200).json({ message: 'Book successfully returned' });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
     }
 }
 

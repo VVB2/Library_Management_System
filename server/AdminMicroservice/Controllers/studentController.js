@@ -7,7 +7,7 @@ export const getAllStudentRecords = async (req, res) => {
         const students = await studentModel.find().sort({ 'authorized': 1 });
         res.status(200).json({'data': students});
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -20,7 +20,7 @@ export const createBulkStudents = async (req, res) => {
         }
         res.status(200).json({ 'message': 'done' });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -30,7 +30,7 @@ export const removeStudent = async (req, res) => {
         await studentModel.deleteOne({ email: req.body.email });
         res.status(201).message({ message: 'Done!' });
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         res.status(404).json({ message: error.message });
     }
 }
@@ -40,7 +40,7 @@ async function insertUsers(user) {
         await studentModel.updateOne( {email: user.email}, { $set: { authorized: true }} );
         insertUsertoQueue(user.email);
     } catch (error) {
-        logger.error(error.message)
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
         console.log({ message: error.message });
     }
 }

@@ -1,4 +1,3 @@
-import amqp from 'amqplib/callback_api.js';
 import logger from '../logger/logger.js';
 import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
 
@@ -7,14 +6,13 @@ export const getBooks = async (req, res) => {
      * Returns books based upon the page number
      * @param {int} page - Pagination page number
      * @return {json} books - Books based upon the page number
-     * @return {int} totalBooks - Total number of books present in the database
      */
     try {
         const books = await booksPagination(parseInt(req.query.page), 20)
-        res.status(200).json(books);
+        res.status(200).json({ success:true,books });
     } catch (error) {
-        logger.error(error.message);
-        res.status(404).json({ message: error.message });
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        res.status(404).json({ success:false, message: error.message });
     }
 }
 
@@ -30,10 +28,10 @@ export const getInitialData = async (req, res) => {
         const authors = await booksAutocomplete("book_detail.author");
         const isbns = await booksAutocomplete("book_detail.isbn");
         const totalBooks = await countBooks();
-        res.status(200).json({titles, authors, isbns, totalBooks});
+        res.status(200).json({success:true, titles, authors, isbns, totalBooks});
     } catch (error) {
-        logger.error(error.message);
-        res.status(404).json({ message: error.message });
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        res.status(404).json({ success:false, message: error.message });
     }
 }
 
@@ -47,19 +45,25 @@ export const searchBooks = async (req, res) => {
      */
     try {
         const books = await booksSearchByParams(req.query);
-        res.status(200).json(books);
+        res.status(200).json({ success:true, books });
     } catch (error) {
-        logger.error(error.message);
-        res.status(404).json({ message: error.message });
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        res.status(404).json({ success:false, message: error.message });
     }
 }
 
 export const watchList = async (req, res) => {
+    /**
+     * Adds book into the queue for watchlist
+     * @param {ObjectId} book_id - Object Id of book
+     * @param {ObjectId} student_id - Object Id of student
+     * @return {json} message - Book successfully added to watchlist
+     */
     try {
         await watchListQuery(req.body);
-        res.status(201).json({ message: 'Book successfully added to watchlist' })
+        res.status(201).json({ success:true, message: 'Book successfully added to watchlist' })
     } catch (error) {
-        logger.error(error.message);
-        res.status(404).json({ message: error.message });
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        res.status(404).json({ success:false, message: error.message });
     }
 }

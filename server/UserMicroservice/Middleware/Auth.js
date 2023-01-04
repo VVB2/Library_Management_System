@@ -15,11 +15,11 @@ exports.protect = async (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await studentModel.findById(decoded.id);
-        if (!user) {
-            return next(new ErrorResponse('No user found with this id', 404));
+        const student = await studentModel.findById(decoded.id);
+        if (!student) {
+            return next(new ErrorResponse('No student found with this id', 404));
         }
-        req.user = user;
+        req.student = student;
         next();
     } catch (error) {
         return next(new ErrorResponse('Unauthorized access', 401));

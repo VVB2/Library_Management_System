@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as winston from "winston";
-import DailyRotateFile from "winston-daily-rotate-file";
+import "winston-daily-rotate-file";
 
 const { combine, timestamp, printf } = winston.format;
 
@@ -14,7 +14,7 @@ const myFormat = printf(({ level, message, timestamp }) => {
 
 const transport = new winston.transports.DailyRotateFile({
     filename: process.env.LOG_FOLDER + process.env.LOG_FILENAME,
-    datePattern: 'YYYY-MM',
+    datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxFiles: '12',
     maxSize: '10m',
@@ -23,7 +23,7 @@ const transport = new winston.transports.DailyRotateFile({
 });
 
 transport.on('rotate', function(oldFilename, newFilename) {
-    console.log('rotated');
+    console.log(`Rotated ${oldFilename} with ${newFilename}`);
 });
 
 const backendLogger = () => {

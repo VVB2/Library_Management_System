@@ -1,7 +1,7 @@
 import studentModel from "../Models/studentModel.js";
 
 export const noOfBooksTaken = async (param) => {
-    return await studentModel.find({"_id": param}, {"books_taken": 1});
+    return await studentModel.find({"_id": param}, {"books_taken": 1, "_id": 0, "name": 1});
 }
 
 export const increaseTotalBooksTakenCount = async (param, count) => {

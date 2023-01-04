@@ -9,7 +9,7 @@ export const issueBook = async (req,res) => {
      * @param {int} accession_number - Accession number of the book
      * @param {ObjectId} book_id - Object Id of the book
      * @param {ObjectId} student_id - Object Id of the student
-     * @return {json} message - Successful issue creation
+     * @return {json} message - Issue successfully created
      */
     try {
         const bookAvailable = await isBookAvailable(req.body.accession_number);
@@ -21,12 +21,13 @@ export const issueBook = async (req,res) => {
             await updateAvailableBook(req.body, "$pull");
             await increaseTotalBooksTakenCount(req.body.student_id, 1);
             await createIssueAndBookReturnNotification(req.body);
-            logger.info(`Book with accession number '${req.body.accession_number}' issued by ${req.body.student_id}`);
-            res.status(201).json({message: 'Issue successfully created'});
+            logger.info(`Book with accession number '${req.body.accession_number}' issued by ${user_book_taken[0].name}`);
+            res.status(201).json({ success:true, message: 'Issue successfully created'});
         } else {
-            res.status(404).json({ message: 'Book not found' });
+            res.status(404).json({ success:false, message: 'Book not found' });
         }
     } catch (error) {
-        logger.error(error.message);
+        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        res.status(500).json({ success: false, error: error.message });
     }
 }

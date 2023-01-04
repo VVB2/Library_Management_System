@@ -1,5 +1,6 @@
 import amqp from 'amqplib/callback_api.js';
 import issueModel from "../Models/issueModel.js";
+import logger from '../logger/logger.js'
 
 export const createIssueAndBookReturnNotification = async (param) => {
     await issueModel.create({
@@ -9,11 +10,13 @@ export const createIssueAndBookReturnNotification = async (param) => {
     });
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
+            logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
             throw error0;
         }
         connection.createChannel(function(error1, channel) {
             if (error1) {
-            throw error1;
+                logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+                throw error1;
             }
             var queue = 'ReturnNotificationQueue';
             var msg = {

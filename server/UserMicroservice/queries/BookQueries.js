@@ -1,6 +1,5 @@
 import amqp from 'amqplib/callback_api.js';
 import booksModel from "../Models/booksModel.js";
-import watchListModel from "../Models/watchListModel.js";
 
 export const countBooks = async () => {
     return await booksModel.countDocuments();
@@ -11,10 +10,6 @@ export const booksAutocomplete = async (param) => {
 }
 
 export const watchListQuery = async (param) => {
-    await watchListModel.create({
-        book_id: param.book_id,
-        student_id: param.student_id
-    });
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;

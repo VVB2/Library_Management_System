@@ -4,7 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
-import booksRouter from './Routes/Books.js';
 import studentRouter from './Routes/Student.js';
 import issueRouter from './Routes/Issues.js';
 import librarianRouter from './Routes/Librarian.js';
@@ -22,14 +21,13 @@ const server = app.listen(PORT, console.log(`Server running on ${PORT}`));
 
 app.use(express.json());
 
-app.use('/api/admin/books', booksRouter);
 app.use('/api/admin/student', studentRouter);
 app.use('/api/admin/issue', issueRouter);
 app.use('/api/admin/librarian', librarianRouter);
 app.use('/api/admin/data', dataRouter);
 
 process.on('unhandlededRejection', (error, data) => {
-    logger.error(error.message);
+    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
     console.log(error);
     server.close(() => process.exit(1));
 });

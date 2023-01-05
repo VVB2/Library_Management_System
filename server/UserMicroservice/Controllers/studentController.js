@@ -17,12 +17,13 @@ export const createStudent = async (req, res, next) => {
    * @return {json} message - Account successfully created
    */
   try {
-    insertStudent(req.body);
+    await insertStudent(req.body, res, next);
     logger.info("New student was created");
-    res.status(200).json({ success:true, message: "Account successfully created" });
   } catch (error) {
-    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-    next();
+    logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
+    next(error);
   }
 };
 
@@ -51,7 +52,9 @@ export const signin = async (req, res, next) => {
     }
     sendToken(student, 200, res);
   } catch (error) {
-    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+    logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
     res.status(500).json({ success: false, error: error.message });
   }
 };
@@ -73,12 +76,13 @@ export const getStudentInfo = async (req, res) => {
   }
 };
 
-function insertStudent(student) {
+async function insertStudent(student, res, next) {
   /**
    * Helper function to create a new student
    */
   try {
-    studentModel.create({
+    const newStudent = await studentModel.create({
+      grno: student.grno,
       email: student.email,
       password: student.password,
       name: student.name,
@@ -88,9 +92,12 @@ function insertStudent(student) {
       year: student.year,
       profile_picture: student.profile_picture,
     });
+    sendToken(newStudent, 201, res);
   } catch (error) {
-    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-    console.log({ message: error.message });
+    logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
+    next(error);
   }
 }
 

@@ -1,4 +1,5 @@
 import express from 'express';
+import isAuthenticated from '../Middleware/Auth.js';
 import { getBooks, getInitialData, searchBooks, watchList } from '../Controllers/booksController.js';
 
 const booksRouter = express.Router();
@@ -13,6 +14,6 @@ booksRouter.get('/get-initial-data', getInitialData);
 booksRouter.get('/search-books', searchBooks);
 
 //@route - /api/user/books/watchlist
-booksRouter.post('/watchlist', watchList);
+booksRouter.post('/watchlist', isAuthenticated, watchList);
 
 export default booksRouter;

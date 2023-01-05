@@ -27,7 +27,9 @@ export const issueBook = async (req,res) => {
             res.status(404).json({ success:false, message: 'Book not found' });
         }
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(500).json({ success: false, error: error.message });
     }
 }

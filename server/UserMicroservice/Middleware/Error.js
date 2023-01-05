@@ -5,7 +5,7 @@ const ErrorHandler = (err, req, res, next) => {
     error.message = err.message;
 
     if (err.code === 11000) {
-        const message = 'Username/Email Already in use!';
+        const message = 'Email/GR Number Already in use!';
         error = new ErrorResponse(message, 400);
     }
 

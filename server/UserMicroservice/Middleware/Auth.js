@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import studentModel from '../Models/studentModel.js';
 import ErrorResponse from '../utils/errorResponse.js';
 
-exports.protect = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
     let token;
     if (
         req.headers.authorization &&
@@ -25,3 +25,5 @@ exports.protect = async (req, res, next) => {
         return next(new ErrorResponse('Unauthorized access', 401));
     }
 };
+
+export default isAuthenticated;

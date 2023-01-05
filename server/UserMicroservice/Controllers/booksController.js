@@ -11,7 +11,10 @@ export const getBooks = async (req, res) => {
         const books = await booksPagination(parseInt(req.query.page), 20)
         res.status(200).json({ success:true,books });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, 
+      ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(404).json({ success:false, message: error.message });
     }
 }
@@ -30,7 +33,9 @@ export const getInitialData = async (req, res) => {
         const totalBooks = await countBooks();
         res.status(200).json({success:true, titles, authors, isbns, totalBooks});
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(404).json({ success:false, message: error.message });
     }
 }
@@ -47,7 +52,9 @@ export const searchBooks = async (req, res) => {
         const books = await booksSearchByParams(req.query);
         res.status(200).json({ success:true, books });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(404).json({ success:false, message: error.message });
     }
 }
@@ -63,7 +70,9 @@ export const watchList = async (req, res) => {
         await watchListQuery(req.body);
         res.status(201).json({ success:true, message: 'Book successfully added to watchlist' })
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(404).json({ success:false, message: error.message });
     }
 }

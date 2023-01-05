@@ -10,12 +10,18 @@ export const createIssueAndBookReturnNotification = async (param) => {
     });
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
-            logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+            logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, 
+      ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
             throw error0;
         }
         connection.createChannel(function(error1, channel) {
             if (error1) {
-                logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+                logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, 
+      ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
                 throw error1;
             }
             var queue = 'ReturnNotificationQueue';

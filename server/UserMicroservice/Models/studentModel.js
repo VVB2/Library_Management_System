@@ -7,6 +7,17 @@ const studentSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    grno: {
+        type: String,
+        required: [true, 'Please provide a GR Number'],
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: [
+            /^[xX][iI][eE].*$/,
+            'Please provide a valid GR Number'
+        ]
+    },
     email: {
         type: String,
         required: [true, 'Please provide an Email address'],

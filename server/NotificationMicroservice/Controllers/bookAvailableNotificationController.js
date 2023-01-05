@@ -13,7 +13,9 @@ export const createBookNotification = async (req, res) => {
         logger.info(`Book Available Notification for ${req.body.book_id} was created`);
         res.status(200).json({ message: 'Book Available Notification successfully created' });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         res.status(404).json({ message: error.message });
     }
 }
@@ -25,7 +27,9 @@ function createNotification(notification) {
             student_id: notification.student_id
         })
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
         console.log({ message: error.message });
     }
 }

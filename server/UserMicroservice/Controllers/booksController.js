@@ -1,5 +1,6 @@
 import logger from '../logger/logger.js';
 import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
+import { checkAuthorized } from '../queries/StudentQueries.js';
 
 export const getBooks = async (req, res) => { 
     /**
@@ -67,8 +68,12 @@ export const watchList = async (req, res) => {
      * @return {json} message - Book successfully added to watchlist
      */
     try {
-        await watchListQuery(req.body);
-        res.status(201).json({ success:true, message: 'Book successfully added to watchlist' })
+        const { authorized } = await checkAuthorized(req.body.student_id);
+        if(authorized) {
+            await watchListQuery(req.body);
+            res.status(201).json({ success:true, message: 'Book successfully added to watchlist' });
+        }
+        res.status(401).json({ success:false, message: 'You are not authorized to perform this task' });
     } catch (error) {
         logger.error(
       `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`

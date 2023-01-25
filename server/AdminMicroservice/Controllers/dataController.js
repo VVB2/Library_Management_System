@@ -4,16 +4,6 @@ import issueModel from '../Models/issueModel.js';
 import librarianModel from '../Models/librarianModel.js';
 import studentModel from '../Models/studentModel.js';
 
-export const getBooks = async (req, res) => {
-    try {
-        const books = await booksModel.find({});
-        res.status(200).json({ books });
-    } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-        res.status(404).json({ message: error.message });
-    }
-}
-
 export const issuedBooks = async (req, res) => {
     try {
         const data = [];

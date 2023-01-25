@@ -2,7 +2,7 @@
 
 var amqp = require('amqplib/callback_api');
 
-amqp.connect('amqp://localhost:5672', function(error0, connection) {
+amqp.connect(process.env.MONGO_URI, function(error0, connection) {
     if (error0) {
         throw error0;
     }
@@ -11,7 +11,7 @@ amqp.connect('amqp://localhost:5672', function(error0, connection) {
             throw error1;
         }
 
-        var queue = 'accountActivated';
+        var queue = 'WatchListQueue';
 
         channel.assertQueue(queue, {
             durable: true

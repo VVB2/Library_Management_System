@@ -52,7 +52,7 @@ function insertUsertoQueue(email) {
         }
         connection.createChannel(function(error1, channel) {
             if (error1) {
-            throw error1;
+                throw error1;
             }
             var queue = 'AuthorizedUserQueue';
             var msg = {

@@ -7,6 +7,13 @@ const studentSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    grno: {
+        type: String,
+        required: [true, 'Please provide a GR Number'],
+        unique: true,
+        trim: true,
+        lowercase: true,
+    },
     email: {
         type: String,
         required: [true, 'Please provide an Email address'],

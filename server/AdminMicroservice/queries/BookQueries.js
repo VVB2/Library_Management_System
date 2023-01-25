@@ -7,4 +7,5 @@ export const updateAvailableBook = async (param, process) => {
     }, {
         [process]: { "available_books": param.accession_number }
     });
+    return book;
 }

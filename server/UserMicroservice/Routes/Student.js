@@ -1,4 +1,5 @@
 import express from 'express';
+import isAuthenticated from '../Middleware/Auth.js';
 import { createStudent, signin, getStudentInfo } from '../Controllers/studentController.js';
 
 const studentRouter = express.Router();
@@ -10,6 +11,6 @@ studentRouter.post('/create-student', createStudent);
 studentRouter.post('/signin', signin);
 
 //@route - /api/user/student/get-student-info
-studentRouter.post('/get-student-info', getStudentInfo)
+studentRouter.post('/get-student-info', isAuthenticated, getStudentInfo)
 
 export default studentRouter;

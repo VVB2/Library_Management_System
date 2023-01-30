@@ -1,5 +1,5 @@
 import amqp from 'amqplib/callback_api.js';
-// import studentModel from '../Models/studentModel.js';
+import studentModel from '../Models/studentModel.js';
 import { main } from '../Utils/BootstrapMail.js';
 
 const bookReturnController = async () => {
@@ -21,12 +21,12 @@ const bookReturnController = async () => {
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
             channel.consume(queue, async function(msg) {
-                // const data = JSON.parse(msg.content.toString());
-                // const studentInfo = await studentModel.findById(data.student_id, {email: 1, name: 1});
-                main('bookReturnMail', { username: 'VVB',
-                    book: 'test',
-                    date: '12/5/22',
-                    no_of_days: '5' });
+                const data = JSON.parse(msg.content.toString());
+                main('bookReturnMail', { username: data.username,
+                    book: data.title,
+                    date: data.date,
+                    no_of_days: data.no_of_days 
+                });
             }, {
                 noAck: true
             });

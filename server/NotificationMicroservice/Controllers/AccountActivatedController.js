@@ -14,7 +14,8 @@ const accountActivated = async () => {
             var queue = 'AuthorizedUserQueue';
 
             channel.assertQueue(queue, {
-                durable: true
+                durable: true,
+                
             });
 
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);

@@ -9,19 +9,19 @@ export const checkReturnBooks = async () => {
     for (const issue in issues) {
         const currDate = moment();
         const returnDate = moment(issues[issue].return_by, 'DD/MM/YYYY');
-        if (returnDate.diff(currDate, 'days') <= 2) {
+        if (returnDate.diff(currDate, 'days') <= 2 && !issues[issue].returned_on) {
             const studentInfo = await studentModel.findById(issues[issue].student_id, {email: 1, name: 1});
             const bookInfo = await booksModel.find({ "accession_books_list": { "$all" : [issues[issue].accession_number] }});
             sendToQueue({
                 username: studentInfo.name,
-                title: bookInfo[0].book_detail.title,
+                title: bookInfo[0].book_detail[0].title,
+                image: bookInfo[0].book_detail[0].image_url,
                 date: issues[issue].return_by,
                 no_of_days: returnDate.diff(currDate, 'days'),
                 email: studentInfo.email
              });
         }
     }
-    return 'Done'
 }
 
 function sendToQueue(data) {
@@ -37,6 +37,7 @@ function sendToQueue(data) {
             var msg = {
                 username: data.username,
                 title: data.title,
+                image: data.image,
                 date: data.date,
                 no_of_days: data.no_of_days,
                 email: data.email, 
@@ -47,7 +48,7 @@ function sendToQueue(data) {
             });
 
             channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
-            console.log(`[x] Sent ${msg}`);
+            console.log(`[x] Sent Return Book mail details`);
         });
         setTimeout(function() {
             connection.close();

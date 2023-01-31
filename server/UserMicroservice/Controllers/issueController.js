@@ -28,6 +28,7 @@ export const issueBook = async (req,res) => {
                 return res.status(404).json({ success:false, message: 'Book not found' });
             }
         }
+        logger.info(`Unauthorized issue by [${user_book_taken[0].name}]`);
         return res.status(401).json({ success:false, message: 'You are not authorized to perform this task' });
     } catch (error) {
         logger.error(error.message);

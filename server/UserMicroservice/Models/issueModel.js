@@ -26,7 +26,7 @@ const issueSchema = new mongoose.Schema({
         default: moment().add(7, 'days').format('DD/MM/YYYY')
     },
     returned_on: {
-        type: String,
+        type: Date,
         default: null
     },
     returned_to: {

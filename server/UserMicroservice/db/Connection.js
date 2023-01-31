@@ -18,9 +18,9 @@ const connectDB = async () => {
             autoIndex: true,
         });
         console.log('Database connection successful');
-    } catch (err) {
-        logger.error(err)
-        console.log(err);
+    } catch (error) {
+        logger.error(error)
+        console.log(error);
         process.exit(1);
     }
 };

@@ -7,20 +7,20 @@ export const getAllStudentRecords = async (req, res) => {
         const students = await studentModel.find().sort({ 'authorized': 1 });
         res.status(200).json({'data': students});
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(error.message);
         res.status(404).json({ message: error.message });
     }
 }
 
 export const createBulkStudents = async (req, res) => { 
     try {
-        for (let data in req.body) {
+        for (const data in req.body) {
             await insertUsers(req.body[data]);
             logger.info(`Successfully authorized student with email ${req.body[data].email}`);
         }
         res.status(200).json({ 'message': 'done' });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(error.message);
         res.status(404).json({ message: error.message });
     }
 }
@@ -28,10 +28,11 @@ export const createBulkStudents = async (req, res) => {
 export const removeStudent = async (req, res) => {
     try {
         await studentModel.deleteOne({ email: req.body.email });
-        res.status(201).message({ message: 'Done!' });
+        logger.info(`[${req.body.email}] account deleted`)
+        return res.status(201).message({ message: 'Done!' });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-        res.status(404).json({ message: error.message });
+        logger.error(error.message);
+        return res.status(404).json({ message: error.message });
     }
 }
 
@@ -40,7 +41,7 @@ async function insertUsers(user) {
         await studentModel.updateOne( {email: user.email}, { $set: { authorized: true }} );
         insertUsertoQueue(user.email);
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(error.message);
         console.log({ message: error.message });
     }
 }
@@ -64,7 +65,7 @@ function insertUsertoQueue(email) {
             });
 
             channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
-            console.log(" [x] Sent %s", msg);
+            console.log(`[x] Sent ${JSON.stringify(msg)}`);
         });
         setTimeout(function() {
             connection.close();

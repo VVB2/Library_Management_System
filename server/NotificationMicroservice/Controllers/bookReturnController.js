@@ -24,6 +24,7 @@ const bookReturnController = async () => {
                 const data = JSON.parse(msg.content.toString());
                 main('bookReturnMail', { username: data.username,
                     book: data.title,
+                    image: data.image,
                     date: data.date,
                     no_of_days: data.no_of_days 
                 });

@@ -17,13 +17,12 @@ app.use(cors());
 // DB Connection
 connectDB();
 
-const job = cron.schedule("0 10 * * * ", () => {
-    console.log("Running the cron job at 1 second every day");
+// Check for book to be returned
+const job = cron.schedule("0 10 * * * ", async () => {
+    logger.info('Checking to send Book Return Mail');
+    await checkReturnBooks();
 });
-
-const data = await checkReturnBooks();
-console.log(data);
-
+await checkReturnBooks();
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, console.log(`Server running on ${PORT}`));
@@ -39,7 +38,7 @@ job.start();
 app.use(ErrorHandler);
 
 process.on('unhandlededRejection', (error, data) => {
-    logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`);
+    logger.error(error.message);
     console.log(error);
     server.close(() => process.exit(1));
 });

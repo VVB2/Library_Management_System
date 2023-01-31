@@ -21,9 +21,9 @@ const accountActivated = async () => {
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
             channel.consume(queue, async function(msg) {
-                const data = msg.content.toString();
+                const data = JSON.parse(msg.content.toString());
                 console.log(data);
-                main('accountActivatedMail', { url: 'http://localhost:3000' });
+                main('accountActivatedMail', { url: 'http://localhost:3000', email: data.email });
             }, {
                 noAck: true
             });

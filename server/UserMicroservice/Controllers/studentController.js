@@ -18,11 +18,9 @@ export const createStudent = async (req, res, next) => {
    */
   try {
     await insertStudent(req.body, res, next);
-    logger.info("New student was created");
+    logger.info(`[${req.body.name}] requested an account creation`);
   } catch (error) {
-    logger.error(
-      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
-    );
+    logger.error(error.message);
     next(error);
   }
 };
@@ -52,9 +50,7 @@ export const signin = async (req, res, next) => {
     }
     sendToken(student, 200, res);
   } catch (error) {
-    logger.error(
-      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
-    );
+    logger.error(error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 };
@@ -70,7 +66,7 @@ export const getStudentInfo = async (req, res) => {
   const { id, exp } = jwt.decode(req.body.jwtEncodedStudent);
   try {
     const student = await studentModel.findById(id);
-    res.status(201).json({ success: true, student, exp });
+    return res.status(201).json({ success: true, student, exp });
   } catch (error) {
     next(error);
   }
@@ -94,9 +90,7 @@ async function insertStudent(student, res, next) {
     });
     sendToken(newStudent, 201, res);
   } catch (error) {
-    logger.error(
-      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
-    );
+    logger.error(error.message);
     next(error);
   }
 }

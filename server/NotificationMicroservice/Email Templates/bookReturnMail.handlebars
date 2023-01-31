@@ -147,7 +147,7 @@
 <td class="pad">
 <div style="font-family: sans-serif">
 <div class="" style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #0D0D0D; line-height: 1.2; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;">
-<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"><span style="font-size:28px;"><strong><span style="font-size:28px;">Hello {{username}},</span></strong></span><br/><span style="font-size:28px;">Please Return Book.</span></p>
+<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"><span style="font-size:28px;"><strong><span style="font-size:28px;">Hello {{username}},</span></strong></span><br/><span style="font-size:28px;">Please Return Issued Book.</span></p>
 </div>
 </div>
 </td>
@@ -165,9 +165,10 @@
 <td class="pad" style="padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:20px;">
 <div style="font-family: sans-serif">
 <div class="" style="font-size: 12px; mso-line-height-alt: 18px; color: #0D0D0D; line-height: 1.5; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;">
-<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Hello {{username}}, the issued book {{book}} is due to return on</p>
-<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">{{date}}({{no_of_days}} day/s remaining).</p>
-<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Please return the book as soon as possible to not receive a fine.</p>
+<div align="center" class="alignment" style="line-height:10px"><img alt={{book}} src={{image}} style="display: block; height: auto; border: 0; width: 316px; max-width: 30%; margin-top: -20px" title="Image" width="316"/></div>
+<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Hello {{username}}, the issued book <b>"{{book}}"</b>
+</br>is due to return on <b>{{date}}</b>({{no_of_days}} day/s remaining).</p>
+<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;">Please return the book as soon as possible to not receive a <b>fine.</b></p>
 </div>
 </div>
 </td>

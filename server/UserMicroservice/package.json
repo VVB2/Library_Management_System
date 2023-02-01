@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
     "mongoose": "^6.5.4",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.2",
     "nodemon": "^2.0.19",
     "passport": "^0.6.0",

@@ -17,6 +17,7 @@ const connectDB = async () => {
             useUnifiedTopology: true,
             autoIndex: true,
         });
+        logger.info('Database Connection Successful');
         console.log('Database connection successful');
     } catch (error) {
         logger.error(error)

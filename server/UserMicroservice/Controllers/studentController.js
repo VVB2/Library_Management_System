@@ -42,10 +42,12 @@ export const signin = async (req, res, next) => {
       .findOne({ email: req.body.email })
       .select("+password");
     if (!student) {
+      logger.info(`[${req.body.email}] passed invalid credentials`);
       return next(new ErrorResponse("Invalid credentials", 401));
     }
     const isMatch = await student.matchPassword(req.body.password);
     if (!isMatch) {
+      logger.info(`[${req.body.email}] passed invalid credentials`);
       return next(new ErrorResponse("Invalid credentials", 401));
     }
     sendToken(student, 200, res);

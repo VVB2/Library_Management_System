@@ -48,6 +48,7 @@ function sendToQueue(data) {
             });
 
             channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
+            logger.info(`Sending book return email to [${data.username}]`);
             console.log(`[x] Sent Return Book mail details`);
         });
         setTimeout(function() {

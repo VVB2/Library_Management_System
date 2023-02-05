@@ -20,9 +20,10 @@ export const returnBook = async (req,res) => {
         await updateIssue(req.body, today);
         await pushToQueue(book[0].book_detail[0].title, student_id[0].student_id);
         logger.info(`Book with accession number '${req.body.accession_number}' returned on ${today.toLocaleDateString('en-GB')} to ${req.body.returned_to}`);
-        res.status(200).json({ message: 'Book successfully returned' });
+        return res.status(200).json({ message: 'Book successfully returned' });
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
+        logger.error(error.message);
+        return res.status(500).json({ success: false, error: error.message });
     }
 }
 

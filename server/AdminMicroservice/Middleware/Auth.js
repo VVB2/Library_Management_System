@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
-import studentModel from '../Models/studentModel.js';
+import librarianModel from '../Models/librarianModel.js';
 import ErrorResponse from '../utils/errorResponse.js';
 
-exports.protect = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
     let token;
     if (
         req.headers.authorization &&
@@ -15,13 +15,15 @@ exports.protect = async (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await studentModel.findById(decoded.id);
-        if (!user) {
-            return next(new ErrorResponse('No user found with this id', 404));
+        const librarian = await librarianModel.findById(decoded.id);
+        if (!librarian) {
+            return next(new ErrorResponse('No librarian found with this id', 404));
         }
-        req.user = user;
+        req.librarian = librarian;
         next();
     } catch (error) {
         return next(new ErrorResponse('Unauthorized access', 401));
     }
 };
+
+export default isAuthenticated;

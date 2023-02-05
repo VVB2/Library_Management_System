@@ -38,23 +38,21 @@ export const signin = async (req, res, next) => {
     );
   }
   try {
-    const student = await studentModel
-      .findOne({ email: req.body.email })
-      .select("+password");
-    if (!student) {
-      logger.info(`[${req.body.email}] passed invalid credentials`);
-      return next(new ErrorResponse("Invalid credentials", 401));
+      const student = await studentModel.findOne({ email: req.body.email }).select("+password");
+      if (!student) {
+        logger.info(`[${req.body.email}] passed invalid credentials`);
+        return next(new ErrorResponse("Invalid credentials", 401));
+      }
+      const isMatch = await student.matchPassword(req.body.password);
+      if (!isMatch) {
+        logger.info(`[${req.body.email}] passed invalid credentials`);
+        return next(new ErrorResponse("Invalid credentials", 401));
+      }
+      sendToken(student, 200, res);
+    } catch (error) {
+      logger.error(error.message);
+      res.status(500).json({ success: false, error: error.message });
     }
-    const isMatch = await student.matchPassword(req.body.password);
-    if (!isMatch) {
-      logger.info(`[${req.body.email}] passed invalid credentials`);
-      return next(new ErrorResponse("Invalid credentials", 401));
-    }
-    sendToken(student, 200, res);
-  } catch (error) {
-    logger.error(error.message);
-    res.status(500).json({ success: false, error: error.message });
-  }
 };
 
 export const updateAccount = async (req, res) => {};

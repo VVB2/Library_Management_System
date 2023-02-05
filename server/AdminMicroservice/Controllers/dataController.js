@@ -5,12 +5,16 @@ import librarianModel from '../Models/librarianModel.js';
 import studentModel from '../Models/studentModel.js';
 
 export const issuedBooks = async (req, res) => {
+    /**
+     * Gets the data about all the issues books based on latest issue date
+     * @return {json} data - Data about the issued books, the student who issued it
+     */
     try {
         const data = [];
         const issuedBooksData = await issueModel.find({ "returned_on": null }).sort({ "issued_on": -1 });
         for (let issuedBook in issuedBooksData) {
             const student = await studentModel.find({ "_id": issuedBooksData[issuedBook].student_id });
-            const book = await booksModel.find({ "_id": issuedBooksData[issuedBook].book_id });
+            const book = await booksModel.find({ "accession_books_list": { "$all" : [issuedBooksData[issuedBook].accession_number] }});
             data.push({
                 accession_number: issuedBooksData[issuedBook].accession_number,
                 issued_on: issuedBooksData[issuedBook].issued_on,
@@ -19,29 +23,32 @@ export const issuedBooks = async (req, res) => {
                     email: student[0].email,
                     name: student[0].name,
                     dept: student[0].dept,
-                    class: student[0].class,
                 },
                 bookInfo: {
                     title: book[0].book_detail[0].title,
                     isbn: book[0].book_detail[0].isbn,
                     image_url: book[0].book_detail[0].image_url,
                 }
-            })
+            });
         }
-        res.status(200).json(data);
+        return res.status(200).json(data);
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-        res.status(404).json({ message: error.message });
+        logger.error(error.message);
+        return res.status(500).json({ success: false, error: error.message });
     }
 }
 
 export const returnedBooks = async (req, res) => {
+    /**
+     * Gets the data about all the returned books based on latest returned date
+     * @return {json} data - Data about the issued books, the student who issued it and the librarian who was it returned to
+     */
     try {
         const data = [];
         const returnedBooksData = await issueModel.find({ "returned_on": { "$ne": null } }).sort({ "issued_on": -1 });
         for (let returnedBook in returnedBooksData) {
             const student = await studentModel.find({ "_id": returnedBooksData[returnedBook].student_id });
-            const book = await booksModel.find({ "_id": returnedBooksData[returnedBook].book_id });
+            const book = await booksModel.find({ "accession_books_list": { "$all" : [returnedBooksData[returnedBook].accession_number] }});
             const librarian = await librarianModel.find({ "_id": returnedBooksData[returnedBook].returned_to });
             data.push({
                 accession_number: returnedBooksData[returnedBook].accession_number,
@@ -52,7 +59,6 @@ export const returnedBooks = async (req, res) => {
                     email: student[0].email,
                     name: student[0].name,
                     dept: student[0].dept,
-                    class: student[0].class,
                 },
                 librarianInfo: {
                     email: librarian[0].email,
@@ -65,9 +71,9 @@ export const returnedBooks = async (req, res) => {
                 }
             })
         }
-        res.status(200).json(data);
+        return res.status(200).json(data);
     } catch (error) {
-        logger.error(`${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", ""))}`);
-        res.status(404).json({ message: error.message });
+        logger.error(error.message);
+        return res.status(500).json({ success: false, error: error.message });
     }
 }

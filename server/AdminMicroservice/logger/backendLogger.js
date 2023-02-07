@@ -9,7 +9,7 @@ const myFormat = printf(({ level, message, timestamp, ...metadata }) => {
     /**
      * To store the log in a well formated and documented manner.
      */
-    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: '|'}`;
+    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: ''}`;
 });
 
 const transport = new winston.transports.DailyRotateFile(

@@ -23,11 +23,16 @@ export const issuedBooks = async (req, res) => {
                     email: student[0].email,
                     name: student[0].name,
                     dept: student[0].dept,
+                    year: student[0].year,
+                    books_taken: student[0].books_taken,
+                    fines_pending: student[0].fines_pending
                 },
                 bookInfo: {
                     title: book[0].book_detail[0].title,
                     isbn: book[0].book_detail[0].isbn,
                     image_url: book[0].book_detail[0].image_url,
+                    author: book[0].book_detail[0].author,
+                    publisher: book[0].book_detail[0].publisher,
                 }
             });
         }
@@ -59,6 +64,9 @@ export const returnedBooks = async (req, res) => {
                     email: student[0].email,
                     name: student[0].name,
                     dept: student[0].dept,
+                    year: student[0].year,
+                    books_taken: student[0].books_taken,
+                    fines_pending: student[0].fines_pending
                 },
                 librarianInfo: {
                     email: librarian[0].email,
@@ -68,7 +76,9 @@ export const returnedBooks = async (req, res) => {
                     title: book[0].book_detail[0].title,
                     isbn: book[0].book_detail[0].isbn,
                     image_url: book[0].book_detail[0].image_url,
-                }
+                    author: book[0].book_detail[0].author,
+                    publisher: book[0].book_detail[0].publisher,
+                },
             })
         }
         return res.status(200).json(data);

@@ -1,39 +1,22 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { createServer } from "http";
-import express from 'express';
-import { Server } from "socket.io";
-import cors from 'cors';
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
-import booksRouter from './Routes/Books.js';
-import studentRouter from './Routes/Student.js';
-import issueRouter from './Routes/Issues.js';
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-const httpServer = createServer(app);
+import bookReturnController from './Controllers/bookReturnController.js';
+import AccountActivatedController from './Controllers/AccountActivatedController.js';
+import forgotPassword from './Controllers/ForgotPasswordController.js';
 
 // DB Connection
 connectDB();
 
-const PORT = process.env.PORT || 5000;
-
-const io = new Server(httpServer, { /* options */ });
-
-io.on("connection", (socket) => {
-    console.log('user connected');
-});
-
-httpServer.listen(PORT, console.log(`Notification server running on ${PORT}`));
-
-app.use('/api/user/books', booksRouter);
-app.use('/api/user/student', studentRouter);
-app.use('/api/user/issue', issueRouter);
+bookReturnController();
+AccountActivatedController();
+forgotPassword();
 
 process.on('unhandlededRejection', (error, data) => {
-    logger.error(error.message);
+    logger.error(
+      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
+    );
     console.log(error);
     server.close(() => process.exit(1));
 });

@@ -16,11 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.4",
     "node-cron": "^3.0.2",
+    "nodemailer": "^6.8.0",
+    "nodemailer-express-handlebars": "^6.0.0",
     "nodemon": "^2.0.19",
-    "socket.io": "^4.5.4",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"
   },

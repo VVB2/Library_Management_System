@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import moment from "moment/moment.js";
 import studentModel from "./studentModel.js";
 import librarianModel from "./librarianModel.js";
 import booksModel from "./booksModel.js";
@@ -17,12 +18,12 @@ const issueSchema = new mongoose.Schema({
         ref: studentModel
     },
     issued_on: {
-        type: Date,
-        default: new Date()
+        type: String,
+        default: moment().format("DD/MM/YYYY")
     },
     return_by: {
-        type: Date,
-        default: new Date().setDate(new Date().getDate() + 7)
+        type: String,
+        default: moment().add(7, 'days').format('DD/MM/YYYY')
     },
     returned_on: {
         type: Date,

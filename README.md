@@ -16,27 +16,41 @@
 
 ## Problem Statement
 Our aim to create advanced library management where the system contain all management features and advanced features like trending books, users choices, tracking of the books circulation etc. <br/>
-1. Acquisition management 
-2. Circulation management 
-3. Search function 
-4. Self management 
-5. Productive 
-6. Online payment 
-7. Efficient
+- Acquisition management 
+- Circulation management 
+- Search function 
+- Self management 
+- Productive 
+- Online payment 
+- Efficient
 <hr/>
 
 ## Proposed Methodology
 ![Proposed Methodology](Images/Proposed%20Methodology.jpg)
 <hr/>
 
+## System Design
+- Flow Diagram
+![Flow Diagram](System%20Design/Knowza.io%20-%20Flow%20Diagram.png)
+
+- ER Diagram
+![ER Diagram](System%20Design/Knowza.io%20-%20ER%20Diagram.png)
+
+- Use Case
+![Use Case](System%20Design/Knowza.io%20-%20Use%20case%20diagram.png)
+
+- Activity Diagram
+![Activity Diagram](System%20Design/Knowza.io%20-%20Activity%20Diagram.png)
+<hr />
+
 ## Implementation Plan
-1. Data preprocessing
-2. Web Scraping using selenium
-3. Design Flask server
-4. API testing
-5. Build React app for user
-6. Build React app for admin
-7. Testing Whole system
+- [x] Data preprocessing
+- [x] Web Scraping using selenium
+- [x] Design Flask server
+- [ ] API testing
+- [ ] Build React app for user
+- [ ] Build React app for admin
+- [ ] Testing Whole system
 <hr/>
 
 ## Requirement analysis
@@ -88,7 +102,7 @@ Our aim to create advanced library management where the system contain all manag
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;">Payment Gateway</td>
-            <td style="text-align: center;">Razorpay</td>
+            <td style="text-align: center;">Stripe JS</td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>
             <td style="text-align: center;"></td>

@@ -25,6 +25,10 @@ const librarianSchema = mongoose.Schema({
         required: [true, 'Please provide a username'],
         trim: true,
     },
+    created_on: {
+        type: Date,
+        default: new Date()
+    },
     address: {
         type: String,
         required: true
@@ -42,7 +46,6 @@ const librarianSchema = mongoose.Schema({
     }
 },
     {collection: 'Librarians'},
-    {timestamps: true}
 );
 
 librarianSchema.pre('save', async function (next) {

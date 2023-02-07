@@ -7,6 +7,17 @@ const studentSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    grno: {
+        type: String,
+        required: [true, 'Please provide a GR Number'],
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: [
+            /^[xX][iI][eE].*$/,
+            'Please provide a valid GR Number'
+        ]
+    },
     email: {
         type: String,
         required: [true, 'Please provide an Email address'],
@@ -17,6 +28,10 @@ const studentSchema = mongoose.Schema({
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             'Please provide a valid Email address',
         ],
+    },
+    created_on: {
+        type: Date,
+        default: new Date()
     },
     password: {
         type: String,
@@ -62,7 +77,6 @@ const studentSchema = mongoose.Schema({
     }
 },
     {collection: 'Users'},
-    {timestamps: true}
 );
 
 studentSchema.pre('save', async function (next) {

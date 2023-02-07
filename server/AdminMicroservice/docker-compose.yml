@@ -1,0 +1,7 @@
+version: "3"
+services:
+  server:
+    build: .
+    container_name: admin-microservice
+    ports:
+      - "8000:8000"

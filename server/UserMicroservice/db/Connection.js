@@ -15,11 +15,13 @@ const connectDB = async () => {
         await mongoose.connect(connString, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            autoIndex: true,
         });
+        logger.info('Database Connection Successful');
         console.log('Database connection successful');
-    } catch (err) {
-        logger.error(err)
-        console.log(err);
+    } catch (error) {
+        logger.error(error)
+        console.log(error);
         process.exit(1);
     }
 };

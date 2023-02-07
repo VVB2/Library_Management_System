@@ -16,10 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
+    "axios": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.4",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"

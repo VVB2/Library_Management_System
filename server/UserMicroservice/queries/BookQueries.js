@@ -1,3 +1,4 @@
+import amqp from 'amqplib/callback_api.js';
 import booksModel from "../Models/booksModel.js";
 
 export const countBooks = async () => {
@@ -6,6 +7,53 @@ export const countBooks = async () => {
 
 export const booksAutocomplete = async (param) => {
     return await booksModel.distinct(param);
+}
+
+export const watchListQuery = async (param, username, email) => {
+    amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
+        if (error0) {
+            throw error0;
+        }
+        connection.createChannel(function(error1, channel) {
+            if (error1) {
+                throw error1;
+            }
+            const queue = username;
+            const msg = {
+                book_id: param.book_id
+            }
+
+            channel.assertQueue(queue, {
+                durable: true
+            });
+
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
+            console.log(`[x] Sent to ${username}:'${JSON.stringify(msg)}'`);
+        });
+
+        connection.createChannel(function(error1, channel) {
+            if (error1) {
+                throw error1;
+            }
+            const queue = 'WatchListQueue';
+            const msg = {
+                book_id: param.book_id,
+                email
+            }
+
+            channel.assertQueue(queue, {
+                durable: true
+            });
+
+            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
+            console.log(`[x] Sent to ${email}:'${JSON.stringify(msg)}'`);
+        });
+
+        setTimeout(function() {
+            connection.close();
+            process.exit(0)
+        }, 500);
+    });
 }
 
 export const booksSearchByParams = async (param) => {

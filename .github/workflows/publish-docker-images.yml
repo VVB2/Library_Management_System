@@ -27,8 +27,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./server/AdminMicroservice
-          file: ./Dockerfile
+          context: server/AdminMicroservice
+          file: Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/admin_microservice:latest
 

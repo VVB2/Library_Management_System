@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  docker-push:
 
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +22,8 @@ jobs:
         echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
         
     - uses: actions/checkout@v3
-    - name: Build the AdminMicroservice
-      run: docker build ../../../server/AdminMicroservice/. --tag ${{secrets.DOCKER_USER}}/AdminMicroservice:$(date +%s)
+    - name: Build the AdminMicroservice Image
+      run: docker build ../../../server/AdminMicroservice/. --tag ${{ secrets.DOCKER_USERNAME }}/admin_microservice:$(date +%s)
       
     - name: Docker Push
-      run: docker push ${{ secrets.DOCKER_USER }}/AdminMicroservice:$(date +%s)
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/admin_microservice:$(date +%s)

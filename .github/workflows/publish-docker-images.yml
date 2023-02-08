@@ -25,9 +25,9 @@ jobs:
       run: |
         cd server/AdminMicroservice/
         docker build . --tag ${{ secrets.DOCKER_USERNAME }}/admin_microservice
-        cd server/NotificationMicroservice/
+        cd ../NotificationMicroservice/
         docker build . --tag ${{ secrets.DOCKER_USERNAME }}/notification_microservice
-        cd server/UserMicroservice/
+        cd ../UserMicroservice/
         docker build . --tag ${{ secrets.DOCKER_USERNAME }}/user_microservice
       
     - name: Docker Push all Images

@@ -21,10 +21,17 @@ jobs:
         echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
         
     - uses: actions/checkout@v3
-    - name: Build the AdminMicroservice Image
+    - name: Build the Microservice Images
       run: |
         cd server/AdminMicroservice/
         docker build . --tag ${{ secrets.DOCKER_USERNAME }}/admin_microservice
+        cd server/NotificationMicroservice/
+        docker build . --tag ${{ secrets.DOCKER_USERNAME }}/notification_microservice
+        cd server/UserMicroservice/
+        docker build . --tag ${{ secrets.DOCKER_USERNAME }}/user_microservice
       
-    - name: Docker Push
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/admin_microservice
+    - name: Docker Push all Images
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/admin_microservice
+        docker push ${{ secrets.DOCKER_USERNAME }}/notification_microservice
+        docker push ${{ secrets.DOCKER_USERNAME }}/user_microservice

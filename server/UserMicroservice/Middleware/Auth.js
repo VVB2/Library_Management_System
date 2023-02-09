@@ -16,12 +16,14 @@ const isAuthenticated = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const student = await studentModel.findById(decoded.id);
+        console.log(student);
         if (!student) {
             return next(new ErrorResponse('No student found with this id', 404));
         }
         req.student = student;
         next();
     } catch (error) {
+        console.log(error);
         return next(new ErrorResponse('Unauthorized access', 401));
     }
 };

@@ -9,52 +9,48 @@ on:
 jobs:
 
   docker-push:
+    name: Docker build and push to ACR
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
     steps:
-    
     - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - name: Docker Login
+      uses: azure/docker-login@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+ 
+    - name: Build the frontend image and push it to ACR
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+        file: server/AdminMicroservice/Dockerfile
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: ap-south-1
 
-    - name: Build, tag, and push image to Amazon ECR
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: knowza_admin_backend
-        IMAGE_TAG: latest
-      run: |
-        cd server/AdminMicroservice/
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    # - uses: actions/checkout@v2
-    # - name: docker login
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v1
+
+    # - name: Build, tag, and push image to Amazon ECR
     #   env:
-    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-    #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    #   run: |
-    #     echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-        
-    # - uses: actions/checkout@v3
-    # - name: Build the Microservice Images
+    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     ECR_REPOSITORY: knowza_admin_backend
+    #     IMAGE_TAG: latest
     #   run: |
     #     cd server/AdminMicroservice/
-    #     docker build . --tag ${{ secrets.DOCKER_USERNAME }}/admin_microservice
-    #     cd ../NotificationMicroservice/
-    #     docker build . --tag ${{ secrets.DOCKER_USERNAME }}/notification_microservice
-    #     cd ../UserMicroservice/
-    #     docker build . --tag ${{ secrets.DOCKER_USERNAME }}/user_microservice
-      
-    # - name: Docker Push all Images
-    #   run: |
-    #     docker push ${{ secrets.DOCKER_USERNAME }}/admin_microservice
-    #     docker push ${{ secrets.DOCKER_USERNAME }}/notification_microservice
-    #     docker push ${{ secrets.DOCKER_USERNAME }}/user_microservice
+    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

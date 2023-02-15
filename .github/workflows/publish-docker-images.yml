@@ -12,10 +12,6 @@ jobs:
     name: Docker build and push to ACR
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-
     steps:
     - name: Check out code
       uses: actions/checkout@v2
@@ -27,12 +23,11 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
  
-    - name: Build the frontend image and push it to ACR
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
-        file: server/AdminMicroservice/Dockerfile
+    - name: Build, tag, and push image to ACR
+      run: |
+        cd server/AdminMicroservice
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
 
     # - name: Configure AWS credentials
     #   uses: aws-actions/configure-aws-credentials@v1

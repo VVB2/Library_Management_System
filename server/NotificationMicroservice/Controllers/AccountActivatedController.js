@@ -1,6 +1,10 @@
 import amqp from 'amqplib/callback_api.js';
-import { main } from '../Utils/BootstrapMail.js';
+import logger from '../logger/logger.js'
+import { bootstrapMail } from '../Utils/BootstrapMail.js';
 
+/**
+ * Send mails to the users accounts which have been activated
+ */
 const accountActivated = async () => {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
@@ -22,8 +26,8 @@ const accountActivated = async () => {
 
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
-                console.log(data);
-                main('accountActivatedMail', { url: 'http://localhost:3000', email: data.email });
+                bootstrapMail('accountActivatedMail', { url: 'http://localhost:3000' }, data.email, 'Your account has been authorized');
+                logger.info(`Send account activated mail to ${data.email}`);
             }, {
                 noAck: true
             });

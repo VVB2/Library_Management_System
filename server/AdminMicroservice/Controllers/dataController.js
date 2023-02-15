@@ -4,11 +4,11 @@ import issueModel from '../Models/issueModel.js';
 import librarianModel from '../Models/librarianModel.js';
 import studentModel from '../Models/studentModel.js';
 
+/**
+ * Gets the data about all the issues books based on latest issue date
+ * @return {json} data - Data about the issued books, the student who issued it
+ */
 export const issuedBooks = async (req, res) => {
-    /**
-     * Gets the data about all the issues books based on latest issue date
-     * @return {json} data - Data about the issued books, the student who issued it
-     */
     try {
         const data = [];
         const issuedBooksData = await issueModel.find({ "returned_on": null }).sort({ "issued_on": -1 });
@@ -43,11 +43,11 @@ export const issuedBooks = async (req, res) => {
     }
 }
 
+/**
+ * Gets the data about all the returned books based on latest returned date
+ * @return {json} data - Data about the issued books, the student who issued it and the librarian who was it returned to
+ */
 export const returnedBooks = async (req, res) => {
-    /**
-     * Gets the data about all the returned books based on latest returned date
-     * @return {json} data - Data about the issued books, the student who issued it and the librarian who was it returned to
-     */
     try {
         const data = [];
         const returnedBooksData = await issueModel.find({ "returned_on": { "$ne": null } }).sort({ "issued_on": -1 });

@@ -9,19 +9,22 @@ from dotenv import dotenv_values
 from utils import driver_setup, bulk_scrape_data
 from collections import defaultdict
 from databaseCRUD import DatabaseObject
+from logger import customLogger
 
 config = dotenv_values('.env')
 
 INSTANCE = 5
 
 def clean_json(books_data):
-    unique = { each['book_detail']['isbn'] : each for each in books_data }.values()
-    with DatabaseObject() as dbo:
-        for data in unique:
-            if dbo.checkPresent(data['book_detail']['isbn']):
-                dbo.updateList(data['book_detail']['isbn'], data['accession_books_list'])
-            else:
-                dbo.insertOne(data)
+    customLogger('info', 'Inserting into database')
+
+    # unique = { each['book_detail']['isbn'] : each for each in books_data }.values()
+    # with DatabaseObject() as dbo:
+    #     for data in unique:
+    #         if dbo.checkPresent(data['book_detail']['isbn']):
+    #             dbo.updateList(data['book_detail']['isbn'], data['accession_books_list'])
+    #         else:
+    #             dbo.insertOne(data)
 
 def scrapping(channel, method, properties, body):
     try:
@@ -67,7 +70,8 @@ def scrapping(channel, method, properties, body):
         os.remove(filepath)
         os.remove(datapath)
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
-channel = connection.channel()
-channel.basic_consume(queue='WebScrappingQueue', on_message_callback=scrapping)
-channel.start_consuming()
+# connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
+# channel = connection.channel()
+# channel.basic_qos(prefetch_count=1)
+# channel.basic_consume(queue='WebScrappingQueue', on_message_callback=scrapping)
+# channel.start_consuming()

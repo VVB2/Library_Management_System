@@ -2,11 +2,11 @@ import amqp from 'amqplib/callback_api.js';
 import logger from '../logger/logger.js';
 import studentModel from '../Models/studentModel.js';
 
+/**
+ * Returns data about all the students
+ * @return {json} students - A JSON data containing about the students
+ */
 export const getAllStudentRecords = async (req, res) => {
-    /**
-     * Returns data about all the students
-     * @return {json} students - A JSON data containing about the students
-     */
     try {
         const students = await studentModel.find().sort({ 'authorized': 1 });
         return res.status(200).json({ students });
@@ -16,12 +16,12 @@ export const getAllStudentRecords = async (req, res) => {
     }
 }
 
+/**
+ * Activates the students account for issuing books
+ * @param {Array} students - An array of all the students whose accounts need to be activated
+ * @return {json} message - Informing about successful activation of students accounts
+ */
 export const createBulkStudents = async (req, res) => { 
-    /**
-     * Activates the students account for issuing books
-     * @param {Array} students - An array of all the students whose accounts need to be activated
-     * @return {json} message - Informing about successful activation of students accounts
-     */
     try {
         for (const data in req.body) {
             await insertUsers(req.body[data]);
@@ -34,15 +34,15 @@ export const createBulkStudents = async (req, res) => {
     }
 }
 
+/**
+ * Returns data about all the students
+ * @param {string} email - Email of student whose account needs to be deactivated 
+ * @return {json} students - A JSON data containing about the students
+ */
 export const removeStudent = async (req, res) => {
-    /**
-     * Returns data about all the students
-     * @param {string} email - Email of student whose account needs to be deactivated 
-     * @return {json} students - A JSON data containing about the students
-     */
     try {
-        await studentModel.deleteOne({ email: req.body.email });
-        logger.info(`[${req.body.email}] account deleted`)
+        await studentModel.findOneAndUpdate({ email: req.body.email }, { authorized: false });
+        logger.info(`[${req.body.email}] account deactivated`)
         return res.status(201).message({ message: 'Done!' });
     } catch (error) {
         logger.error(error.message);
@@ -50,10 +50,11 @@ export const removeStudent = async (req, res) => {
     }
 }
 
+/**
+ * Helper function to authorize students
+ * @param {Object} student - Details of student whose account needs to be authorized
+ */
 async function insertUsers(student) {
-    /**
-     * Helper function to authorize students
-     */
     try {
         await studentModel.updateOne( {email: student.email}, { $set: { authorized: true }} );
         insertUsertoQueue(student.email);
@@ -62,10 +63,10 @@ async function insertUsers(student) {
     }
 }
 
+/**
+ * Helper function to send out the notification email to queue
+ */
 function insertUsertoQueue(email) {
-    /**
-     * Helper function to send out the notification email to queue
-     */
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;

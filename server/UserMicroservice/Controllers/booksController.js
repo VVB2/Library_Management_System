@@ -2,12 +2,12 @@ import logger from '../logger/logger.js';
 import { booksAutocomplete, booksSearchByParams, booksPagination, countBooks, watchListQuery } from '../queries/BookQueries.js';
 import { checkAuthorized } from '../queries/StudentQueries.js';
 
+/**
+ * Returns books based upon the page number
+ * @param {int} page - Pagination page number
+ * @return {json} books - Books based upon the page number
+ */
 export const getBooks = async (req, res) => { 
-    /**
-     * Returns books based upon the page number
-     * @param {int} page - Pagination page number
-     * @return {json} books - Books based upon the page number
-     */
     try {
         const books = await booksPagination(parseInt(req.query.page), 20);
         res.status(200).json({ success:true,books });
@@ -17,13 +17,13 @@ export const getBooks = async (req, res) => {
     }
 }
 
+/**
+ * Returns titles, authors and isbns for autocomplete
+ * @return {json} titles - Titles of books
+ * @return {json} authors - Authors of books
+ * @return {json} isbns - ISBNs of books
+ */
 export const getInitialData = async (req, res) => { 
-    /**
-     * Returns titles, authors and isbns for autocomplete
-     * @return {json} titles - Titles of books
-     * @return {json} authors - Authors of books
-     * @return {json} isbns - ISBNs of books
-     */
     try {
         const titles = await booksAutocomplete("book_detail.title");
         const authors = await booksAutocomplete("book_detail.author");
@@ -36,14 +36,14 @@ export const getInitialData = async (req, res) => {
     }
 }
 
+/**
+ * Returns book based upon the search parameters
+ * @param {string} title - Title of book
+ * @param {string} author - Author of book
+ * @param {string} isbn - ISBN of book
+ * @return {json} books - Books based upon the given query
+ */
 export const searchBooks = async (req, res) => {
-    /**
-     * Returns book based upon the search parameters
-     * @param {string} title - Title of book
-     * @param {string} author - Author of book
-     * @param {string} isbn - ISBN of book
-     * @return {json} books - Books based upon the given query
-     */
     try {
         const books = await booksSearchByParams(req.query);
         return res.status(200).json({ success:true, books });
@@ -53,13 +53,13 @@ export const searchBooks = async (req, res) => {
     }
 }
 
+/**
+ * Adds book into the queue for watchlist
+ * @param {ObjectId} book_id - Object Id of book
+ * @param {ObjectId} student_id - Object Id of student
+ * @return {json} message - Book successfully added to watchlist
+ */
 export const watchList = async (req, res) => {
-    /**
-     * Adds book into the queue for watchlist
-     * @param {ObjectId} book_id - Object Id of book
-     * @param {ObjectId} student_id - Object Id of student
-     * @return {json} message - Book successfully added to watchlist
-     */
     try {
         const { authorized, name, email } = await checkAuthorized(req.body.student_id);
         if(authorized) {

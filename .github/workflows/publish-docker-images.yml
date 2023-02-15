@@ -1,51 +1,51 @@
-name: Docker Image CI
+# name: Docker Image CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
-jobs:
+# jobs:
 
-  docker-push:
-    name: Docker build and push to ACR
-    runs-on: ubuntu-latest
+#   docker-push:
+#     name: Docker build and push to ACR
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Check out code
+#       uses: actions/checkout@v2
 
-    - name: Docker Login
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+#     - name: Docker Login
+#       uses: azure/docker-login@v1
+#       with:
+#         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+#         username: ${{ secrets.REGISTRY_USERNAME }}
+#         password: ${{ secrets.REGISTRY_PASSWORD }}
  
-    - name: Build, tag, and push image to ACR
-      run: |
-        cd server/AdminMicroservice
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+#     - name: Build, tag, and push image to ACR
+#       run: |
+#         cd server/AdminMicroservice
+#         docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+#         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ap-south-1
+#     # - name: Configure AWS credentials
+#     #   uses: aws-actions/configure-aws-credentials@v1
+#     #   with:
+#     #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#     #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     #     aws-region: ap-south-1
 
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v1
+#     # - name: Login to Amazon ECR
+#     #   id: login-ecr
+#     #   uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: knowza_admin_backend
-    #     IMAGE_TAG: latest
-    #   run: |
-    #     cd server/AdminMicroservice/
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#     # - name: Build, tag, and push image to Amazon ECR
+#     #   env:
+#     #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#     #     ECR_REPOSITORY: knowza_admin_backend
+#     #     IMAGE_TAG: latest
+#     #   run: |
+#     #     cd server/AdminMicroservice/
+#     #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+#     #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

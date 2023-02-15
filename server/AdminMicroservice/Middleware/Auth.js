@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken';
 import librarianModel from '../Models/librarianModel.js';
 import ErrorResponse from '../utils/errorResponse.js';
 
+/**
+ * Used to check if the user is authorized or not
+ */
 const isAuthenticated = async (req, res, next) => {
     let token;
     if (

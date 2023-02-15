@@ -3,9 +3,9 @@ import logger from '../logger/logger.js';
 import { bootstrapMail } from '../Utils/BootstrapMail.js';
 
 /**
- * Notifies(sending mail) the user about return of book
+ * Sends mail informing about successful update of users password 
  */
-const bookReturnController = async () => {
+const updatePassword = async () => {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;
@@ -15,7 +15,7 @@ const bookReturnController = async () => {
                 throw error1;
             }
 
-            var queue = 'BookReturnedQueue';
+            var queue = 'UpdatePasswordQueue';
 
             channel.assertQueue(queue, {
                 durable: true
@@ -25,13 +25,8 @@ const bookReturnController = async () => {
 
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
-                bootstrapMail('bookReturnMail', { username: data.username,
-                    book: data.title,
-                    image: data.image,
-                    date: data.date,
-                    no_of_days: data.no_of_days,
-                }, data.email, 'About return book at earliest');
-                logger.info(`Send return book mail to ${data.email}`);
+                bootstrapMail('passwordUpdateMail', { username: data.username }, data.email, 'Password Updated Successfully');
+                logger.info(`Send password update mail to ${data.email}`);
             }, {
                 noAck: true
             });
@@ -39,4 +34,4 @@ const bookReturnController = async () => {
     });
 }
 
-export default bookReturnController;
+export default updatePassword;

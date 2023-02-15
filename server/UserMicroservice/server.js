@@ -67,7 +67,6 @@ app.use(ErrorHandler);
 
 process.on('unhandlededRejection', (error, data) => {
     logger.error(error.message);
-    console.log(error);
     server.close(() => process.exit(1));
 });
 

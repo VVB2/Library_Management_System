@@ -3,13 +3,13 @@ import { isBookAvailable, updateAvailableBook } from "../queries/BookQueries.js"
 import { noOfBooksTaken, increaseTotalBooksTakenCount, checkAuthorized } from "../queries/StudentQueries.js";
 import { createIssueAndBookReturnNotification } from "../queries/IssueQueries.js";
 
+/**
+ * Issues books
+ * @param {int} accession_number - Accession number of the book
+ * @param {ObjectId} student_id - Object Id of the student
+ * @return {json} message - Issue successfully created
+ */
 export const issueBook = async (req,res) => {
-    /**
-     * Issues books
-     * @param {int} accession_number - Accession number of the book
-     * @param {ObjectId} student_id - Object Id of the student
-     * @return {json} message - Issue successfully created
-     */
     try {
         const { authorized } = await checkAuthorized(req.body.student_id);
         if(authorized) {

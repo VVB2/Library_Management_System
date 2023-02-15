@@ -1,7 +1,10 @@
 import amqp from 'amqplib/callback_api.js';
-// import studentModel from '../Models/studentModel.js';
-import { main } from '../Utils/BootstrapMail.js';
+import logger from '../logger/logger.js';
+import { bootstrapMail } from '../Utils/BootstrapMail.js';
 
+/**
+ * Sends mail about the link from which to reset password 
+ */
 const forgotPassword = async () => {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
@@ -21,9 +24,9 @@ const forgotPassword = async () => {
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
             channel.consume(queue, async function(msg) {
-                // const data = JSON.parse(msg.content.toString());
-                // const studentInfo = await studentModel.findById(data.student_id, {email: 1, name: 1});
-                main('forgotPasswordMail', { username: 'Vinod Vaman Bhat' });
+                const data = JSON.parse(msg.content.toString());
+                bootstrapMail('forgotPasswordMail', { username: data.username, link: data.link }, data.email, 'Password reset email');
+                logger.info(`Send password reset mail to ${data.email}`);
             }, {
                 noAck: true
             });

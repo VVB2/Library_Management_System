@@ -4,14 +4,14 @@ import { updateAvailableBook } from "../queries/BookQueries.js";
 import { increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
 import { updateIssue, findStudent } from "../queries/IssueQueries.js";
 
+/**
+ * Returns books
+ * @param {int} accession_number - Accession number of the book
+ * @param {ObjectId} book_id - Object Id of the book
+ * @param {ObjectId} returned_to - Object Id of the librarian
+ * @return {json} message - Successful return book
+ */
 export const returnBook = async (req,res) => {
-    /**
-     * Returns books
-     * @param {int} accession_number - Accession number of the book
-     * @param {ObjectId} book_id - Object Id of the book
-     * @param {ObjectId} returned_to - Object Id of the librarian
-     * @return {json} message - Successful return book
-     */
     try {
         const today = new Date();
         const student_id = await findStudent(req.body.accession_number);
@@ -27,6 +27,11 @@ export const returnBook = async (req,res) => {
     }
 }
 
+/**
+ * Adds book which are returned to queue
+ * @param {ObjectId} book_id - Object Id of the book
+ * @param {ObjectId} student_id - Object Id of the student
+ */
 async function pushToQueue(book_id, student_id) {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {

@@ -5,19 +5,17 @@ import connectDB from './db/Connection.js';
 import bookReturnController from './Controllers/bookReturnController.js';
 import AccountActivatedController from './Controllers/AccountActivatedController.js';
 import forgotPassword from './Controllers/ForgotPasswordController.js';
+import updatePassword from './Controllers/UpdatePasswordController.js';
 
 // DB Connection
 connectDB();
-
 bookReturnController();
 AccountActivatedController();
 forgotPassword();
+updatePassword();
 
 process.on('unhandlededRejection', (error, data) => {
-    logger.error(
-      `${(new Error().stack.split("at ")[1].split(" ")[0]).trim()}, ${(new Error().stack.split("at ")[1].split("/").pop().replace(")", "")).trim()}`
-    );
-    console.log(error);
+    logger.error(error.message);
     server.close(() => process.exit(1));
 });
 

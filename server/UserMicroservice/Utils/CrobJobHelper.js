@@ -4,6 +4,9 @@ import issueModel from "../Models/issueModel.js";
 import studentModel from '../Models/studentModel.js';
 import booksModel from '../Models/booksModel.js';
 
+/**
+ * Function to check if books are coming close to the return_by date 
+ */
 export const checkReturnBooks = async () => {
     const issues = await issueModel.find();
     for (const issue in issues) {
@@ -24,6 +27,9 @@ export const checkReturnBooks = async () => {
     }
 }
 
+/**
+ * Helper function to add message to the queue
+ */
 function sendToQueue(data) {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {

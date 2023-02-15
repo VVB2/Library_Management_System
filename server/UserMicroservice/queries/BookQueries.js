@@ -51,7 +51,6 @@ export const watchListQuery = async (param, username, email) => {
 
         setTimeout(function() {
             connection.close();
-            process.exit(0)
         }, 500);
     });
 }

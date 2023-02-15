@@ -1,5 +1,8 @@
 import ErrorResponse from "../utils/errorResponse.js";
 
+/**
+ * Handles if any unexpected error happens in the code
+ */
 const ErrorHandler = (err, req, res, next) => {
     let error = { ...err };
     error.message = err.message;

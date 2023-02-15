@@ -2,6 +2,7 @@ import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from logger import customLogger
 
 def driver_setup():
     chrome_options = Options()
@@ -24,7 +25,6 @@ def bulk_scrape_data(df, driver, accession_list):
                 search_text.send_keys(data['ISBN'])
                 submit = driver.find_element(By.CLASS_NAME,"nb-input-group-right")
                 submit.click()
-                print(df, accession_list)
                 result_data = {'book_detail': {
                         'title': data['Title-Edition-ISBN'].split('.')[0].strip(),
                         'isbn': str(data['ISBN']),
@@ -47,7 +47,7 @@ def bulk_scrape_data(df, driver, accession_list):
                     title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
                     result_data['books_detail']['title'] = title.get_attribute('innerHTML')
                 except Exception as e:
-                    print(e) 
+                    customLogger('error', e)
             
                 data_json.append(result_data)
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
@@ -87,7 +87,7 @@ def single_scrape_data(data, driver):
             title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
             result_data['books_detail']['title'] = title.get_attribute('innerHTML')
         except Exception as e:
-            print('Book not found')
+            customLogger('info', 'Book not found')
 
     finally:
         driver.close()

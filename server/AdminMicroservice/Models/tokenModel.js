@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import studentModel from "./studentModel.js";
+import librarianModel from "./librarianModel.js";
 
 const tokenSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: studentModel
+        ref: librarianModel
     },
     token: {
         type: String,

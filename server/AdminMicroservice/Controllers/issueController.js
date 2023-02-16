@@ -2,7 +2,7 @@ import amqp from 'amqplib/callback_api.js';
 import logger from "../logger/logger.js";
 import { updateAvailableBook } from "../queries/BookQueries.js";
 import { increaseTotalBooksTakenCount } from "../queries/StudentQueries.js";
-import { updateIssue, findStudent } from "../queries/IssueQueries.js";
+import { updateIssue, findStudent, checkWatchList } from "../queries/IssueQueries.js";
 
 /**
  * Returns books
@@ -16,6 +16,7 @@ export const returnBook = async (req,res) => {
         const today = new Date();
         const student_id = await findStudent(req.body.accession_number);
         const book = await updateAvailableBook(req.body, "$push");
+        await checkWatchList(req.body);
         await increaseTotalBooksTakenCount(student_id[0].student_id, -1);
         await updateIssue(req.body, today);
         await pushToQueue(book[0].book_detail[0].title, student_id[0].student_id);

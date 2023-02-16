@@ -1,4 +1,4 @@
-import amqp from 'amqplib/callback_api.js';
+import watchListModel from '../Models/watchListModel.js';
 import booksModel from "../Models/booksModel.js";
 
 export const countBooks = async () => {
@@ -10,48 +10,9 @@ export const booksAutocomplete = async (param) => {
 }
 
 export const watchListQuery = async (param, username, email) => {
-    amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
-        if (error0) {
-            throw error0;
-        }
-        connection.createChannel(function(error1, channel) {
-            if (error1) {
-                throw error1;
-            }
-            const queue = username;
-            const msg = {
-                book_id: param.book_id
-            }
-
-            channel.assertQueue(queue, {
-                durable: true
-            });
-
-            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
-            console.log(`[x] Sent to ${username}:'${JSON.stringify(msg)}'`);
-        });
-
-        connection.createChannel(function(error1, channel) {
-            if (error1) {
-                throw error1;
-            }
-            const queue = 'WatchListQueue';
-            const msg = {
-                book_id: param.book_id,
-                email
-            }
-
-            channel.assertQueue(queue, {
-                durable: true
-            });
-
-            channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
-            console.log(`[x] Sent to ${email}:'${JSON.stringify(msg)}'`);
-        });
-
-        setTimeout(function() {
-            connection.close();
-        }, 500);
+    await watchListModel.create({
+        student_id: param.student_id,
+        book_id: param.book_id
     });
 }
 

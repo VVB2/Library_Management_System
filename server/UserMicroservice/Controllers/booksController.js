@@ -61,9 +61,9 @@ export const searchBooks = async (req, res) => {
  */
 export const watchList = async (req, res) => {
     try {
-        const { authorized, name, email } = await checkAuthorized(req.body.student_id);
+        const { authorized } = await checkAuthorized(req.body.student_id);
         if(authorized) {
-            await watchListQuery(req.body, name, email);
+            await watchListQuery(req.body);
             return res.status(201).json({ success:true, message: 'Book successfully added to watchlist' });
         }
         return res.status(401).json({ success:false, message: 'You are not authorized to perform this task' });

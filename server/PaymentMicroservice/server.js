@@ -14,10 +14,10 @@ app.use(cors());
 // DB Connection
 connectDB();
 
+/**
+ * Used to log incoming requests to the server
+ */
 const morganMiddleware = morgan(
-    /**
-     * Used to log incoming requests to the server
-     */
     function (tokens, req, res) {
         return JSON.stringify({
             method: tokens.method(req, res),

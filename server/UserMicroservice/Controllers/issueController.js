@@ -19,6 +19,9 @@ export const issueBook = async (req,res) => {
                 if (user_book_taken[0].books_taken >= 3) {
                     return res.status(200).json({ message: 'Book Issue limit reached!' });
                 }
+                else if (user_book_taken[0].fine_pending >= 50) {
+                    return res.status(200).json({ message: 'Please pay the fine before issuing book' });
+                }
                 await updateAvailableBook(req.body, "$pull");
                 await increaseTotalBooksTakenCount(req.body.student_id, 1);
                 await createIssueAndBookReturnNotification(req.body);

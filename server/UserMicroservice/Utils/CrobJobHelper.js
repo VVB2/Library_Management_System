@@ -12,7 +12,7 @@ export const checkReturnBooks = async () => {
     for (const issue in issues) {
         const currDate = moment();
         const returnDate = moment(issues[issue].return_by, 'DD/MM/YYYY');
-        if (returnDate.diff(currDate, 'days') <= 2 && !issues[issue].returned_on) {
+        if (returnDate.diff(currDate, 'days') <= 2 && returnDate.diff(currDate, 'days') >= 0 && !issues[issue].returned_on) {
             const studentInfo = await studentModel.findById(issues[issue].student_id, {email: 1, name: 1});
             const bookInfo = await booksModel.find({ "accession_books_list": { "$all" : [issues[issue].accession_number] }});
             sendToQueue({

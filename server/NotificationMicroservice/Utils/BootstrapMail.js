@@ -2,6 +2,13 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 import hbs from 'nodemailer-express-handlebars';
 
+/**
+ * 
+ * @param {String} template - Contains information about which Email template to use
+ * @param {Object} context - Contains all the dynamic details of the email  
+ * @param {String} email - The receivers email address
+ * @param {String} subject - The subject of the email
+ */
 export const bootstrapMail = async (template, context, email, subject) => {
   const transporter = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",

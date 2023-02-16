@@ -9,6 +9,7 @@ import updatePassword from './Controllers/UpdatePasswordController.js';
 
 // DB Connection
 connectDB();
+
 bookReturnController();
 AccountActivatedController();
 forgotPassword();

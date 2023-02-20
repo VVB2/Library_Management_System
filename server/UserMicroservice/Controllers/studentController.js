@@ -127,7 +127,7 @@ export const updatePassword = async (req, res, next) => {
  * @return {json} message - Student deatils and expiration time
  */
 export const getStudentInfo = async (req, res) => {
-  const { id, exp } = jwt.decode(req.body.jwtEncodedStudent);
+  const { id, exp } = jwt.decode(req.headers.authorization.split(' ')[1]);
   try {
     const student = await studentModel.findById(id);
     return res.status(201).json({ success: true, student, exp });

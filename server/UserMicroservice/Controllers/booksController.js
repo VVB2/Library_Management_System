@@ -29,7 +29,7 @@ export const getInitialData = async (req, res) => {
         const authors = await booksAutocomplete("book_detail.author");
         const isbns = await booksAutocomplete("book_detail.isbn");
         const totalBooks = await countBooks();
-        return res.status(200).json({success:true, titles, authors, isbns, totalBooks});
+        return res.status(200).json({ success:true, titles, authors, isbns, totalBooks });
     } catch (error) {
         logger.error(error.message);
         return res.status(404).json({ success:false, message: error.message });

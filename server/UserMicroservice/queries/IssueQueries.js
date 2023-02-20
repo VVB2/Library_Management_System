@@ -6,3 +6,9 @@ export const createIssueAndBookReturnNotification = async (param) => {
         student_id: param.student_id,
     });
 }
+
+export const getInfo = async (param) => {
+    return await issueModel.find({ 
+        student_id: param.student_id 
+    });
+}

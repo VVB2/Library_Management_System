@@ -3,7 +3,13 @@ dotenv.config();
 import Stripe from "stripe";
 import logger from '../logger/logger.js';
 import studentModel from '../Models/studentModel.js';
+import paymentModel from '../Models/paymentModel.js';
 
+/**
+ * Students can pay fine using stripe gateway
+ * @param {ObjectId} student_id - Object Id of student
+ * @return {json} charge - Charge information
+ */
 export const payFine = async (req, res) => {
   const student_info = await studentModel.findById(req.body.student_id);
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -29,6 +35,13 @@ export const payFine = async (req, res) => {
       last4: charge.payment_method_details.card.last4
     }
     addToQueue(student_info.email, student_info.name, student_info.fine_pending, receiptDetails);
+    await paymentModel.create({
+      student_id: req.body.student_id,
+      payed_on: charge.created,
+      invoice_link: charge.receipt_url,
+      amount: charge.amount / 100,
+      transaction_id: charge.id,
+    });
     await studentModel.findByIdAndUpdate(req.body.student_id, { fine_pending: 0 });
     return res.status(201).json({ success: true, message: 'Success', charge });
   })

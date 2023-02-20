@@ -9,6 +9,7 @@ import studentRouter from './Routes/Student.js';
 import issueRouter from './Routes/Issues.js';
 import librarianRouter from './Routes/Librarian.js';
 import dataRouter from './Routes/Data.js';
+import paymentRouter from './Routes/Payment.js';
 import ErrorHandler from './Middleware/Error.js';
 
 const app = express();
@@ -53,6 +54,7 @@ app.use('/api/admin/student', studentRouter);
 app.use('/api/admin/issue', issueRouter);
 app.use('/api/admin/librarian', librarianRouter);
 app.use('/api/admin/data', dataRouter);
+app.use('/api/admin/payment', paymentRouter);
 
 app.use(ErrorHandler);
 

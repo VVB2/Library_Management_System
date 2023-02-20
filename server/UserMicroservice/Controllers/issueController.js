@@ -1,7 +1,7 @@
 import logger from "../logger/logger.js";
 import { isBookAvailable, updateAvailableBook } from "../queries/BookQueries.js";
 import { noOfBooksTaken, increaseTotalBooksTakenCount, checkAuthorized } from "../queries/StudentQueries.js";
-import { createIssueAndBookReturnNotification } from "../queries/IssueQueries.js";
+import { createIssueAndBookReturnNotification, getInfo } from "../queries/IssueQueries.js";
 
 /**
  * Issues books
@@ -37,4 +37,15 @@ export const issueBook = async (req,res) => {
         logger.error(error.message);
         return res.status(500).json({ success: false, error: error.message });
     }
+}
+
+export const getIssueAndReturnInfo = async (req, res) => {
+    try {
+        const data = await getInfo(req.body);   
+        return res.status(200).json({ success:true, data });
+    } catch (error) {
+        logger.error(error.message);
+        return res.status(500).json({ success: false, error: error.message });
+    }
+
 }

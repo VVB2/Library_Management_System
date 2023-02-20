@@ -9,6 +9,7 @@ import connectDB from './db/Connection.js';
 import booksRouter from './Routes/Books.js';
 import studentRouter from './Routes/Student.js';
 import issueRouter from './Routes/Issues.js';
+import paymentRouter from './Routes/Payment.js';
 import ErrorHandler from './Middleware/Error.js';
 // import { checkReturnBooks } from './Utils/CrobJobHelper.js';
 
@@ -60,6 +61,7 @@ app.use(morganMiddleware);
 app.use('/api/user/books', booksRouter);
 app.use('/api/user/student', studentRouter);
 app.use('/api/user/issue', issueRouter);
+app.use('/api/user/payment', paymentRouter);
   
 job.start();
 

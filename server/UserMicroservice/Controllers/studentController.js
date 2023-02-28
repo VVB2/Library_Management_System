@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import studentModel from "../Models/studentModel.js";
 import tokenModel from "../Models/tokenModel.js";
 import { resetPasswordQueue, updatePasswordQueue } from "../queries/StudentQueries.js";
-import ErrorResponse from "../utils/errorResponse.js";
+import ErrorResponse from "../Utils/ErrorResponse.js";
 
 /**
  * Creates student account

@@ -1,4 +1,4 @@
-import ErrorResponse from "../utils/errorResponse.js";
+import ErrorResponse from '../Utils/ErrorResponse.js';
 
 /**
  * Handles if any unexpected error happens in the code

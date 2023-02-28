@@ -26,19 +26,17 @@ jobs:
     - name: Build, tag, and push image to ACR
       run: |
         cd server/AdminMicroservice
-        cd ..
-        ls
-        # docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
-        # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
 
-        # cd ../server/NotificationMicroservice
-        # docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
-        # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
+        cd ../NotificationMicroservice
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
 
-        # cd ../server/PaymentMicroservice
-        # docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
-        # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
+        cd ../PaymentMicroservice
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
 
-        # cd ../server/UserMicroservice
-        # docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}
-        # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}
+        cd ../UserMicroservice
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}

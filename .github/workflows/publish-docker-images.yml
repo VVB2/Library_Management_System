@@ -26,6 +26,7 @@ jobs:
     - name: Build, tag, and push image to ACR
       run: |
         cd server/AdminMicroservice
+        cd ..
         ls
         # docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
         # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}

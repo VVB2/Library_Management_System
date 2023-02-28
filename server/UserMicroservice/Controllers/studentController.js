@@ -123,7 +123,7 @@ export const updatePassword = async (req, res, next) => {
 
 /**
  * Gets student information for kepping student logged in
- * @param {string} token - JWT signed access token
+ * @param {string} authorization - contains authorization token 
  * @return {json} message - Student deatils and expiration time
  */
 export const getStudentInfo = async (req, res) => {

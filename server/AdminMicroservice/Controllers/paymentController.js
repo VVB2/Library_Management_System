@@ -1,6 +1,10 @@
 import paymentModel from '../Models/paymentModel.js';
 import studentModel from '../Models/studentModel.js';
 
+/**
+ * Payment information
+ * @returns {json} data - Contains all data regarding payment
+ */
 export const paymentInfo = async (req, res) => {
     const payments = await paymentModel.find({});
     const data = [];

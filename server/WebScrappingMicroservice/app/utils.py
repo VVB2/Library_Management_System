@@ -2,7 +2,6 @@ import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from logger import customLogger
 
 def driver_setup():
     chrome_options = Options()
@@ -19,7 +18,6 @@ def bulk_scrape_data(df, driver, accession_list):
     try:
         for _,data in df.iterrows():
             if not pd.isnull(data['ISBN']):
-                print(f'Scrapping for {data["Title-Edition-ISBN"].split(".")[0].strip()} - {data["ISBN"]}')
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
                 search_text.clear()
                 search_text.send_keys(data['ISBN'])
@@ -47,8 +45,7 @@ def bulk_scrape_data(df, driver, accession_list):
                     title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
                     result_data['books_detail']['title'] = title.get_attribute('innerHTML')
                 except Exception as e:
-                    customLogger('error', e)
-            
+                    print(e)
                 data_json.append(result_data)
                 search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
                 search_text.clear()
@@ -59,7 +56,6 @@ def bulk_scrape_data(df, driver, accession_list):
 
 def single_scrape_data(data, driver):
     try:
-        print(f'Scrapping for {data["title"].split(".")[0].strip()} - {data["isbn"]}')
         search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
         search_text.clear()
         search_text.send_keys(data['isbn'])
@@ -87,8 +83,7 @@ def single_scrape_data(data, driver):
             title = driver.find_element(By.XPATH, '//*[@id="search-results"]/div/div/div[2]/div[1]/a')
             result_data['books_detail']['title'] = title.get_attribute('innerHTML')
         except Exception as e:
-            customLogger('info', 'Book not found')
-
+            print(e)
     finally:
         driver.close()
     

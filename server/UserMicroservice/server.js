@@ -11,7 +11,7 @@ import studentRouter from './Routes/Student.js';
 import issueRouter from './Routes/Issues.js';
 import paymentRouter from './Routes/Payment.js';
 import ErrorHandler from './Middleware/Error.js';
-// import { checkReturnBooks } from './Utils/CrobJobHelper.js';
+import { checkReturnBooks } from './Utils/CrobJobHelper.js';
 
 const app = express();
 app.use(cors());
@@ -47,7 +47,7 @@ const morganMiddleware = morgan(
 // Check for book to be returned
 const job = cron.schedule("0 10 * * * ", async () => {
     logger.info('Checking to send Book Return Mail');
-    // await checkReturnBooks();
+    await checkReturnBooks();
 });
 
 const PORT = process.env.PORT || 5000;

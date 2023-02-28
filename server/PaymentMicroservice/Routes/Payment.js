@@ -5,7 +5,6 @@ import { payFine } from '../Controllers/paymentController.js';
 const paymentRouter = express.Router();
 
 //@route - /api/payment/pay-fine
-paymentRouter.post('/pay-fine', payFine);
-// paymentRouter.post('/pay-fine', isAuthenticated, payFine);
+paymentRouter.post('/pay-fine', isAuthenticated, payFine);
 
 export default paymentRouter;

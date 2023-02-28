@@ -34,7 +34,7 @@ sortedcontainers==2.4.0
 trio==0.22.0
 trio-websocket==0.9.2
 urllib3==1.26.13
-Werkzeug==2.2.3
+Werkzeug==2.2.2
 win32-setctime==1.1.0
 wsproto==1.2.0
 zipp==3.11.0

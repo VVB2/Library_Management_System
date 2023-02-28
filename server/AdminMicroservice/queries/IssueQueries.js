@@ -34,7 +34,6 @@ function addToQueue(email, username, bookInfo) {
         if (error0) {
             throw error0;
         }
-
         connection.createChannel(function(error1, channel) {
             if (error1) {
                 throw error1;

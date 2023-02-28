@@ -39,6 +39,11 @@ export const issueBook = async (req,res) => {
     }
 }
 
+/**
+ * 
+ * @param {ObjectId} student_id - Object ID of the student 
+ * @returns {json} data - contains all the info about issues and returns  
+ */
 export const getIssueAndReturnInfo = async (req, res) => {
     try {
         const data = await getInfo(req.body);   

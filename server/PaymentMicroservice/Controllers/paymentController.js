@@ -20,7 +20,7 @@ export const payFine = async (req, res) => {
   })
   .then((customer) => {
     return stripe.charges.create({
-        amount: (student_info.fine_pending + 5) * 100,     
+        amount: student_info.fine_pending * 100,     
         description: 'Late book return fine',
         currency: 'INR',
         customer: customer.id
@@ -51,6 +51,9 @@ export const payFine = async (req, res) => {
   });
 }
 
+/**
+ * Helper function to insert payment done to queue
+ */
 function addToQueue(email, username, fine, receiptDetails) {
   amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
     if (error0) {

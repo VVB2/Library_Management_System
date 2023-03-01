@@ -2,18 +2,22 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
-import bookReturnController from './Controllers/bookReturnController.js';
-import AccountActivatedController from './Controllers/AccountActivatedController.js';
+import bookReturn from './Controllers/BookReturnController.js';
+import accountActivated from './Controllers/AccountActivatedController.js';
 import forgotPassword from './Controllers/ForgotPasswordController.js';
 import updatePassword from './Controllers/UpdatePasswordController.js';
+import watchList from './Controllers/WatchListController.js';
+import paymentDone from './Controllers/PaymentDoneController.js';
 
 // DB Connection
 connectDB();
 
-bookReturnController();
-AccountActivatedController();
+bookReturn();
+accountActivated();
 forgotPassword();
 updatePassword();
+watchList();
+paymentDone();
 
 process.on('unhandlededRejection', (error, data) => {
     logger.error(error.message);

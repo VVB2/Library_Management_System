@@ -1,11 +1,12 @@
 import amqp from 'amqplib/callback_api.js';
+import moment from 'moment';
 import logger from '../logger/logger.js';
 import { bootstrapMail } from '../Utils/BootstrapMail.js';
 
 /**
- * Notifies(sending mail) the user about return of book
+ * Sends mail informing about book availability 
  */
-const bookReturn = async () => {
+const paymentDone = async () => {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
         if (error0) {
             throw error0;
@@ -15,7 +16,7 @@ const bookReturn = async () => {
                 throw error1;
             }
 
-            var queue = 'BookReturnedQueue';
+            var queue = 'PaymentDoneQueue';
 
             channel.assertQueue(queue, {
                 durable: true
@@ -25,13 +26,8 @@ const bookReturn = async () => {
 
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
-                bootstrapMail('bookReturnMail', { username: data.username,
-                    book: data.title,
-                    image: data.image,
-                    date: data.date,
-                    no_of_days: data.no_of_days,
-                }, data.email, 'About return book at earliest');
-                logger.info(`Send return book mail to ${data.email}`);
+                bootstrapMail('paymentDoneMail', { username: data.username, amount: `${data.amount}`, date: moment.unix(data.receiptDetails.date).format("MMM DD, YYYY, hh:mm:ss A"), last4: data.receiptDetails.last4 }, data.email, 'Payment done Successfully!');
+                logger.info(`Send watch list mail to [${data.email}]`);
             }, {
                 noAck: true
             });
@@ -39,4 +35,4 @@ const bookReturn = async () => {
     });
 }
 
-export default bookReturn;
+export default paymentDone;

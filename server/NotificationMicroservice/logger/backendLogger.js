@@ -9,7 +9,7 @@ const { combine, timestamp, printf, splat } = winston.format;
  * To store the log in a well formated and documented manner.
  */
 const myFormat = printf(({ level, message, timestamp, ...metadata }) => {
-    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: '|'}`;
+    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: ''}`;
 });
 
 /**
@@ -24,7 +24,7 @@ const transport = new winston.transports.DailyRotateFile(
         maxFiles: '12d',
         maxSize: '10m',
         prepend: true,
-        level: 'info',
+        level: 'http',
     },
 );
 
@@ -39,7 +39,7 @@ transport.on('rotate', function(oldFilename, newFilename) {
  */
 const backendLogger = () => {
     return winston.createLogger({
-        level: 'info',
+        level: 'http',
         exitOnError: false,
         exceptionHandlers: [
             new winston.transports.File({ filename: process.env.LOG_FOLDER + 'exception.log' }),

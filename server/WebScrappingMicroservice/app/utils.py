@@ -14,6 +14,16 @@ def driver_setup():
     return driver
 
 def bulk_scrape_data(df, driver, accession_list):
+    """Helper function to scrape multiple books for image URL
+
+    Args:
+        df (DataFrame): Dataframe containing all the details of the books   
+        driver (Driver): Gevent driver
+        accession_list (list): List of the accession
+
+    Returns:
+        JSON: A dictionary containing all the book details along with image URL 
+    """
     data_json = []
     try:
         for _,data in df.iterrows():
@@ -55,6 +65,15 @@ def bulk_scrape_data(df, driver, accession_list):
     return data_json
 
 def single_scrape_data(data, driver):
+    """Helper function to scrape book for image URL
+
+    Args:
+        df (DataFrame): Dataframe containing all the details of the books  
+        driver (Driver): Gevent driver
+
+    Returns:
+        JSON: A dictionary containing all the book details along with image URL 
+    """
     try:
         search_text = driver.find_element(By.CLASS_NAME,"nb-input-group-left")
         search_text.clear()

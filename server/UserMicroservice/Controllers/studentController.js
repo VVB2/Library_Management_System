@@ -85,6 +85,7 @@ export const resetPassword = async (req, res, next) => {
   });
   const link = `${hash}/passwordReset?token=${resetToken}&id=${student._id}`;
   await resetPasswordQueue({ link, email: student.email,username: student.name });
+  logger.info(`Password update request send by [${student.email}]`);
   return res.status(201).json({ success: true, message: 'Reset Password mail send successfully' });
 };
 
@@ -118,6 +119,7 @@ export const updatePassword = async (req, res, next) => {
   const student = await studentModel.findById({ _id: req.body.student_id });
   await updatePasswordQueue({ email: student.email, username: student.name });
   await passwordResetToken.deleteOne({ user_id: req.body.student_id });
+  logger.info(`Successfuly password changed by [${librarian.email}]`);
   return res.status(201).json({ success:true, message: 'Password changed successfully' });;
 }
 
@@ -152,6 +154,7 @@ async function insertStudent(student, res, next) {
       year: student.year,
       profile_picture: student.profile_picture,
     });
+    logger.info(`New student [${student.email}] was created`);
     sendToken(newStudent, 201, res);
   } catch (error) {
     logger.error(error.message);

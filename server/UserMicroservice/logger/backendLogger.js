@@ -9,7 +9,7 @@ const { combine, timestamp, printf, splat } = winston.format;
  * To store the log in a well formated and documented manner.
  */
 const myFormat = printf(({ level, message, timestamp, ...metadata }) => {
-    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: '|'}`;
+    return `${timestamp} | [${level.toUpperCase()}] | ${message} ${JSON.stringify(metadata) !== "{}"? `| ${JSON.stringify(metadata)}`: ''}`;
 });
 
 /**

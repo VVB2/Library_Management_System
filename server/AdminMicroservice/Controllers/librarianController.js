@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import tokenModel from '../Models/tokenModel.js';
 import logger from '../logger/logger.js';
 import librarianModel from '../Models/librarianModel.js';
-import ErrorResponse from '../utils/errorResponse.js';
+import ErrorResponse from '../Utils/ErrorResponse.js';
 
 /**
  * Creates
@@ -18,7 +18,6 @@ import ErrorResponse from '../utils/errorResponse.js';
 export const createLibrarian = async (req, res, next) => { 
     try {
         await insertLibrarain(req.body, res, next);
-        logger.info('New librarian was created');
     } catch (error) {
         logger.error(error.message);
         return res.status(500).json({ success: false, error: error.message });
@@ -80,42 +79,44 @@ export const resetPassword = async (req, res, next) => {
       created_at: Date.now(),
     });
     const link = `${hash}/passwordReset?token=${resetToken}&id=${librarian._id}`;
-    await resetPasswordQueue({ link, email: librarian.email,username: librarian.name });
+    await resetPasswordQueue({ link, email: librarian.email, username: librarian.name });
+    logger.info(`Password update request send by [${librarian.email}]`);
     return res.status(201).json({ success: true, message: 'Reset Password mail send successfully' });
-  };
+};
   
-  /**
-   * Password update function
-   * @param {string} token - Token generated from reset password 
-   * @param {ObjectId} librarian_id - Object ID of the librarian
-   * @param {string} password - Updated password
-   * @return {json} message - Password changed successfully
-   */
-  export const updatePassword = async (req, res, next) => {
+/**
+ * Password update function
+ * @param {string} token - Token generated from reset password 
+ * @param {ObjectId} librarian_id - Object ID of the librarian
+ * @param {string} password - Updated password
+ * @return {json} message - Password changed successfully
+ */
+export const updatePassword = async (req, res, next) => {
     let passwordResetToken = await tokenModel.findOne({ user_id: req.body.librarian_id });
     if (!passwordResetToken) {
-      return next(
+        return next(
         new ErrorResponse('Invalid or expired password reset token', 400)
-      )
+        )
     }
     const isValid = await bcrypt.compare(req.body.token, passwordResetToken.token);
     if (!isValid) {
-      return next(
+        return next(
         new ErrorResponse('Invalid or expired password reset token', 400)
-      )
+        )
     }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(req.body.password, salt);
     await librarianModel.updateOne(
-      { _id: req.body.librarian_id },
-      { $set: { password: hash } },
-      { new: true }
+        { _id: req.body.librarian_id },
+        { $set: { password: hash } },
+        { new: true }
     );
     const librarian = await librarianModel.findById({ _id: req.body.librarian_id });
     await updatePasswordQueue({ email: librarian.email, username: librarian.name });
     await passwordResetToken.deleteOne({ user_id: req.body.librarian_id });
+    logger.info(`Successfuly password changed by [${librarian.email}]`);
     return res.status(201).json({ success:true, message: 'Password changed successfully' });;
-  }
+}
 
 /**
  * Returns the librarian info
@@ -162,6 +163,7 @@ async function insertLibrarain(librarian, res, next) {
             year: librarian.year,
             profile_picture: librarian.profile_picture
         });
+        logger.info(`New librarian [${librarian.email}] was created`);
         sendToken(newLibrarian, 201, res);
     } catch (error) {
         logger.error(error.message);

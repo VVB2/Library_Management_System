@@ -25,7 +25,7 @@ export const createBulkStudents = async (req, res) => {
     try {
         for (const data in req.body) {
             await insertUsers(req.body[data]);
-            logger.info(`Successfully authorized student with email ${req.body[data].email}`);
+            logger.info(`Successfully authorized student with email [${req.body[data].email}]`);
         }
         return res.status(200).json({ 'message': 'done' });
     } catch (error) {

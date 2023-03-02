@@ -4,7 +4,7 @@ import logger from '../logger/logger.js';
 import { bootstrapMail } from '../Utils/BootstrapMail.js';
 
 /**
- * Sends mail informing about book availability 
+ * Sends mail informing about payment sucessfully done
  */
 const paymentDone = async () => {
     amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {

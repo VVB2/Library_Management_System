@@ -22,8 +22,14 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABB
 channel = connection.channel()
 channel.queue_declare(queue='WebScrappingQueue', durable=True)
 
+
 @app.route('/api/web-scrapping/single-insert-book', methods=['POST'])
 def singleInsertBook():
+    """API to scrape books images for multiple books 
+
+    Returns:
+        JSON: Message indicating successful API call
+    """
     data = request.get_json()
     with DatabaseObject() as dbo:
         if dbo.checkPresent(data['isbn']):
@@ -31,10 +37,15 @@ def singleInsertBook():
         else:
             result_data = single_scrape_data(data, driver_setup())
             dbo.insertOne(result_data)
-    return 'Done!'
+    return { 'message': 'Done!' }
 
 @app.route('/api/web-scrapping/bulk-insert-book', methods=['POST'])
 def bulkInsertBook():
+    """API to scrape books images for single book 
+
+    Returns:
+        JSON: Message indicating successful API call
+    """
     uploaded_file = request.files['file']
     if uploaded_file:
         filepath = os.path.join(app.config['FILE_UPLOADS'], f'{time.strftime("%Y%m%d-%H%M%S")}-{uploaded_file.filename}')
@@ -46,10 +57,9 @@ def bulkInsertBook():
                          delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
                       ))
         connection.close()
-        return 'Done!'
+        return { 'message': 'Done!' }
     else:
-        return 'Server Error'
-
+        return { 'message': 'Server Error!' }
 
 if (__name__ == "__main__"):
     print('Server started')

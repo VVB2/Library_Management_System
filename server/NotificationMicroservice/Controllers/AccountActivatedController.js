@@ -27,7 +27,7 @@ const accountActivated = async () => {
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
                 bootstrapMail('accountActivatedMail', { url: process.env.FRONTEND_URL }, data.email, 'Your account has been authorized');
-                logger.info(`Send account activated mail to ${data.email}`);
+                logger.info(`Send account activated mail to [${data.email}]`);
             }, {
                 noAck: true
             });

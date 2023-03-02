@@ -26,7 +26,7 @@ const updatePassword = async () => {
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
                 bootstrapMail('passwordUpdateMail', { username: data.username }, data.email, 'Password Updated Successfully');
-                logger.info(`Send password update mail to ${data.email}`);
+                logger.info(`Send password update mail to [${data.email}]`);
             }, {
                 noAck: true
             });

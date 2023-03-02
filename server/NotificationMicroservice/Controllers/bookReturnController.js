@@ -31,7 +31,7 @@ const bookReturn = async () => {
                     date: data.date,
                     no_of_days: data.no_of_days,
                 }, data.email, 'About return book at earliest');
-                logger.info(`Send return book mail to ${data.email}`);
+                logger.info(`Send return book mail to [${data.email}]`);
             }, {
                 noAck: true
             });

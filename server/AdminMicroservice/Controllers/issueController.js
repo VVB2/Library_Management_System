@@ -20,7 +20,7 @@ export const returnBook = async (req,res) => {
         await increaseTotalBooksTakenCount(student_id[0].student_id, -1);
         await updateIssue(req.body, today);
         await pushToQueue(book[0].book_detail[0].title, student_id[0].student_id);
-        logger.info(`Book with accession number '${req.body.accession_number}' returned on ${today.toLocaleDateString('en-GB')} to ${req.body.returned_to}`);
+        logger.info(`Book with accession number ['${req.body.accession_number}'] returned on [${today.toLocaleDateString('en-GB')}] to [${req.body.returned_to}]`);
         return res.status(200).json({ message: 'Book successfully returned' });
     } catch (error) {
         logger.error(error.message);

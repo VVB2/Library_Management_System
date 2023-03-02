@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import Stripe from "stripe";
+import amqp from 'amqplib/callback_api.js';
 import logger from '../logger/logger.js';
 import studentModel from '../Models/studentModel.js';
 import paymentModel from '../Models/paymentModel.js';
@@ -10,6 +11,8 @@ import paymentModel from '../Models/paymentModel.js';
  * @param {ObjectId} student_id - Object Id of student
  * @return {json} charge - Charge information
  */
+
+// https://stripe-images.s3.amazonaws.com/emails/receipt_assets/card/visa-dark@2x.png
 export const payFine = async (req, res) => {
   const student_info = await studentModel.findById(req.body.student_id);
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -20,7 +23,7 @@ export const payFine = async (req, res) => {
   })
   .then((customer) => {
     return stripe.charges.create({
-        amount: student_info.fine_pending * 100,     
+        amount: (student_info.fine_pending + 1) * 100,     
         description: 'Late book return fine',
         currency: 'INR',
         customer: customer.id
@@ -29,9 +32,8 @@ export const payFine = async (req, res) => {
   .then(async (charge) => {
     logger.info(`Payment of [${student_info.fine_pending}] done by [${student_info.name}]`);
     const receiptDetails = {
-      amount: student_info.fine_pending,
       date: charge.created,
-      brand: charge.payment_method_details.card.brand,
+      // brand: charge.payment_method_details.card.brand,
       last4: charge.payment_method_details.card.last4
     }
     addToQueue(student_info.email, student_info.name, student_info.fine_pending, receiptDetails);
@@ -43,6 +45,7 @@ export const payFine = async (req, res) => {
       transaction_id: charge.id,
     });
     await studentModel.findByIdAndUpdate(req.body.student_id, { fine_pending: 0 });
+    logger.info(`Successful payment of [${student_info.fine_pending}] by [${student_info.email}]`);
     return res.status(201).json({ success: true, message: 'Success', charge });
   })
   .catch((error) => {
@@ -54,7 +57,7 @@ export const payFine = async (req, res) => {
 /**
  * Helper function to insert payment done to queue
  */
-function addToQueue(email, username, fine, receiptDetails) {
+function addToQueue(email, username, amount, receiptDetails) {
   amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
     if (error0) {
         throw error0;
@@ -67,7 +70,7 @@ function addToQueue(email, username, fine, receiptDetails) {
         var msg = {
             email,
             username, 
-            fine, 
+            amount, 
             receiptDetails
         };
 

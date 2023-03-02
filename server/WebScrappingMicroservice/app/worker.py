@@ -15,6 +15,11 @@ config = dotenv_values('.env')
 INSTANCE = 5
 
 def clean_json(books_data):
+    """To remove duplicate dictionary from json file befor inserting
+
+    Args:
+        books_data (Dictionary): Book details dictionary from the file
+    """
     unique = { each['book_detail']['isbn'] : each for each in books_data }.values()
     with DatabaseObject() as dbo:
         for data in unique:
@@ -24,6 +29,12 @@ def clean_json(books_data):
                 dbo.insertOne(data)
 
 def scrapping(channel, method, properties, body):
+    """Used for scrapping image URL from website
+
+    Args:
+        channel (RabbitMQ): To connect to the RabbitMQ queue
+        body (String): Contains the path to the json file
+    """
     try:
         print('Started Scrapping')
         filepath = body.decode()

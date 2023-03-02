@@ -26,7 +26,7 @@ const forgotPassword = async () => {
             channel.consume(queue, async function(msg) {
                 const data = JSON.parse(msg.content.toString());
                 bootstrapMail('forgotPasswordMail', { username: data.username, link: data.link }, data.email, 'Password reset email');
-                logger.info(`Send password reset mail to ${data.email}`);
+                logger.info(`Send password reset mail to [${data.email}]`);
             }, {
                 noAck: true
             });

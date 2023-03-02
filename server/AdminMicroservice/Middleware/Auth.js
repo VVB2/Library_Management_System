@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import librarianModel from '../Models/librarianModel.js';
-import ErrorResponse from '../utils/errorResponse.js';
+import ErrorResponse from '../Utils/ErrorResponse.js';
 
 /**
  * Used to check if the user is authorized or not

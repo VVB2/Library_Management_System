@@ -13,6 +13,7 @@
     "npm": "8.19.1"
   },
   "dependencies": {
+    "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "jsonwebtoken": "^9.0.0",

@@ -59,7 +59,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/usericroservice:latest
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: userserver

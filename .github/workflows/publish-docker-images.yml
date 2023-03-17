@@ -43,7 +43,14 @@ jobs:
 
       - name: Create Container Instances
         run: |
-          az container create -g Knowza.io --name adminserver --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest --secure-environment-variables ${{ secrets.ADMIN_VARIABLES }} --ip-address Public --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}
+          az container create \
+          -g Knowza.io \
+          --name adminserver \
+          --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest  \
+          --secure-environment-variables ${{ secrets.ADMIN_VARIABLES }} \
+          --ip-address Public \
+          --registry-username ${{ secrets.REGISTRY_USERNAME }} \
+          --registry-password ${{ secrets.REGISTRY_PASSWORD }}
 
           # az container create --resource-group Knowza.io --file server/deploy-userserver.yml
 

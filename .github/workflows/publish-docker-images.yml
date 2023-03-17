@@ -42,18 +42,8 @@ jobs:
       #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
       - name: Create Container Instances
-        env:
-          JWT_SECRET: "${{ secrets.JWT_SECRET }}"
-          MONGO_URI: "{{ secrets.MONGO_URI }}"
-          RABBITMQ_URI: "{{ secrets.RABBITMQ_URI }}"
-          REGISTRY_LOGIN_SERVER: "${{ secrets.REGISTRY_LOGIN_SERVER }}"
-          REGISTRY_NAME: "${{ secrets.REGISTRY_NAME }}"
-          REGISTRY_PASSWORD: "${{ secrets.REGISTRY_PASSWORD }}"
-          REGISTRY_USERNAME: "${{ secrets.REGISTRY_USERNAME }}"
-          STRIPE_PUBLISHABLE_KEY: "${{ secrets.STRIPE_PUBLISHABLE_KEY }}"
-          STRIPE_SECRET_KEY: "${{ secrets.STRIPE_SECRET_KEY }}"
         run: |
-          az container create --resource-group Knowza.io --file server/deploy-adminserver.yml
+          az container create -g Knowza.io --name adminserver --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest --secure-environment-variables ${{ secrets.ADMIN_VARIABLES }} --ip-address Public --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}
 
           # az container create --resource-group Knowza.io --file server/deploy-userserver.yml
 

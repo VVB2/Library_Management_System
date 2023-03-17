@@ -49,6 +49,7 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: adminserver
+          dns-name-label: url-for-container
           environment-variables: LOG_FOLDER='.//logs//' LOG_FILENAME='log_file-%DATE%.log' PORT='8000'
           secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} JWT_EXPIRE=${{ secrets.JWT_EXPIRE }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
           location: 'central india'

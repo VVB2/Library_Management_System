@@ -15,7 +15,7 @@ const forgotPassword = async () => {
                 throw error1;
             }
 
-            var queue = 'ForgotPasswordQueue';
+            const queue = 'ForgotPasswordQueue';
 
             channel.assertQueue(queue, {
                 durable: true

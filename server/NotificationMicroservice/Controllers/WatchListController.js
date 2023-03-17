@@ -15,7 +15,7 @@ const watchList = async () => {
                 throw error1;
             }
 
-            var queue = 'WatchListQueue';
+            const queue = 'WatchListQueue';
 
             channel.assertQueue(queue, {
                 durable: true

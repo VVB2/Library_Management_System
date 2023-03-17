@@ -16,7 +16,7 @@ const paymentDone = async () => {
                 throw error1;
             }
 
-            var queue = 'PaymentDoneQueue';
+            const queue = 'PaymentDoneQueue';
 
             channel.assertQueue(queue, {
                 durable: true

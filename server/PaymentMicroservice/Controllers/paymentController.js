@@ -66,8 +66,8 @@ function addToQueue(email, username, amount, receiptDetails) {
         if (error1) {
             throw error1;
         }
-        var queue = 'PaymentDoneQueue';
-        var msg = {
+        const queue = 'PaymentDoneQueue';
+        const msg = {
             email,
             username, 
             amount, 

@@ -1,0 +1,46 @@
+apiVersion: 2018-10-01
+name: paymentserver
+location: centralindia
+type: Microsoft.ContainerInstance/containerGroups
+properties:
+  osType: Linux
+  restartPolicy: Always
+  ipAddress:
+    ports:
+    - protocol: TCP
+      port: 6000
+    type: Public
+  containers:
+  - name: paymentserver
+    properties:
+      image: ${REGISTRY_LOGIN_SERVER}/paymentmicroservice:latest
+      resources:
+        requests:
+          cpu: 2.0
+          memoryInGB: 2.0
+      ports: 
+      - protocol: TCP
+        port: 6000
+      environmentVariables:
+        - name: 'MONGO_URI'
+          secureValue: ${MONGO_URI}
+        - name: 'LOG_FOLDER'
+          value: './/logs//'
+        - name: 'LOG_FILENAME'
+          value: 'log_file-%DATE%.log'
+        - name: 'PORT'
+          value: '6000'
+        - name: 'JWT_SECRET'
+          secureValue: ${JWT_SECRET}
+        - name: 'JWT_EXPIRE'
+          secureValue: '2 days'
+        - name: 'RABBITMQ_URI'
+          secureValue: ${RABBITMQ_URI} 
+        - name: 'STRIPE_SECRET_KEY'
+          secureValue: ${STRIPE_SECRET_KEY}
+        - name: 'STRIPE_PUBLISHABLE_KEY'
+          secureValue: ${STRIPE_PUBLISHABLE_KEY}
+  imageRegistryCredentials:
+  - server: ${REGISTRY_LOGIN_SERVER}
+    username: ${REGISTRY_USERNAME}
+    password: ${REGISTRY_PASSWORD}

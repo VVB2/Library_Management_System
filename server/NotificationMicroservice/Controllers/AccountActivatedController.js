@@ -15,7 +15,7 @@ const accountActivated = async () => {
                 throw error1;
             }
 
-            var queue = 'AuthorizedUserQueue';
+            const queue = 'AuthorizedUserQueue';
 
             channel.assertQueue(queue, {
                 durable: true,

@@ -13,8 +13,8 @@ export const issuedBooks = async (req, res) => {
         const data = [];
         const issuedBooksData = await issueModel.find({ "returned_on": null }).sort({ "issued_on": -1 });
         for (let issuedBook in issuedBooksData) {
-            const student = await studentModel.find({ "_id": issuedBooksData[issuedBook].student_id });
-            const book = await booksModel.find({ "accession_books_list": { "$all" : [issuedBooksData[issuedBook].accession_number] }});
+            const student = studentModel.find({ "_id": issuedBooksData[issuedBook].student_id });
+            const book = booksModel.find({ "accession_books_list": { "$all" : [issuedBooksData[issuedBook].accession_number] }});
             data.push({
                 accession_number: issuedBooksData[issuedBook].accession_number,
                 issued_on: issuedBooksData[issuedBook].issued_on,

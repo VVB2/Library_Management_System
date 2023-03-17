@@ -23,20 +23,45 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
  
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
     - name: Build, tag, and push image to ACR
       run: |
-        cd server/AdminMicroservice
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:${{ github.sha }}
+        docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
 
-        cd ../NotificationMicroservice
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:${{ github.sha }}
+        docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
 
-        cd ../PaymentMicroservice
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:${{ github.sha }}
+        docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
 
-        cd ../UserMicroservice
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:${{ github.sha }}
+        docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+
+    - name: Create Container Instances
+      env:
+        JWT_SECRET: '${{ secrets.JWT_SECRET }}'
+        MONGO_URI: '{{ secrets.MONGO_URI }}'
+        RABBITMQ_URI: '{{ secrets.RABBITMQ_URI }}'
+        REGISTRY_LOGIN_SERVER: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
+        REGISTRY_NAME: '${{ secrets.REGISTRY_NAME }}'
+        REGISTRY_PASSWORD: '${{ secrets.REGISTRY_PASSWORD }}'
+        REGISTRY_USERNAME: '${{ secrets.REGISTRY_USERNAME }}'
+        STRIPE_PUBLISHABLE_KEY: '${{ secrets.STRIPE_PUBLISHABLE_KEY }}'
+        STRIPE_SECRET_KEY: '${{ secrets.STRIPE_SECRET_KEY }}'
+      run: |
+        az container create --resource-group Knowza.io --file server/deploy-adminserver.yml
+
+        az container create --resource-group Knowza.io --file server/deploy-userserver.yml
+
+        az container create --resource-group Knowza.io --file server/deploy-paymentserver.yml
+    
+    - name: Azure logout
+      run: |
+        az logout

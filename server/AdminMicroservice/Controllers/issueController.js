@@ -42,8 +42,8 @@ async function pushToQueue(book_id, student_id) {
             if (error1) {
                 throw error1;
             }
-            var queue = 'BookReturnedQueue';
-            var msg = {
+            const queue = 'BookReturnedQueue';
+            const msg = {
                 book_id,
                 student_id
             };

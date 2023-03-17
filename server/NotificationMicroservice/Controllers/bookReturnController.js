@@ -15,7 +15,7 @@ const bookReturn = async () => {
                 throw error1;
             }
 
-            var queue = 'BookReturnedQueue';
+            const queue = 'BookReturnedQueue';
 
             channel.assertQueue(queue, {
                 durable: true

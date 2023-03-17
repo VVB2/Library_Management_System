@@ -1,0 +1,42 @@
+apiVersion: 2018-10-01
+name: userserver
+location: centralindia
+type: Microsoft.ContainerInstance/containerGroups
+properties:
+  osType: Linux
+  restartPolicy: Always
+  ipAddress:
+    ports:
+    - protocol: TCP
+      port: 5000
+    type: Public
+  containers:
+  - name: userserver
+    properties:
+      image: ${REGISTRY_LOGIN_SERVER}/usermicroservice:latest
+      resources:
+        requests:
+          cpu: 2.0
+          memoryInGB: 2.0
+      ports: 
+      - protocol: TCP
+        port: 5000
+      environmentVariables:
+        - name: 'MONGO_URI'
+          secureValue: ${MONGO_URI}
+        - name: 'LOG_FOLDER'
+          value: './/logs//'
+        - name: 'LOG_FILENAME'
+          value: 'log_file-%DATE%.log'
+        - name: 'PORT'
+          value: '5000'
+        - name: 'JWT_SECRET'
+          secureValue: ${JWT_SECRET}
+        - name: 'JWT_EXPIRE'
+          secureValue: '2 days'
+        - name: 'RABBITMQ_URI'
+          secureValue: ${RABBITMQ_URI} 
+  imageRegistryCredentials:
+  - server: ${REGISTRY_LOGIN_SERVER}
+    username: ${REGISTRY_USERNAME}
+    password: ${REGISTRY_PASSWORD}

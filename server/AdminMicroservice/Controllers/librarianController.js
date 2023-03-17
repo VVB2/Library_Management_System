@@ -60,7 +60,7 @@ export const signin = async (req, res, next) => {
  * @return {json} message - Reset Password mail send successfully
  */
 export const resetPassword = async (req, res, next) => {
-    const librarian = await librarianModel.findOne({ email: req.body.email });
+    const librarian = librarianModel.findOne({ email: req.body.email });
     if (!librarian) {
       return next(
         new ErrorResponse('Librarian does not exists', 400)

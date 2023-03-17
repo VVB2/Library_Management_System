@@ -75,8 +75,8 @@ function insertUsertoQueue(email) {
             if (error1) {
                 throw error1;
             }
-            var queue = 'AuthorizedUserQueue';
-            var msg = {
+            const queue = 'AuthorizedUserQueue';
+            const msg = {
                 email,
             };
 

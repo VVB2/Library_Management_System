@@ -41,20 +41,17 @@ jobs:
       #     docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
       #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
-      - name: Create Container Instances
-        run: |
-          az container create \
-          -g Knowza.io \
-          --name adminserver \
-          --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest  \
-          --secure-environment-variables ${{ secrets.ADMIN_VARIABLES }} \
-          --ip-address Public \
-          --registry-username ${{ secrets.REGISTRY_USERNAME }} \
-          --registry-password ${{ secrets.REGISTRY_PASSWORD }}
-
-          # az container create --resource-group Knowza.io --file server/deploy-userserver.yml
-
-          # az container create --resource-group Knowza.io --file server/deploy-paymentserver.yml
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: Knowza.io
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: adminserver
+          environment-variables: LOG_FOLDER='.//logs//' LOG_FILENAME='log_file-%DATE%.log' PORT='8000'
+          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} JWT_EXPIRE=${{ secrets.JWT_EXPIRE }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
+          location: 'central india'
 
       - name: Azure logout
         run: |

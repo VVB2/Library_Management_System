@@ -1,5 +1,5 @@
 apiVersion: 2018-10-01
-name: adminserver
+name: adminserver1
 location: centralindia
 type: Microsoft.ContainerInstance/containerGroups
 properties:

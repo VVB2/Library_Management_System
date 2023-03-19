@@ -42,7 +42,7 @@ jobs:
   #         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
   deploy-instance:
-    needs: docker-push
+    # needs: docker-push
     name: Deploy to Container Instance
     runs-on: ubuntu-latest
 

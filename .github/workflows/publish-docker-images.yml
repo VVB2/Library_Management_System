@@ -40,7 +40,12 @@ jobs:
 
       #     docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
       #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+  
+  deploy-instance:
+    name: Deploy to Container Instance
+    runs-on: ubuntu-latest
 
+    steps:
       # - name: 'Deploy Admin Server to Azure Container Instances'
       #   uses: 'azure/aci-deploy@v1'
       #   with:
@@ -69,30 +74,30 @@ jobs:
       #     location: 'central india'
       #     ports: '5000'
 
-      # - name: 'Deploy Payment Server to Azure Container Instances'
-      #   uses: 'azure/aci-deploy@v1'
-      #   with:
-      #     resource-group: Knowza.io
-      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
-      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-      #     name: paymentserver
-      #     dns-name-label: paymentserver
-      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
-      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-      #     location: 'central india'
-      #     ports: '6000'
-
-      - name: 'Deploy RabbitMq Server to Azure Container Instances'
+      - name: 'Deploy Payment Server to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: Knowza.io
-          image: rabbitmq:3-management-alpine
-          name: rabbitmqserver
-          dns-name-label: rabbitmqserver
-          secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: paymentserver
+          dns-name-label: paymentserver
+          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
+          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
           location: 'central india'
-          ports: 5672 15672
+          ports: '6000'
+
+      # - name: 'Deploy RabbitMq Server to Azure Container Instances'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: rabbitmq:3-management-alpine
+      #     name: rabbitmqserver
+      #     dns-name-label: rabbitmqserver
+      #     secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+      #     location: 'central india'
+      #     ports: 5672 15672
 
       - name: Azure logout
         run: |

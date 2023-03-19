@@ -27,61 +27,72 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build, tag, and push image to ACR
-        run: |
-          docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+      # - name: Build, tag, and push image to ACR
+      #   run: |
+      #     docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
 
-          docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+      #     docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
 
-          docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+      #     docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
 
-          docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+      #     docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: adminserver
-          dns-name-label: adminserver
-          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="8000" JWT_EXPIRE="2 days"
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
-          location: 'central india'
-          ports: '8000'
+      # - name: 'Deploy Admin Server to Azure Container Instances'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+      #     name: adminserver
+      #     dns-name-label: adminserver
+      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="8000" JWT_EXPIRE="2 days"
+      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
+      #     location: 'central india'
+      #     ports: '8000'
       
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: userserver
-          dns-name-label: userserver
-          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="5000" JWT_EXPIRE="2 days"
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
-          location: 'central india'
-          ports: '5000'
+      # - name: 'Deploy User Server to Azure Container Instances'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+      #     name: userserver
+      #     dns-name-label: userserver
+      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="5000" JWT_EXPIRE="2 days"
+      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
+      #     location: 'central india'
+      #     ports: '5000'
 
-      - name: 'Deploy to Azure Container Instances'
+      # - name: 'Deploy Payment Server to Azure Container Instances'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+      #     name: paymentserver
+      #     dns-name-label: paymentserver
+      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
+      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      #     location: 'central india'
+      #     ports: '6000'
+
+      - name: 'Deploy RabbitMq Server to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: paymentserver
-          dns-name-label: paymentserver
-          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+          image: rabbitmq:3-management-alpine
+          name: rabbitmqserver
+          dns-name-label: rabbitmqserver
+          secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
           location: 'central india'
-          ports: '6000'
+          ports: 5672 15672
 
       - name: Azure logout
         run: |

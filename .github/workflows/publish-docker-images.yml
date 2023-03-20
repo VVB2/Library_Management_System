@@ -123,7 +123,6 @@ jobs:
           secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} FRONTEND_URL=${{ secrets.FRONTEND_URL }}
           location: 'central india'
           ports: 9000 2525
-          restart-policy: 'OnFailure'
           log-type: ContainerInsights
 
       - name: Azure logout

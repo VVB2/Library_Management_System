@@ -48,22 +48,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Login via Azure CLI"
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # - name: "Login via Azure CLI"
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Deploy RabbitMq Server'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: rabbitmq:3-management-alpine
-          name: rabbitmqserver
-          dns-name-label: rabbitmqserver
-          secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
-          location: 'central india'
-          ports: 5672 15672
-          log-type: ContainerInsights
+      # - name: 'Deploy RabbitMq Server'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: rabbitmq:3-management-alpine
+      #     name: rabbitmqserver
+      #     dns-name-label: rabbitmqserver
+      #     secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+      #     location: 'central india'
+      #     ports: 5672 15672
+      #     log-type: ContainerInsights
 
       # - name: 'Deploy Admin Server'
       #   uses: 'azure/aci-deploy@v1'
@@ -95,35 +95,35 @@ jobs:
       #     ports: '5000'
       #     log-type: ContainerInsights
 
-      # - name: 'Deploy Payment Server'
-      #   uses: 'azure/aci-deploy@v1'
-      #   with:
-      #     resource-group: Knowza.io
-      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
-      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-      #     name: paymentserver
-      #     dns-name-label: paymentserver
-      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
-      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-      #     location: 'central india'
-      #     ports: '6000'
-      #     log-type: ContainerInsights
-
-      - name: 'Deploy Notification Server'
+      - name: 'Deploy Payment Server'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: notificationserver
-          dns-name-label: notificationserver
-          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="9000"
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+          name: paymentserver
+          dns-name-label: paymentserver
+          environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="6000" JWT_EXPIRE="2 days"
+          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} JWT_SECRET=${{ secrets.JWT_SECRET }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }} STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}
           location: 'central india'
-          ports: 9000 2525
+          ports: '6000'
           log-type: ContainerInsights
+
+      # - name: 'Deploy Notification Server'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+      #     registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+      #     name: notificationserver
+      #     dns-name-label: notificationserver
+      #     environment-variables: LOG_FOLDER=".//logs//" LOG_FILENAME="log_file-%DATE%.log" PORT="9000"
+      #     secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} FRONTEND_URL=${{ secrets.FRONTEND_URL }}
+      #     location: 'central india'
+      #     ports: 9000 2525
+      #     log-type: ContainerInsights
 
       - name: Azure logout
         run: |

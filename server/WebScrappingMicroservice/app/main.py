@@ -63,4 +63,4 @@ def bulkInsertBook():
 
 if (__name__ == "__main__"):
     print('Server started')
-    app.run(port = 8000, debug=True, host='0.0.0.0')
+    app.run(port = 4000, debug=True, host='0.0.0.0')

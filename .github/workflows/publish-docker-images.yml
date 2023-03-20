@@ -7,42 +7,42 @@ on:
     branches: ["main"]
 
 jobs:
-  docker-push:
-    name: Docker build and push to ACR
-    runs-on: ubuntu-latest
+  # docker-push:
+  #   name: Docker build and push to ACR
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v2
 
-      - name: Docker Login
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+  #     - name: Docker Login
+  #       uses: azure/docker-login@v1
+  #       with:
+  #         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+  #         username: ${{ secrets.REGISTRY_USERNAME }}
+  #         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: "Login via Azure CLI"
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - name: "Login via Azure CLI"
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build, tag, and push image to ACR
-        run: |
-          docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+  #     - name: Build, tag, and push image to ACR
+  #       run: |
+  #         docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+  #         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
 
-          docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+  #         docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+  #         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
 
-          docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+  #         docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+  #         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
 
-          docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+  #         docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+  #         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
   deploy-instance:
-    needs: docker-push
+    # needs: docker-push
     name: Deploy to Container Instance
     runs-on: ubuntu-latest
 
@@ -52,17 +52,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Deploy RabbitMq Server'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: rabbitmq:3-management-alpine
-          name: rabbitmqserver
-          dns-name-label: rabbitmqserver
-          secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
-          location: 'central india'
-          ports: 5672 15672
-          log-type: ContainerInsights
+      # - name: 'Deploy RabbitMq Server'
+      #   uses: 'azure/aci-deploy@v1'
+      #   with:
+      #     resource-group: Knowza.io
+      #     image: rabbitmq:3-management-alpine
+      #     name: rabbitmqserver
+      #     dns-name-label: rabbitmqserver
+      #     secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+      #     location: 'central india'
+      #     ports: 5672 15672
+      #     log-type: ContainerInsights
 
       # - name: 'Deploy Admin Server'
       #   uses: 'azure/aci-deploy@v1'
@@ -122,6 +122,7 @@ jobs:
           secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }} MAILTRAP_USER=${{ secrets.MAILTRAP_USER }} MAILTRAP_PASSWORD=${{ secrets.MAILTRAP_PASSWORD }} FRONTEND_URL=${{ secrets.FRONTEND_URL }}
           location: 'central india'
           ports: '9000'
+          restart-policy: 'OnFailure'
           log-type: ContainerInsights
 
       - name: Azure logout

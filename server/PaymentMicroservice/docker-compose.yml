@@ -2,6 +2,8 @@ version: "3"
 services:
   server:
     build: .
+    env_file:
+      - .env
     container_name: payment-microservice
     ports:
       - "6000:6000"

@@ -2,9 +2,9 @@ FROM node:19-alpine
 
 EXPOSE 9000
 
-WORKDIR /usermicroservice
+WORKDIR /notificationmicroservice
 
-COPY . /usermicroservice
+COPY . /notificationmicroservice
 
 RUN npm install
 

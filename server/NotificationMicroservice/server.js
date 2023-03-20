@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
-import bookReturn from './Controllers/BookReturnController.js';
+import bookReturn from './Controllers/bookReturnController.js';
 import accountActivated from './Controllers/AccountActivatedController.js';
 import forgotPassword from './Controllers/ForgotPasswordController.js';
 import updatePassword from './Controllers/UpdatePasswordController.js';

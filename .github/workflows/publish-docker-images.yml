@@ -53,17 +53,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # - name: 'Deploy RabbitMq Server'
-      #   uses: 'azure/aci-deploy@v1'
-      #   with:
-      #     resource-group: Knowza.io
-      #     image: rabbitmq:3-management-alpine
-      #     name: rabbitmqserver
-      #     dns-name-label: rabbitmqserver
-      #     secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
-      #     location: 'central india'
-      #     ports: 5672 15672
-      #     log-type: ContainerInsights
+      - name: 'Deploy RabbitMq Server'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: Knowza.io
+          image: rabbitmq:3-management-alpine
+          name: rabbitmqserver
+          dns-name-label: rabbitmqserver
+          secure-environment-variables: RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }}
+          location: 'central india'
+          ports: 5672 15672
+          log-type: ContainerInsights
 
       # - name: 'Deploy Admin Server'
       #   uses: 'azure/aci-deploy@v1'

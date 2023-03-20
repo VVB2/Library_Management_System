@@ -48,10 +48,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: "Login via Azure CLI"
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # - name: 'Deploy RabbitMq Server'
       #   uses: 'azure/aci-deploy@v1'

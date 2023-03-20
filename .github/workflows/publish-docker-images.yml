@@ -42,10 +42,10 @@ jobs:
           docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
-          docker build server/WebScrappingMicroservice -f Dockerfile-server -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-server:latest 
+          docker build server/WebScrappingMicroservice -f server/WebScrappingMicroservice/Dockerfile-server -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-server:latest 
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-server:latest
 
-          docker build server/WebScrappingMicroservice -f Dockerfile-worker -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-worker:latest 
+          docker build server/WebScrappingMicroservice -f server/WebScrappingMicroservice/Dockerfile-worker -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-worker:latest 
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-worker:latest
 
       - name: Azure logout

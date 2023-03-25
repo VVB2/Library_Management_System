@@ -1,27 +1,22 @@
 from gevent import monkey
 monkey.patch_all()
-from flask import Flask, request
 import time
 import os
-import pika
+import json
+from flask import Flask, request
 from flask_cors import CORS
 from dotenv import dotenv_values
 from utils import driver_setup, single_scrape_data
+from worker import scrapping
 from databaseCRUD import DatabaseObject
 
 app = Flask(__name__)
 CORS(app)
 
 config = dotenv_values('.env')
-print(config)
 
 FILE_UPLOADS = 'app/static'
 app.config['FILE_UPLOADS'] = FILE_UPLOADS
-
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
-channel = connection.channel()
-channel.queue_declare(queue='WebScrappingQueue', durable=True)
-
 
 @app.route('/api/web-scrapping/single-insert-book', methods=['POST'])
 def singleInsertBook():
@@ -46,20 +41,14 @@ def bulkInsertBook():
     Returns:
         JSON: Message indicating successful API call
     """
-    uploaded_file = request.files['file']
-    if uploaded_file:
-        filepath = os.path.join(app.config['FILE_UPLOADS'], f'{time.strftime("%Y%m%d-%H%M%S")}-{uploaded_file.filename}')
-        uploaded_file.save(filepath)
-        channel.basic_publish(exchange='',
-                    routing_key='WebScrappingQueue',
-                    body=filepath,
-                    properties=pika.BasicProperties(
-                         delivery_mode = pika.spec.PERSISTENT_DELIVERY_MODE
-                      ))
-        connection.close()
-        return { 'message': 'Done!' }
-    else:
-        return { 'message': 'Server Error!' }
+    with DatabaseObject() as dbo:
+        uploaded_file = request.files['file']
+        if uploaded_file:
+            filepath = os.path.join(app.config['FILE_UPLOADS'], f'{time.strftime("%Y%m%d-%H%M%S")}-{uploaded_file.filename}')
+            uploaded_file.save(filepath)
+            return { 'message': 'Done!' }
+        else:
+            return { 'message': 'Server Error!' }
 
 if (__name__ == "__main__"):
     print('Server started')

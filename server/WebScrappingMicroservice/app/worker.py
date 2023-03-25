@@ -1,4 +1,3 @@
-import pika
 import os
 import pandas as pd
 import numpy as np
@@ -14,7 +13,7 @@ config = dotenv_values('.env')
 
 INSTANCE = 5
 
-def clean_json(books_data):
+def clean_json(books_data, filepath, datapath):
     """To remove duplicate dictionary from json file befor inserting
 
     Args:
@@ -27,8 +26,10 @@ def clean_json(books_data):
                 dbo.updateList(data['book_detail']['isbn'], data['accession_books_list'])
             else:
                 dbo.insertOne(data)
+    os.remove(filepath)
+    os.remove(datapath)
 
-def scrapping(channel, method, properties, body):
+def scrapping(filename):
     """Used for scrapping image URL from website
 
     Args:
@@ -37,7 +38,7 @@ def scrapping(channel, method, properties, body):
     """
     try:
         print('Started Scrapping')
-        filepath = body.decode()
+        filepath = os.path.join('app/static', filename)
         df = pd.read_csv(filepath, encoding='latin-1')
         old_ISBN = df['ISBN'][0]
         accession_list = defaultdict(list)
@@ -70,16 +71,12 @@ def scrapping(channel, method, properties, body):
         with open(datapath) as f:
             file_data = json.load(f)
 
-        clean_json(file_data)
-        channel.basic_ack(delivery_tag=method.delivery_tag)
+        clean_json(file_data, filepath, datapath)
+
+    except Exception as e:
+        print(e)
     
     finally:
         print('[x] Done!')
-        os.remove(filepath)
-        os.remove(datapath)
-
-connection = pika.BlockingConnection(pika.ConnectionParameters(host=config['RABBITMQ_URI']))
-channel = connection.channel()
-channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue='WebScrappingQueue', on_message_callback=scrapping)
-channel.start_consuming()
+         
+    

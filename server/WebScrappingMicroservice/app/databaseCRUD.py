@@ -30,6 +30,14 @@ class DatabaseObject:
             data (JSON): Book containing all the details
         """
         self.DATABASE['Test'].insert_one(data)
+
+    def insertMany(self, data):
+        """Insert the book data for scrapping into database
+
+        Args:
+            data (JSON): Book containing all the details
+        """
+        self.DATABASE['Test'].insert_many(data)
     
     def updateList(self, isbn, list):
         """Update the accession_books_list and available_books list in database

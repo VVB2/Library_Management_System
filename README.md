@@ -1,35 +1,62 @@
-# Knowza.io - Advanced Library Management System
+<h1 align="center">Welcome to Knowza.io 👋</h1>
+<p align="center">
+    <img src="https://img.shields.io/github/actions/workflow/status/VVB2/Library_Management_System/publish-docker-images.yml?branch=main&style=flat-square" />
+    <img src="https://img.shields.io/github/contributors/VVB2/Library_Management_System?style=flat-square" />
+    <img src="https://img.shields.io/librariesio/github/VVB2/Library_Management_System?style=flat-square" />
+    <img src="https://img.shields.io/github/repo-size/VVB2/Library_Management_System?style=flat-square" />
+    <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-yellow.svg?style=flat-square" target="_blank" />
+</p>
 
-## Introduction 
+> Backend useful to move from traditional pen paper library management system to modern automation and database approach.
+
+## ⛳ Introduction 
 - A college library management is a project that manages and stores books information electronically according to students needs. The system helps both students and library manager to keep a constant track of all the books available in the library. </br>
 - It allows both the admin and the student to search for the desired book. It becomes necessary for colleges to keep a continuous check on the books issued and returned and even calculate fine. </br>
 - This task if carried out manually will be tedious and includes chances of mistakes. These errors are avoided by allowing the system to keep track of information such as issue date, last date to return the book and even fine information and thus there is no need to keep manual track of this information which thereby avoids chances of mistakes. </br>
 - Thus this system reduces manual work to a great extent allows smooth flow of library activities by removing chances of errors in the details.
-<hr/>
 
-## Objective
-1. The system excludes the use of paper work by managing all the book information electronically. </br>
-2. Admin can keep updating the system by providing the new books arrival in system and their availability thus students need not to go to library for issuing purpose. </br>
-3. The system has books well organized and systematically arranged in different categories in the system so that user can easily search and find the book. </br>
-4. Thus, it saves human efforts and resources.
-<hr/>
+## 📄 Prerequisites
+- Git should be installed on your machine in not install it by visiting [here](https://git-scm.com/downloads).
+- Docker should be installed on your machine. Can be installed [here](https://www.docker.com/products/docker-desktop/).
 
-## Problem Statement
-Our aim to create advanced library management where the system contain all management features and advanced features like trending books, users choices, tracking of the books circulation etc. <br/>
-- Acquisition management 
-- Circulation management 
-- Search function 
-- Self management 
-- Productive 
-- Online payment 
-- Efficient
-<hr/>
 
-## Proposed Methodology
-![Proposed Methodology](Images/Proposed%20Methodology.jpg)
-<hr/>
+## 🚀 Usage
+1. Clone this repo using:
+```
+git clone https://github.com/VVB2/Library_Management_System.git
+```
+2. Create a `.env` file in all root folders of `/server`.
+3. `AdminMicroservice, NotificationMicroservice, PaymentMicroservice and UserMicroservice` env file must contain:
+```
+MONGO_URI
+LOG_FOLDER
+LOG_FILENAME
+PORT
+JWT_SECRET
+JWT_EXPIRE
+RABBITMQ_URI
+```
+4. `PaymentMicroservice` must contain:
+```
+STRIPE_SECRET_KEY
+STRIPE_PUBLISHABLE_KEY
+```
+5. `NotificationMicroservice` must contain:
+```
+MAILTRAP_USER
+MAILTRAP_PASSWORD
+FRONTEND_URL
+```
+6. `WebScrappingMicroservice` must contain:
+```
+MONGO_URI
+```
+7. Run each `docker-compose.yml` file to run the docker container.
 
-## System Design
+## 🤔 Proposed Methodology
+![Proposed Methodology](System%20Design/Proposed%20Methodology.png)
+
+## 🎨 System Design
 - Flow Diagram
 ![Flow Diagram](System%20Design/Knowza.io%20-%20Flow%20Diagram.png)
 
@@ -41,23 +68,8 @@ Our aim to create advanced library management where the system contain all manag
 
 - Activity Diagram
 ![Activity Diagram](System%20Design/Knowza.io%20-%20Activity%20Diagram.png)
-<hr />
 
-## Implementation Plan
-- [x] Data preprocessing
-- [x] Web Scraping using selenium
-- [x] Design Flask server
-- [ ] API testing
-- [ ] Build React app for user
-- [ ] Build React app for admin
-- [ ] Testing Whole system
-<hr/>
-
-## Requirement analysis
-![Requirement analysis](Images/Requirement%20Analysis.jpg "hello")
-<hr/>
-
-## Modern Tools
+## 🛠 Modern Tools
 <table>
     <thead>
         <tr class="header">
@@ -80,7 +92,7 @@ Our aim to create advanced library management where the system contain all manag
         </tr>
         <tr>
             <td style="text-align: center;">CSS Library</td>
-            <td style="text-align: center;">Material UI</td>
+            <td style="text-align: center;">Minimal UI</td>
             <td style="text-align: center;">Database</td>
             <td style="text-align: center;">MongoDB</td>
             <td style="text-align: center;">CSV Data manipulation</td>
@@ -110,3 +122,17 @@ Our aim to create advanced library management where the system contain all manag
         </tr>
     </tbody>
 </table>
+
+## 💻 Code Contributors
+<a href="https://github.com/VVB2/Library_Management_System/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=VVB2/Library_Management_System" />
+</a>
+
+## 👤 Author
+🙃 Vinod Vaman Bhat
+- GitHub: [@VVB2](https://github.com/VVB2)
+- Portfolio Website: [@VVB](https://snazzy-tartufo-6f8f42.netlify.app/)
+
+## 📃 License
+Copyright © 2022 [Vinod Vaman Bhat](https://github.com/VVB2). <br>
+This project is [MIT](https://github.com/kefranabg/readme-md-generator/blob/master/LICENSE) licensed.

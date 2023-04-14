@@ -1,12 +1,10 @@
-from dotenv import dotenv_values
+import os
 from pymongo import MongoClient
-
-config = dotenv_values('.env')
 
 class DatabaseObject:
     def __init__(self) -> None: 
         """Initialize the database connection"""
-        self.URI = config['MONGO_URI']
+        self.URI = os.environ['MONGO_URI']
         self.DATABASE = None   
 
     def checkPresent(self, isbn):

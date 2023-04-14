@@ -7,15 +7,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from werkzeug.utils import secure_filename
 from flask import Flask, request
 from flask_cors import CORS
-from dotenv import dotenv_values
 from utils import driver_setup, single_scrape_data
 from worker import scrapping
 from databaseCRUD import DatabaseObject
 
 app = Flask(__name__)
 CORS(app)
-
-config = dotenv_values('.env')
 
 FILE_UPLOADS = 'app/static'
 app.config['FILE_UPLOADS'] = FILE_UPLOADS
@@ -63,4 +60,4 @@ atexit.register(lambda: scheduler.shutdown())
 
 if (__name__ == "__main__"):
     print('Server started')
-    app.run(port = 4000, debug=True, host='0.0.0.0')
+    app.run(port = 9999, debug=True, host='0.0.0.0')

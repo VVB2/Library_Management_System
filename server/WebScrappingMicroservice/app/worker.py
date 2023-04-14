@@ -4,12 +4,9 @@ import numpy as np
 import gevent
 import json
 import time
-from dotenv import dotenv_values
 from utils import driver_setup, bulk_scrape_data
 from collections import defaultdict
 from databaseCRUD import DatabaseObject
-
-config = dotenv_values('.env')
 
 INSTANCE = 5
 

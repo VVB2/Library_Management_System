@@ -19,7 +19,7 @@ class DatabaseObject:
             bool: If present or not
         """
         try:
-            return len(self.DATABASE['Test'].find_one({ 'book_detail.isbn': isbn })) > 0
+            return len(self.DATABASE['Books'].find_one({ 'book_detail.isbn': str(isbn) })) > 0
         except:
             return False
     
@@ -29,25 +29,17 @@ class DatabaseObject:
         Args:
             data (JSON): Book containing all the details
         """
-        self.DATABASE['Test'].insert_one(data)
+        self.DATABASE['Books'].insert_one(data)
 
-    def insertMany(self, data):
-        """Insert the book data for scrapping into database
-
-        Args:
-            data (JSON): Book containing all the details
-        """
-        self.DATABASE['Test'].insert_many(data)
-    
     def updateList(self, isbn, list):
-        """Update the accession_books_list and available_books list in database
+        """Update the accession_BooksCopy_list and available_BooksCopy list in database
 
         Args:
             isbn (ObjectID): Object Id of the book for which to update lists
             list (List): A list contating all the new values to be inserted into database 
         """
-        self.DATABASE['Test'].update_many({ 'book_detail.isbn': isbn }, { '$addToSet': {
-            'accession_books_list': {
+        self.DATABASE['Books'].update_many({ 'book_detail.isbn': isbn }, { '$addToSet': {
+            'accession_list': {
                 '$each': list
             },
             'available_books': {

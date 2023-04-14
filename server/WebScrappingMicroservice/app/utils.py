@@ -1,21 +1,19 @@
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 
 def driver_setup():
-    driver_path = '/usr/local/bin/chromedriver'
+    # driver_path = '/usr/local/bin/chromedriver'
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--window-size=1920,1080')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument('--disable-extensions')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(driver_path, chrome_options=chrome_options)
-    driver.get("https://us.nicebooks.com/search?q=1501173081")
+    driver = webdriver.Firefox(options=chrome_options)
+    # driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(5)
+    driver.get("https://us.nicebooks.com/search?q=1501173081")
     return driver
 
 def bulk_scrape_data(df, driver, accession_list):
@@ -113,6 +111,3 @@ def single_scrape_data(data, driver):
         driver.close()
     
     return result_data
-
-if __name__=="__main__":
-    pass

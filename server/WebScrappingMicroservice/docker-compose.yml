@@ -1,24 +1,10 @@
 version: "3"
 services:
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile-server
-    volumes:
-      - ./app:/scrapping/app
-    container_name: webscrapping-server-microservice
+    build: .
+    env_file:
+      - .env
+    container_name: webscrapping-microservice
     ports:
       - "4000:4000"
     restart: always
-
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile-worker
-    volumes:
-      - ./app:/scrapping/app
-    container_name: webscrapping-worker-microservice
-    restart: always
-    depends_on:
-      server:
-        condition: service_completed_successfully

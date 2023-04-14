@@ -2,7 +2,9 @@ from gevent import monkey
 monkey.patch_all()
 import time
 import os
-import json
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
+from werkzeug.utils import secure_filename
 from flask import Flask, request
 from flask_cors import CORS
 from dotenv import dotenv_values
@@ -28,10 +30,10 @@ def singleInsertBook():
     data = request.get_json()
     with DatabaseObject() as dbo:
         if dbo.checkPresent(data['isbn']):
-            dbo.updateList(data['isbn'], data['accession_books_list'])
+            dbo.updateList(data['isbn'], data['accession_books_list'], 'BooksCopy')
         else:
             result_data = single_scrape_data(data, driver_setup())
-            dbo.insertOne(result_data)
+            dbo.insertOne(result_data, 'Books')
     return { 'message': 'Done!' }
 
 @app.route('/api/web-scrapping/bulk-insert-book', methods=['POST'])
@@ -41,14 +43,23 @@ def bulkInsertBook():
     Returns:
         JSON: Message indicating successful API call
     """
-    with DatabaseObject() as dbo:
-        uploaded_file = request.files['file']
-        if uploaded_file:
-            filepath = os.path.join(app.config['FILE_UPLOADS'], f'{time.strftime("%Y%m%d-%H%M%S")}-{uploaded_file.filename}')
-            uploaded_file.save(filepath)
-            return { 'message': 'Done!' }
-        else:
-            return { 'message': 'Server Error!' }
+    uploaded_file = request.files['file']
+    if uploaded_file:
+        uploaded_file.save(os.path.join(app.config['FILE_UPLOADS'], secure_filename(f'{time.strftime("%d%m%Y-%H%M%S")}-{uploaded_file.filename}')))
+        return { 'message': 'Done!' }
+    else:
+        return { 'message': 'Server Error!' }
+
+def scrape_from_csv():
+    for file in os.listdir(app.config['FILE_UPLOADS']):
+        if file.endswith('.csv'):
+            scrapping(file)
+
+scheduler = BackgroundScheduler(daemon=True)
+scheduler.add_job(scrape_from_csv, 'cron', day_of_week='0-6', hour='22')
+scheduler.start()
+
+atexit.register(lambda: scheduler.shutdown())
 
 if (__name__ == "__main__"):
     print('Server started')

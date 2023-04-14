@@ -13,6 +13,8 @@ config = dotenv_values('.env')
 
 INSTANCE = 5
 
+# path_to_watch = "/scrapping/app/static"
+
 def clean_json(books_data, filepath, datapath):
     """To remove duplicate dictionary from json file befor inserting
 
@@ -77,6 +79,4 @@ def scrapping(filename):
         print(e)
     
     finally:
-        print('[x] Done!')
-         
-    
+        print('Done!')

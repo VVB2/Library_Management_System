@@ -16,10 +16,12 @@ RUN echo "deb http://deb.debian.org/debian/ unstable main contrib non-free" >> /
     apt-get update && \
     apt-get install -y --no-install-recommends firefox
 
+# copying files and installing required packages
 WORKDIR /scrapping
 RUN pip install --upgrade pip
 COPY ./requirements.txt /scrapping
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY ./app /scrapping/app
 
-CMD ["python app/main.py"]
+# running the server
+CMD ["python", "app/main.py"]

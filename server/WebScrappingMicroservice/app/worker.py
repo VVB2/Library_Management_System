@@ -36,7 +36,6 @@ def scrapping(filename):
         body (String): Contains the path to the json file
     """
     try:
-        print('Started Scrapping')
         filepath = os.path.join('app/static', filename)
         df = pd.read_csv(filepath, encoding='latin-1')
         old_ISBN = df['ISBN'][0]

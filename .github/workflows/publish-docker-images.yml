@@ -29,17 +29,17 @@ jobs:
 
       - name: Build, tag, and push image to ACR
         run: |
-          docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+          # docker build server/NotificationMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
+          # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/notificationmicroservice:latest
 
-          docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+          # docker build server/AdminMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
+          # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adminmicroservice:latest
 
-          docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+          # docker build server/PaymentMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
+          # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/paymentmicroservice:latest
 
-          docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+          # docker build server/UserMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
+          # docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/usermicroservice:latest
 
           docker build server/WebScrappingMicroservice -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice:latest 
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice:latest

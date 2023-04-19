@@ -3,6 +3,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
 import paymentRouter from './Routes/Payment.js';
@@ -38,6 +40,13 @@ const morganMiddleware = morgan(
     }
 )
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: true, 
+	legacyHeaders: false, 
+})
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, console.log(`Server running on ${PORT}`));
@@ -45,8 +54,10 @@ logger.info(`PaymentMicroservice running on [${PORT}]`)
 
 app.use(express.json());
 app.use(morganMiddleware);
+app.use(limiter);
 
 app.use(express.json());
+app.use(ExpressMongoSanitize());
 
 app.use('/api/payment', paymentRouter);
 

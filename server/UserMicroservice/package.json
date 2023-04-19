@@ -20,6 +20,8 @@
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",

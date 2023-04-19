@@ -4,6 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import cron from 'node-cron';
 import morgan from 'morgan';
+import ExpressMongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
 import logger from './logger/logger.js';
 import connectDB from './db/Connection.js';
 import booksRouter from './Routes/Books.js';
@@ -44,6 +46,13 @@ const morganMiddleware = morgan(
     }
 )
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100,
+	standardHeaders: true, 
+	legacyHeaders: false, 
+})
+
 // Check for book to be returned
 const job = cron.schedule("0 10 * * * ", async () => {
     logger.info('Checking to send Book Return Mail');
@@ -56,6 +65,9 @@ const server = app.listen(PORT, console.log(`Server running on ${PORT}`));
 logger.info(`UserMicroservice running on [${PORT}]`)
 
 app.use(express.json());
+app.use(ExpressMongoSanitize());
+app.use(limiter);
+
 app.use(morganMiddleware);
 
 app.use('/api/user/books', booksRouter);

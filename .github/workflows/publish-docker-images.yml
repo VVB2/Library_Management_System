@@ -146,34 +146,6 @@ jobs:
           ports: 9000 2525
           log-type: ContainerInsights
 
-      - name: 'Deploy Web Scrapping Server'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-server:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: webscrappingserver
-          dns-name-label: webscrappingserver
-          environment-variables: PORT="4000"
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
-          location: 'central india'
-          ports: '4000'
-          log-type: ContainerInsights
-
-      - name: 'Deploy Web Scrapping Worker'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: Knowza.io
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/webscrappingmicroservice-server:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: webscrappingworker
-          dns-name-label: webscrappingworker
-          secure-environment-variables: MONGO_URI=${{ secrets.MONGO_URI }} RABBITMQ_URI=${{ secrets.RABBITMQ_URI }}
-          location: 'central india'
-          log-type: ContainerInsights
-
       - name: Azure logout
         run: |
           az logout

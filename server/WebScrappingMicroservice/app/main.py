@@ -27,7 +27,7 @@ def singleInsertBook():
     data = request.get_json()
     with DatabaseObject() as dbo:
         if dbo.checkPresent(data['isbn']):
-            dbo.updateList(data['isbn'], data['accession_books_list'], 'BooksCopy')
+            dbo.updateList(data['isbn'], data['accession_books_list'])
         else:
             result_data = single_scrape_data(data, driver_setup())
             dbo.insertOne(result_data, 'Books')
